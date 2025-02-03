@@ -1,0 +1,15 @@
+C:\Users\dince\source\repos\Portfolio\Portfolio.Application\bin\Debug\net7.0\Portfolio.Application.deps.json
+C:\Users\dince\source\repos\Portfolio\Portfolio.Application\bin\Debug\net7.0\Portfolio.Application.dll
+C:\Users\dince\source\repos\Portfolio\Portfolio.Application\bin\Debug\net7.0\Portfolio.Application.pdb
+C:\Users\dince\source\repos\Portfolio\Portfolio.Application\obj\Debug\net7.0\Portfolio.Application.csproj.AssemblyReference.cache
+C:\Users\dince\source\repos\Portfolio\Portfolio.Application\obj\Debug\net7.0\Portfolio.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\dince\source\repos\Portfolio\Portfolio.Application\obj\Debug\net7.0\Portfolio.Application.AssemblyInfoInputs.cache
+C:\Users\dince\source\repos\Portfolio\Portfolio.Application\obj\Debug\net7.0\Portfolio.Application.AssemblyInfo.cs
+C:\Users\dince\source\repos\Portfolio\Portfolio.Application\obj\Debug\net7.0\Portfolio.Application.csproj.CoreCompileInputs.cache
+C:\Users\dince\source\repos\Portfolio\Portfolio.Application\obj\Debug\net7.0\Portfolio.Application.dll
+C:\Users\dince\source\repos\Portfolio\Portfolio.Application\obj\Debug\net7.0\refint\Portfolio.Application.dll
+C:\Users\dince\source\repos\Portfolio\Portfolio.Application\obj\Debug\net7.0\Portfolio.Application.pdb
+C:\Users\dince\source\repos\Portfolio\Portfolio.Application\obj\Debug\net7.0\ref\Portfolio.Application.dll
+C:\Users\dince\source\repos\Portfolio\Portfolio.Application\bin\Debug\net7.0\Portfolio.Domain.dll
+C:\Users\dince\source\repos\Portfolio\Portfolio.Application\bin\Debug\net7.0\Portfolio.Domain.pdb
+C:\Users\dince\source\repos\Portfolio\Portfolio.Application\obj\Debug\net7.0\Portfolio.Application.csproj.CopyComplete
