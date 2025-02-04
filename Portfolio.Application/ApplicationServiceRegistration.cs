@@ -9,6 +9,7 @@ public static class ApplicationServiceRegistration
     public static IServiceCollection AddApplicationServices(this IServiceCollection service)
     {
         service.AddScoped<IArticleService, ArticleService>();
+        service.AddScoped<IAuthorService, AuthorService>();
         return service;
     }
 }

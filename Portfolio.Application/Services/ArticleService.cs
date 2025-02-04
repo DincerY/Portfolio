@@ -24,14 +24,21 @@ public class ArticleService : IArticleService
         //business logic devam edecek
         if (id <= 0)
         {
-            throw new Exception("Id can not be less then equal 0");
+            throw new Exception("Id can not be less then or equal to 0");
         }
         return _articleRepository.GetById(id);
     }
 
     public int AddArticle(Article entity)
     {
-        return _articleRepository.Add(entity);
-
+        int res = _articleRepository.Add(entity);
+        if (res > 0)
+        {
+            return res;
+        }
+        else
+        {
+            throw new Exception("Adding is not successful");
+        }
     }
 }

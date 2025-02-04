@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Portfolio.Application.DTOs;
 using Portfolio.Application.Interfaces;
 using Portfolio.Domain.Entities;
 
@@ -29,10 +29,14 @@ public class ArticleController : ControllerBase
         var article = _service.GetArticleById(id);
         return Ok(article);
     }
+    //Veri tabanında kullandığımız nesleri direkt olarak dışarıdan alamak hem güvenlik hem işleyiş açısından
+    //problem olabilir. Örnek olarak burada bir makalenin yazarlarını bütün olarak almaktansa sadace
+    //idlerini bir liste olarak alıp bunları ilişkilendiricez.
     [HttpPost]
-    public IActionResult AddArticle(Article article)
+    public IActionResult AddArticle(CreateArticleDTO dto)
     {
-        Console.WriteLine();
-        return _service.AddArticle(article) == 1 ? Ok() : BadRequest();
+        //İşin çalışıp çalışmadığını servis katmanında kontrol etmeliyiz.
+        int res = _service.AddArticle(dto);
+        return Ok(res);
     }
 }

@@ -10,6 +10,8 @@ public interface IRepository<TEntity> where TEntity : BaseEntity
     int Delete(int id);
     int Update(TEntity entity);
     int AddAll(IEnumerable<TEntity> entities);
+    IEnumerable<TEntity> GetWhere(Func<TEntity,bool> predicate);
+    IQueryable<TEntity> GetQueryable();
 
     IEnumerable<TEntity> GetAll();
     TEntity GetById(int id);

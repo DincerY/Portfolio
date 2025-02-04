@@ -17,4 +17,11 @@ public class AppDbContext : DbContext
         optionsBuilder.UseSqlServer(
             @"Server=(localdb)\mssqllocaldb;Database=PortfolioDb;Trusted_Connection=True");
     }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Article>()
+            .HasMany(art => art.Authors)
+            .WithMany(aut => aut.Articles);
+    }
 }
