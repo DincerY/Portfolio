@@ -6,5 +6,6 @@ public class Article : BaseEntity
     public string Name { get; set; }
     public string Content { get; set; }
     public List<Author> Authors { get; set; }
+    public List<Category> Categories { get; set; }
 
 }

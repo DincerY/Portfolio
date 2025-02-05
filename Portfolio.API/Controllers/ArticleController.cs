@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Portfolio.Application.DTOs;
 using Portfolio.Application.Interfaces;
-using Portfolio.Domain.Entities;
 
 namespace Portfolio.API.Controllers;
 
@@ -26,9 +25,18 @@ public class ArticleController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult GetArticle(int id)
     {
-        var article = _service.GetArticleById(id);
-        return Ok(article);
+        var articleDto = _service.GetArticleById(id);
+        return Ok(articleDto);
     }
+
+    [HttpGet("/api/getArticleAuthors/{articleId}")]
+    public IActionResult GetArticleAuthors(int articleId)
+    {
+        var authorDTOs = _service.GetAuthorsByArticleId(articleId);
+        return Ok(authorDTOs);
+    }
+
+
     //Veri tabanında kullandığımız nesleri direkt olarak dışarıdan alamak hem güvenlik hem işleyiş açısından
     //problem olabilir. Örnek olarak burada bir makalenin yazarlarını bütün olarak almaktansa sadace
     //idlerini bir liste olarak alıp bunları ilişkilendiricez.

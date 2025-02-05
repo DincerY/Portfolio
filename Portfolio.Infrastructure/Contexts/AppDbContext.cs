@@ -23,5 +23,9 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Article>()
             .HasMany(art => art.Authors)
             .WithMany(aut => aut.Articles);
+
+        modelBuilder.Entity<Article>()
+            .HasMany(art => art.Categories)
+            .WithMany(cat => cat.Articles);
     }
 }

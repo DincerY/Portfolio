@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using Portfolio.Domain.Entities;
 using Portfolio.Domain.Interfaces.Repositories;
 using Portfolio.Infrastructure.Contexts;
@@ -54,8 +55,33 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
         return set.ToList();
     }
 
+    public IEnumerable<TEntity> GetAllWithRelation(params Expression<Func<TEntity, object>>[] exceptions)
+    {
+        var query = set.AsQueryable();
+        foreach (var expression in exceptions)
+        {
+            query = query.Include(expression);
+        }
+        return query.ToList();
+    }
+
     public TEntity GetById(int id)
     {
         return set.Find(id);
     }
+
+
+    //Getirilecek veriye birden fazla tabloyu dahil etmek için yazılan fonksiyon
+    //Ayrıca generic yapıyı destekliyor.
+    public TEntity GetByIdWithRelation(int id, params Expression<Func<TEntity, object>>[] expressions)
+    {
+        var query = set.AsQueryable();
+        foreach (var exp in expressions)
+        {
+            query = query.Include(exp);
+        }
+
+        return query.FirstOrDefault(art => art.Id == id);
+    }
+
 }

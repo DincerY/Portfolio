@@ -37,6 +37,21 @@ namespace Portfolio.Infrastructure.Migrations
                     b.ToTable("ArticleAuthor");
                 });
 
+            modelBuilder.Entity("ArticleCategory", b =>
+                {
+                    b.Property<int>("ArticlesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CategoriesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ArticlesId", "CategoriesId");
+
+                    b.HasIndex("CategoriesId");
+
+                    b.ToTable("ArticleCategory");
+                });
+
             modelBuilder.Entity("Portfolio.Domain.Entities.Article", b =>
                 {
                     b.Property<int>("Id")
@@ -95,6 +110,33 @@ namespace Portfolio.Infrastructure.Migrations
                     b.ToTable("Author");
                 });
 
+            modelBuilder.Entity("Portfolio.Domain.Entities.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("PublishedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Category");
+                });
+
             modelBuilder.Entity("ArticleAuthor", b =>
                 {
                     b.HasOne("Portfolio.Domain.Entities.Article", null)
@@ -106,6 +148,21 @@ namespace Portfolio.Infrastructure.Migrations
                     b.HasOne("Portfolio.Domain.Entities.Author", null)
                         .WithMany()
                         .HasForeignKey("AuthorsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ArticleCategory", b =>
+                {
+                    b.HasOne("Portfolio.Domain.Entities.Article", null)
+                        .WithMany()
+                        .HasForeignKey("ArticlesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Portfolio.Domain.Entities.Category", null)
+                        .WithMany()
+                        .HasForeignKey("CategoriesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

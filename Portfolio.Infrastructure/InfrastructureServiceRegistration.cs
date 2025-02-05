@@ -10,6 +10,8 @@ public static class InfrastructureServiceRegistration
     {
         service.AddScoped<IArticleRepository, ArticleRepository>();
         service.AddScoped<IAuthorRepository, AuthorRepository>();
+        service.AddScoped<ICategoryRepository, CategoryRepository>();
+
         return service;
     }
 }

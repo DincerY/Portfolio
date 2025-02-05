@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Domain.Entities;
 
@@ -14,5 +15,9 @@ public interface IRepository<TEntity> where TEntity : BaseEntity
     IQueryable<TEntity> GetQueryable();
 
     IEnumerable<TEntity> GetAll();
+    IEnumerable<TEntity> GetAllWithRelation(params Expression<Func<TEntity, object>>[] exceptions);
+
     TEntity GetById(int id);
+    TEntity GetByIdWithRelation(int id, params Expression<Func<TEntity, object>>[] expression);
+
 }

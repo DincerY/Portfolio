@@ -14,12 +14,10 @@ namespace Portfolio.Application.Services;
 public class AuthorService : IAuthorService
 {
     private readonly IAuthorRepository _authorRepository;
-    private readonly IArticleRepository _articleRepository;
 
-    public AuthorService(IAuthorRepository authorRepository, IArticleRepository articleRepository)
+    public AuthorService(IAuthorRepository authorRepository)
     {
         _authorRepository = authorRepository;
-        _articleRepository = articleRepository;
     }
 
     public IEnumerable<Author> GetAuthors()
@@ -40,15 +38,18 @@ public class AuthorService : IAuthorService
         //!!!Id değerinin elle girilmesini engellemek aslında bir iş mantığıdır.
     }
 
+    public List<Author> GetAuthorsByIds(List<int> ids)
+    {
+        return _authorRepository.GetWhere(aut => ids.Contains(aut.Id)).ToList();
+    }
+
     public int AddAuthor(CreateAuthorDTO dto)
     {
-        var art = _articleRepository.GetWhere(a => dto.ArticleIds.Contains(a.Id)).ToList();
         Author author = new Author()
         {
             Name = dto.Name,
             Surname = dto.Surname,
             PublishedDate = DateTime.UtcNow,
-            Articles = art,
         };
         int res = _authorRepository.Add(author);
         if (res > 0)
@@ -59,5 +60,21 @@ public class AuthorService : IAuthorService
         {
             throw new Exception("Adding is not successful");
         }
+    }
+
+    public List<ArticleDTO> GetArticlesByAuthorId(int authorId)
+    {
+        List<ArticleDTO> dtos = new();
+        var author = _authorRepository.GetByIdWithRelation(authorId, aut => aut.Articles);
+        foreach (var article in author.Articles)
+        {
+            dtos.Add(new ArticleDTO()
+            {
+                Title = article.Title,
+                Name = article.Name,
+                Content = article.Content
+            });
+        }
+        return dtos;
     }
 }
