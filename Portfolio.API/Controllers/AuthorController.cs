@@ -14,7 +14,7 @@ public class AuthorController : ControllerBase
     {
         _service = auhtorService;
     }
-
+    //Bu fonksiyon sadece yazarları getirmeli ilişkili olan kısımları başka fonksiyonlar ile halletmeliyiz
     [HttpGet]
     public IActionResult GetAuthors()
     {

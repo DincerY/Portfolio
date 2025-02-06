@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using Portfolio.Application;
 using Portfolio.Infrastructure;
 using Portfolio.Infrastructure.Contexts;

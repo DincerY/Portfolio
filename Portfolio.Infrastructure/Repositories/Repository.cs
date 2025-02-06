@@ -17,10 +17,11 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
 
     public DbSet<TEntity> set => _context.Set<TEntity>();
 
-    public int Add(TEntity entity)
+    public TEntity Add(TEntity entity)
     {
-        set.Add(entity);
-        return _context.SaveChanges();
+        var entry = set.Add(entity);
+        _context.SaveChanges();
+        return entry.Entity;
     }
     //TODO
     public int Delete(int id)
@@ -55,10 +56,10 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
         return set.ToList();
     }
 
-    public IEnumerable<TEntity> GetAllWithRelation(params Expression<Func<TEntity, object>>[] exceptions)
+    public IEnumerable<TEntity> GetAllWithRelation(params Expression<Func<TEntity, object>>[] expressions)
     {
         var query = set.AsQueryable();
-        foreach (var expression in exceptions)
+        foreach (var expression in expressions)
         {
             query = query.Include(expression);
         }
@@ -84,4 +85,8 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
         return query.FirstOrDefault(art => art.Id == id);
     }
 
+    public int SaveChanges()
+    {
+        return _context.SaveChanges();
+    }
 }

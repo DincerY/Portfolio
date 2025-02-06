@@ -22,10 +22,12 @@ public class AppDbContext : DbContext
     {
         modelBuilder.Entity<Article>()
             .HasMany(art => art.Authors)
-            .WithMany(aut => aut.Articles);
+            .WithMany(aut => aut.Articles)
+            .UsingEntity<ArticleAuthor>();
 
         modelBuilder.Entity<Article>()
             .HasMany(art => art.Categories)
-            .WithMany(cat => cat.Articles);
+            .WithMany(cat => cat.Articles)
+            .UsingEntity<ArticleCategory>();
     }
 }

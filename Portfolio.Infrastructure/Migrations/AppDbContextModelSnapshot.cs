@@ -22,36 +22,6 @@ namespace Portfolio.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ArticleAuthor", b =>
-                {
-                    b.Property<int>("ArticlesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("AuthorsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ArticlesId", "AuthorsId");
-
-                    b.HasIndex("AuthorsId");
-
-                    b.ToTable("ArticleAuthor");
-                });
-
-            modelBuilder.Entity("ArticleCategory", b =>
-                {
-                    b.Property<int>("ArticlesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CategoriesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ArticlesId", "CategoriesId");
-
-                    b.HasIndex("CategoriesId");
-
-                    b.ToTable("ArticleCategory");
-                });
-
             modelBuilder.Entity("Portfolio.Domain.Entities.Article", b =>
                 {
                     b.Property<int>("Id")
@@ -81,6 +51,36 @@ namespace Portfolio.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Articles");
+                });
+
+            modelBuilder.Entity("Portfolio.Domain.Entities.ArticleAuthor", b =>
+                {
+                    b.Property<int>("ArticleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AuthorId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ArticleId", "AuthorId");
+
+                    b.HasIndex("AuthorId");
+
+                    b.ToTable("ArticleAuthor");
+                });
+
+            modelBuilder.Entity("Portfolio.Domain.Entities.ArticleCategory", b =>
+                {
+                    b.Property<int>("ArticleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ArticleId", "CategoryId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("ArticleCategory");
                 });
 
             modelBuilder.Entity("Portfolio.Domain.Entities.Author", b =>
@@ -137,34 +137,59 @@ namespace Portfolio.Infrastructure.Migrations
                     b.ToTable("Category");
                 });
 
-            modelBuilder.Entity("ArticleAuthor", b =>
+            modelBuilder.Entity("Portfolio.Domain.Entities.ArticleAuthor", b =>
                 {
-                    b.HasOne("Portfolio.Domain.Entities.Article", null)
-                        .WithMany()
-                        .HasForeignKey("ArticlesId")
+                    b.HasOne("Portfolio.Domain.Entities.Article", "Article")
+                        .WithMany("ArticleAuthors")
+                        .HasForeignKey("ArticleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Portfolio.Domain.Entities.Author", null)
-                        .WithMany()
-                        .HasForeignKey("AuthorsId")
+                    b.HasOne("Portfolio.Domain.Entities.Author", "Author")
+                        .WithMany("ArticleAuthors")
+                        .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Article");
+
+                    b.Navigation("Author");
                 });
 
-            modelBuilder.Entity("ArticleCategory", b =>
+            modelBuilder.Entity("Portfolio.Domain.Entities.ArticleCategory", b =>
                 {
-                    b.HasOne("Portfolio.Domain.Entities.Article", null)
-                        .WithMany()
-                        .HasForeignKey("ArticlesId")
+                    b.HasOne("Portfolio.Domain.Entities.Article", "Article")
+                        .WithMany("ArticleCategories")
+                        .HasForeignKey("ArticleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Portfolio.Domain.Entities.Category", null)
-                        .WithMany()
-                        .HasForeignKey("CategoriesId")
+                    b.HasOne("Portfolio.Domain.Entities.Category", "Category")
+                        .WithMany("ArticleCategories")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Article");
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Portfolio.Domain.Entities.Article", b =>
+                {
+                    b.Navigation("ArticleAuthors");
+
+                    b.Navigation("ArticleCategories");
+                });
+
+            modelBuilder.Entity("Portfolio.Domain.Entities.Author", b =>
+                {
+                    b.Navigation("ArticleAuthors");
+                });
+
+            modelBuilder.Entity("Portfolio.Domain.Entities.Category", b =>
+                {
+                    b.Navigation("ArticleCategories");
                 });
 #pragma warning restore 612, 618
         }

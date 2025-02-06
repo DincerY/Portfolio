@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "QIJgnSMmcvyBFDuFJDd84gSUOG9TSpCLt9wsp7ULfzd/BdxDmVgrVnNkmOVkhzvtasw88sP7catxC3avBdAebg==",
+  "dgSpecHash": "RDcfiPhppX/uP4EQIK3MF2NjSWIJGbYU6TNYxhy9RaXtZozXosdztwhu5j/UFY48NjflWRSRNhqabwdBExTunA==",
   "success": true,
   "projectFilePath": "C:\\Users\\dince\\source\\repos\\Portfolio\\Portfolio.Application\\Portfolio.Application.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\dince\\.nuget\\packages\\fluentvalidation\\11.11.0\\fluentvalidation.11.11.0.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\microsoft.entityframeworkcore\\7.0.0\\microsoft.entityframeworkcore.7.0.0.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\7.0.0\\microsoft.entityframeworkcore.abstractions.7.0.0.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\7.0.0\\microsoft.entityframeworkcore.analyzers.7.0.0.nupkg.sha512",

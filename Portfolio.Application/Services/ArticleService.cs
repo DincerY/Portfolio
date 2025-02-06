@@ -19,9 +19,9 @@ public class ArticleService : IArticleService
         _authorRepository = authorRepository;
     }
 
-    public IEnumerable<ArticleWithRelations> GetArticles()
+    public IEnumerable<ArticleWithRelationsDTO> GetArticles()
     {
-        List<ArticleWithRelations> dtos = new();
+        List<ArticleWithRelationsDTO> dtos = new();
         var articles = _articleRepository.GetAllWithRelation(art => art.Authors,art=> art.Categories);
         foreach (var article in articles)
         {
@@ -31,6 +31,7 @@ public class ArticleService : IArticleService
             {
                 authorDtos.Add(new AuthorDTO()
                 {
+                    Id = articleAuthor.Id,
                     Name = articleAuthor.Name,
                     Surname = articleAuthor.Surname
                 });
@@ -41,11 +42,12 @@ public class ArticleService : IArticleService
             {
                 categoryDtos.Add(new CategoryDTO()
                 {
+                    Id = articleCategory.Id,
                     Name = articleCategory.Name,
                     Description = articleCategory.Description
                 });
             }
-            dtos.Add(new ArticleWithRelations()
+            dtos.Add(new ArticleWithRelationsDTO()
             {
                 Id = article.Id,
                 Name = article.Name,
@@ -58,7 +60,7 @@ public class ArticleService : IArticleService
         return dtos;
     }
 
-    public ArticleWithRelations GetArticleById(int id)
+    public ArticleWithRelationsDTO GetArticleById(int id)
     {
         //business logic devam edecek
         if (id <= 0)
@@ -83,12 +85,13 @@ public class ArticleService : IArticleService
         {
             categoryDtos.Add(new CategoryDTO()
             {
+                Id = articleCategory.Id,
                 Name = articleCategory.Name,
                 Description = articleCategory.Description
             });
         }
             
-        ArticleWithRelations dtos = new()
+        ArticleWithRelationsDTO dtos = new()
         {
             Id = article.Id,
             Authors = authorDtos,
@@ -121,21 +124,41 @@ public class ArticleService : IArticleService
             throw new Exception("AuthorIds can not less than of equal to 0");
         }
 
-        List<Author> authors = _authorRepository.GetWhere(aut => dto.Authors.Contains(aut.Id)).ToList();
-        List<Category> categories = _categoryRepository.GetWhere(cat => dto.Categories.Contains(cat.Id)).ToList();
         Article article = new Article()
         {
             Content = dto.Content,
             Name = dto.Name,
             PublishedDate = DateTime.UtcNow,
             Title = dto.Title,
-            Authors = authors,
-            Categories = categories
         };
-        int res = _articleRepository.Add(article);
+        article = _articleRepository.Add(article);
+
+        //bir önce ki yaklaşımda daha fazla sorgu vardı çünkü id si girilen yazarları getiriyordum ayrıca
+        //id si girilen kategorileri getiriyordum daha sonra bunları makaleye ekleyip makaleyi veri
+        //tabanına öyle ekliyordum. Artık ara tabloma direkt ulaşıp idleri oraya ekliyorum.
+
+        if (article == null)
+        {
+            throw new Exception("Adding is not successful");
+        }
+
+        article.ArticleAuthors = dto.Authors.Select(id => new ArticleAuthor()
+        {
+            ArticleId = article.Id,
+            AuthorId = id
+        }).ToList();
+
+        article.ArticleCategories = dto.Categories.Select(id => new ArticleCategory()
+        {
+            ArticleId = article.Id,
+            CategoryId = id
+        }).ToList();
+
+        int res = _articleRepository.SaveChanges();
+
         if (res > 0)
         {
-            return res;
+            return article.Id;
         }
         else
         {

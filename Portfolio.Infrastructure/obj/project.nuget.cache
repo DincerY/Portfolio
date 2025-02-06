@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "a+2JVBBvUKy7ljACGyYGrjEKfnr2sWQFrR1s5Nii6t7qjZYFvxONSpVVpRGyuOlwzFfoj60XbSMBVTI74LcIjA==",
+  "dgSpecHash": "aQjh7Ke5LMlBG6ltAqZG1wuMSCE0SvQy5nnOjrV/z6GFN3SpB+oXuGQEUSRbWHeCvyyPAX/23XiQ1ShfUwyJWw==",
   "success": true,
   "projectFilePath": "C:\\Users\\dince\\source\\repos\\Portfolio\\Portfolio.Infrastructure\\Portfolio.Infrastructure.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\dince\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
+    "C:\\Users\\dince\\.nuget\\packages\\fluentvalidation\\11.11.0\\fluentvalidation.11.11.0.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",

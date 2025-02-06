@@ -80,3 +80,6 @@ C:\Users\dince\source\repos\Portfolio\Portfolio.API\bin\Debug\net7.0\runtimes\wi
 C:\Users\dince\source\repos\Portfolio\Portfolio.API\bin\Debug\net7.0\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll
 C:\Users\dince\source\repos\Portfolio\Portfolio.API\bin\Debug\net7.0\Portfolio.Infrastructure.dll
 C:\Users\dince\source\repos\Portfolio\Portfolio.API\bin\Debug\net7.0\Portfolio.Infrastructure.pdb
+C:\Users\dince\source\repos\Portfolio\Portfolio.API\bin\Debug\net7.0\FluentValidation.dll
+C:\Users\dince\source\repos\Portfolio\Portfolio.API\bin\Debug\net7.0\FluentValidation.AspNetCore.dll
+C:\Users\dince\source\repos\Portfolio\Portfolio.API\bin\Debug\net7.0\FluentValidation.DependencyInjectionExtensions.dll

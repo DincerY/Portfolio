@@ -7,7 +7,7 @@ namespace Portfolio.Domain.Interfaces.Repositories;
 public interface IRepository<TEntity> where TEntity : BaseEntity
 {
     public DbSet<TEntity> set { get; }
-    int Add(TEntity entity);
+    TEntity Add(TEntity entity);
     int Delete(int id);
     int Update(TEntity entity);
     int AddAll(IEnumerable<TEntity> entities);
@@ -15,9 +15,10 @@ public interface IRepository<TEntity> where TEntity : BaseEntity
     IQueryable<TEntity> GetQueryable();
 
     IEnumerable<TEntity> GetAll();
-    IEnumerable<TEntity> GetAllWithRelation(params Expression<Func<TEntity, object>>[] exceptions);
+    IEnumerable<TEntity> GetAllWithRelation(params Expression<Func<TEntity, object>>[] expressions);
 
     TEntity GetById(int id);
     TEntity GetByIdWithRelation(int id, params Expression<Func<TEntity, object>>[] expression);
+    int SaveChanges();
 
 }

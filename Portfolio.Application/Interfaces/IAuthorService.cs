@@ -5,7 +5,7 @@ namespace Portfolio.Application.Interfaces;
 
 public interface IAuthorService
 {
-    public IEnumerable<Author> GetAuthors();
+    public IEnumerable<AuthorDTO> GetAuthors();
     public Author GetAuthorById(int id);
     public List<Author> GetAuthorsByIds(List<int> ids);
     public int AddAuthor(CreateAuthorDTO dto);

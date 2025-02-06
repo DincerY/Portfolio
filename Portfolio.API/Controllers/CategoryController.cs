@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Portfolio.Application.DTOs;
 using Portfolio.Application.Interfaces;
-using Portfolio.Domain.Entities;
 
 namespace Portfolio.API.Controllers;
 
@@ -20,6 +18,19 @@ public class CategoryController : ControllerBase
     public IActionResult GetCategories()
     {
         var res = _categoryService.GetCategories();
+        return Ok(res);
+    }
+
+    [HttpGet("{id}")]
+    public IActionResult GetCategoryById(int id)
+    {
+        var res = _categoryService.GetCategoryById(id);
+        return Ok(res);
+    }
+    [HttpGet("/api/getCategoryArticles/{id}")]
+    public IActionResult GetCategoryWithArticles(int id)
+    {
+        var res = _categoryService.GetArticlesByCategoryId(id);
         return Ok(res);
     }
 

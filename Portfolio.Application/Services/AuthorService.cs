@@ -20,9 +20,15 @@ public class AuthorService : IAuthorService
         _authorRepository = authorRepository;
     }
 
-    public IEnumerable<Author> GetAuthors()
+    public IEnumerable<AuthorDTO> GetAuthors()
     {
-        return _authorRepository.GetAll();
+        var authors = _authorRepository.GetAllWithRelation(aut => aut.Articles);
+        return authors.Select(aut => new AuthorDTO()
+        {
+            Id = aut.Id,
+            Name = aut.Name,
+            Surname = aut.Surname,
+        }).ToList();
     }
 
     public Author GetAuthorById(int id)
@@ -51,15 +57,16 @@ public class AuthorService : IAuthorService
             Surname = dto.Surname,
             PublishedDate = DateTime.UtcNow,
         };
-        int res = _authorRepository.Add(author);
-        if (res > 0)
+        var addedAuthor = _authorRepository.Add(author);
+        if (addedAuthor != null)
         {
-            return res;
+            return addedAuthor.Id;
         }
         else
         {
             throw new Exception("Adding is not successful");
         }
+        
     }
 
     public List<ArticleDTO> GetArticlesByAuthorId(int authorId)
@@ -70,6 +77,7 @@ public class AuthorService : IAuthorService
         {
             dtos.Add(new ArticleDTO()
             {
+                Id = article.Id,
                 Title = article.Title,
                 Name = article.Name,
                 Content = article.Content

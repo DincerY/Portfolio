@@ -1,6 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
+using Portfolio.Application.DTOs;
 using Portfolio.Application.Interfaces;
 using Portfolio.Application.Services;
+using Portfolio.Application.Validators;
 
 namespace Portfolio.Application;
 
@@ -11,6 +14,9 @@ public static class ApplicationServiceRegistration
         service.AddScoped<IArticleService, ArticleService>();
         service.AddScoped<IAuthorService, AuthorService>();
         service.AddScoped<ICategoryService, CategoryService>();
+
+        service.AddSingleton<IValidator<CreateCategoryDTO>, CreateCategoryDTOValidator>();
+
         return service;
     }
 }
