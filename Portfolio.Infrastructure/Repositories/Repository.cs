@@ -28,6 +28,19 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
     {
         throw new NotImplementedException();
     }
+
+    public bool IsExists(Func<TEntity,bool> predicate)
+    {
+        var res = set.Where(predicate).FirstOrDefault();
+        if (res != null)
+        {
+           return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
     //TODO
 
     public int Update(TEntity entity)
@@ -41,9 +54,14 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
         throw new NotImplementedException();
     }
 
-    public IEnumerable<TEntity> GetWhere(Func<TEntity, bool> predicate)
+    public IQueryable<TEntity> GetWhere(params Func<TEntity, bool>[] predicate)
     {
-        return set.Where(predicate);
+        var query = set.AsQueryable();
+        foreach (var func in predicate)
+        {
+            query = query.Where(func).AsQueryable();
+        }
+        return query;
     }
 
     public IQueryable<TEntity> GetQueryable()
@@ -69,6 +87,12 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
     public TEntity GetById(int id)
     {
         return set.Find(id);
+    }
+
+    public IEnumerable<TEntity> GetByIds(List<int> ids)
+    {
+        var res = set.Where(ent => ids.Contains(ent.Id)).ToList();
+        return res;
     }
 
 

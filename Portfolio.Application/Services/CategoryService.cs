@@ -37,14 +37,22 @@ public class CategoryService : ICategoryService
             Description = category.Description,
         };
     }
-
+    //Hem validasyon hemde iş mantığını bir arada yaptık.
     public int AddCategory(CreateCategoryDTO dto)
     {
         var res = _createCategoryValidator.Validate(dto);
         if (!res.IsValid)
         {
-            throw new Exception(string.Join(", ", res.Errors.Select(e => e.ErrorMessage)));
+            throw new ValidationException(res.Errors);
         }
+
+        bool isNameExist = _categoryRepository.IsExists(cat => cat.Name.ToLower() == dto.Name.ToLower());
+        if (isNameExist)
+        {
+            throw new Exception("Category name already exist.");
+        }
+
+
         Category category = new()
         {
             Name = dto.Name,

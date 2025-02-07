@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
 using Portfolio.Application.DTOs;
 using Portfolio.Application.Interfaces;
 using Portfolio.Domain.Entities;
@@ -9,14 +9,17 @@ namespace Portfolio.Application.Services;
 public class ArticleService : IArticleService
 {
     private readonly IArticleRepository _articleRepository;
-    private readonly ICategoryRepository _categoryRepository;
     private readonly IAuthorRepository _authorRepository;
+    private readonly ICategoryRepository _categoryRepository;
+    private readonly IValidator<CreateArticleDTO> _createArticleValidator;
 
-    public ArticleService(IArticleRepository articlesRepository, ICategoryRepository categoryRepository, IAuthorRepository authorRepository)
+
+    public ArticleService(IArticleRepository articlesRepository, IValidator<CreateArticleDTO> createArticleValidator, IAuthorRepository authorRepository, ICategoryRepository categoryRepository)
     {
         _articleRepository = articlesRepository;
-        _categoryRepository = categoryRepository;
+        _createArticleValidator = createArticleValidator;
         _authorRepository = authorRepository;
+        _categoryRepository = categoryRepository;
     }
 
     public IEnumerable<ArticleWithRelationsDTO> GetArticles()
@@ -119,9 +122,42 @@ public class ArticleService : IArticleService
     //o yazarın o ana kadar bir makalesi olmayabilir. Arada ki ilişki çoka çok ilişki türü.
     public int AddArticle(CreateArticleDTO dto)
     {
-        if (dto.Authors.Count <= 0)
+        var res= _createArticleValidator.Validate(dto);
+        if (!res.IsValid)
         {
-            throw new Exception("AuthorIds can not less than of equal to 0");
+            throw new ValidationException(res.Errors);
+        }
+
+        bool isArticleExits = _articleRepository.IsExists(art => art.Name.ToLower() == dto.Name.ToLower());
+        if (isArticleExits)
+        {
+            throw new Exception("Article's name is already exist");
+        }
+
+        isArticleExits = _articleRepository.IsExists(art => art.Title.ToLower() == dto.Title.ToLower());
+        if (isArticleExits)
+        {
+            throw new Exception("Article's title is already exist");
+        }
+
+        //Business Logic
+        //Bütün veri yerine sadece id değerlerini çekip bunların kontrolünü yapıcam
+        //Daha sonra bu id değerlerini ara tablolara eklicem yada yeni nesneler oluşturup
+        //sadece onların id kısımlarını doldurucam. Aşağıda ki gibi
+
+        /*var test = existAuthorIds.Select(id => new Author { Id = id }).ToList();*/
+
+        //_authorRepository.GetWhere().Select()
+        var existAuthors = _authorRepository.GetByIds(dto.Authors).ToList();
+        if (existAuthors.Count != dto.Authors.Count)
+        {
+            throw new Exception("Entered invalid author IDs.");
+        }
+
+        var existCategories = _categoryRepository.GetByIds(dto.Categories).ToList();
+        if (existCategories.Count != dto.Categories.Count)
+        {
+            throw new Exception("Entered invalid categories IDs.");
         }
 
         Article article = new Article()
@@ -130,39 +166,22 @@ public class ArticleService : IArticleService
             Name = dto.Name,
             PublishedDate = DateTime.UtcNow,
             Title = dto.Title,
+            Authors = existAuthors,
+            Categories = existCategories,
         };
-        article = _articleRepository.Add(article);
+        var addedArticle = _articleRepository.Add(article);
 
-        //bir önce ki yaklaşımda daha fazla sorgu vardı çünkü id si girilen yazarları getiriyordum ayrıca
-        //id si girilen kategorileri getiriyordum daha sonra bunları makaleye ekleyip makaleyi veri
-        //tabanına öyle ekliyordum. Artık ara tabloma direkt ulaşıp idleri oraya ekliyorum.
+        //bir önce ki yaklaşımda ara tabloyu kullanarak ekleme yapıyordum fakat kontrol için zaten verileri
+        //verileri getirmek zorundayım getirmişken de ekleme işlemini direkt navigation property 
+        //üzerinden yapmayı daha basit buldum.
 
-        if (article == null)
+        if (addedArticle == null)
         {
             throw new Exception("Adding is not successful");
-        }
-
-        article.ArticleAuthors = dto.Authors.Select(id => new ArticleAuthor()
-        {
-            ArticleId = article.Id,
-            AuthorId = id
-        }).ToList();
-
-        article.ArticleCategories = dto.Categories.Select(id => new ArticleCategory()
-        {
-            ArticleId = article.Id,
-            CategoryId = id
-        }).ToList();
-
-        int res = _articleRepository.SaveChanges();
-
-        if (res > 0)
-        {
-            return article.Id;
         }
         else
         {
-            throw new Exception("Adding is not successful");
+            return addedArticle.Id;
         }
     }
 

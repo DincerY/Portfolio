@@ -1,4 +1,5 @@
-﻿using Portfolio.Application.DTOs;
+﻿using FluentValidation;
+using Portfolio.Application.DTOs;
 using Portfolio.Application.Interfaces;
 using Portfolio.Domain.Entities;
 using Portfolio.Domain.Interfaces.Repositories;
@@ -14,10 +15,12 @@ namespace Portfolio.Application.Services;
 public class AuthorService : IAuthorService
 {
     private readonly IAuthorRepository _authorRepository;
+    private readonly IValidator<CreateAuthorDTO> _createAuthorValidator;
 
-    public AuthorService(IAuthorRepository authorRepository)
+    public AuthorService(IAuthorRepository authorRepository, IValidator<CreateAuthorDTO> createAuthorValidator)
     {
         _authorRepository = authorRepository;
+        _createAuthorValidator = createAuthorValidator;
     }
 
     public IEnumerable<AuthorDTO> GetAuthors()
@@ -51,6 +54,19 @@ public class AuthorService : IAuthorService
 
     public int AddAuthor(CreateAuthorDTO dto)
     {
+        var res = _createAuthorValidator.Validate(dto);
+        if (!res.IsValid)
+        {
+            throw new ValidationException(res.Errors);
+        }
+
+
+        bool isAuthorExist = _authorRepository.IsExists(aut => aut.Name.ToLower() == dto.Name.ToLower());
+        if (isAuthorExist)
+        {
+            throw new Exception("Author's name is already exist");
+        }
+
         Author author = new Author()
         {
             Name = dto.Name,

@@ -16,6 +16,8 @@ public static class ApplicationServiceRegistration
         service.AddScoped<ICategoryService, CategoryService>();
 
         service.AddSingleton<IValidator<CreateCategoryDTO>, CreateCategoryDTOValidator>();
+        service.AddSingleton<IValidator<CreateArticleDTO>, CreateArticleDTOValidator>();
+        service.AddSingleton<IValidator<CreateAuthorDTO>, CreateAuthorDTOValidator>();
 
         return service;
     }
