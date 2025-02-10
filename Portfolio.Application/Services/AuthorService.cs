@@ -47,9 +47,14 @@ public class AuthorService : IAuthorService
         //!!!Id değerinin elle girilmesini engellemek aslında bir iş mantığıdır.
     }
 
-    public List<Author> GetAuthorsByIds(List<int> ids)
+    public List<AuthorDTO> GetAuthorsByIds(List<int> ids)
     {
-        return _authorRepository.GetWhere(aut => ids.Contains(aut.Id)).ToList();
+        return _authorRepository.GetWhere(aut => ids.Contains(aut.Id)).ToList().Select(aut => new AuthorDTO()
+        {
+            Id = aut.Id,
+            Name = aut.Name,
+            Surname = aut.Surname,
+        }).ToList();
     }
 
     public int AddAuthor(CreateAuthorDTO dto)

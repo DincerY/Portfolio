@@ -54,14 +54,14 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
         throw new NotImplementedException();
     }
 
-    public IQueryable<TEntity> GetWhere(params Func<TEntity, bool>[] predicate)
+    public IEnumerable<TEntity> GetWhere(params Expression<Func<TEntity, bool>>[] predicate)
     {
         var query = set.AsQueryable();
         foreach (var func in predicate)
         {
-            query = query.Where(func).AsQueryable();
+            query = query.Where(func);
         }
-        return query;
+        return query.ToList();
     }
 
     public IQueryable<TEntity> GetQueryable()
@@ -108,9 +108,5 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
 
         return query.FirstOrDefault(art => art.Id == id);
     }
-
-    public int SaveChanges()
-    {
-        return _context.SaveChanges();
-    }
+    
 }

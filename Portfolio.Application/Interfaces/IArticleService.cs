@@ -5,8 +5,12 @@ namespace Portfolio.Application.Interfaces;
 
 public interface IArticleService
 {
-    public IEnumerable<ArticleWithRelationsDTO> GetArticles();
-    public ArticleWithRelationsDTO GetArticleById(int id);
+    public IEnumerable<ArticleDTO> GetArticles();
+    public IEnumerable<ArticleWithRelationsDTO> GetArticlesWithRelation();
+
+    public ArticleDTO GetArticleById(int id);
+    public ArticleWithRelationsDTO GetArticleWithRelationById(int id);
+
     public List<Article> GetArticlesByIds(List<int> ids);
 
     public int AddArticle(CreateArticleDTO dto);

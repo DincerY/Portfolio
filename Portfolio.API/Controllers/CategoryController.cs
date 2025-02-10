@@ -40,4 +40,13 @@ public class CategoryController : ControllerBase
         var res = _categoryService.AddCategory(dto);
         return Ok(res);
     }
+
+
+
+    [HttpPut]
+    public ActionResult<ArticleDTO> Deneme(CreateCategoryDTO dto)
+    {
+        var actionRes = new ActionResult<ArticleDTO>(new ArticleDTO());
+        return actionRes;
+    }
 }

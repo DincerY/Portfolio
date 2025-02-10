@@ -22,10 +22,22 @@ public class ArticleService : IArticleService
         _categoryRepository = categoryRepository;
     }
 
-    public IEnumerable<ArticleWithRelationsDTO> GetArticles()
+    public IEnumerable<ArticleDTO> GetArticles()
+    {
+        var articles = _articleRepository.GetAll();
+        return articles.Select(art => new ArticleDTO()
+        {
+            Id = art.Id,
+            Title = art.Title,
+            Content = art.Content,
+            Name = art.Name
+        });
+    }
+
+    public IEnumerable<ArticleWithRelationsDTO> GetArticlesWithRelation()
     {
         List<ArticleWithRelationsDTO> dtos = new();
-        var articles = _articleRepository.GetAllWithRelation(art => art.Authors,art=> art.Categories);
+        var articles = _articleRepository.GetAllWithRelation(art => art.Authors, art => art.Categories);
         foreach (var article in articles)
         {
             List<AuthorDTO> authorDtos = new();
@@ -38,7 +50,7 @@ public class ArticleService : IArticleService
                     Name = articleAuthor.Name,
                     Surname = articleAuthor.Surname
                 });
-                
+
             }
 
             foreach (var articleCategory in article.Categories)
@@ -63,37 +75,46 @@ public class ArticleService : IArticleService
         return dtos;
     }
 
-    public ArticleWithRelationsDTO GetArticleById(int id)
+
+    public ArticleDTO GetArticleById(int id)
     {
         //business logic devam edecek
         if (id <= 0)
         {
             throw new Exception("Id can not be less then or equal to 0");
         }
+        Article article = _articleRepository.GetById(id);
+        ArticleDTO dto = new ArticleDTO()
+        {
+            Id = article.Id,
+            Name = article.Name,
+            Content = article.Content,
+            Title = article.Title
+        };
+        return dto;
+    }
+
+    public ArticleWithRelationsDTO GetArticleWithRelationById(int id)
+    {
+        if (id <= 0)
+        {
+            throw new Exception("Id can not be less then or equal to 0");
+        }
         Article article = _articleRepository.GetByIdWithRelation(id,art => art.Authors, art => art.Categories);
-        List<AuthorDTO> authorDtos = new();
-        List<CategoryDTO> categoryDtos = new();
-
-        foreach (var articleAuthor in article.Authors)
+        List<AuthorDTO> authorDtos = article.Authors.Select(aut => new AuthorDTO()
         {
-            authorDtos.Add(new AuthorDTO()
-            {
-                Id = articleAuthor.Id,
-                Name = articleAuthor.Name,
-                Surname = articleAuthor.Surname
-            });
-        }
+            Id = aut.Id,
+            Name = aut.Name,
+            Surname = aut.Surname
+        }).ToList();
 
-        foreach (var articleCategory in article.Categories)
+        List<CategoryDTO> categoryDtos = article.Categories.Select(cat => new CategoryDTO()
         {
-            categoryDtos.Add(new CategoryDTO()
-            {
-                Id = articleCategory.Id,
-                Name = articleCategory.Name,
-                Description = articleCategory.Description
-            });
-        }
-            
+            Id = cat.Id,
+            Name = cat.Name,
+            Description = cat.Description
+        }).ToList();
+
         ArticleWithRelationsDTO dtos = new()
         {
             Id = article.Id,
@@ -167,7 +188,7 @@ public class ArticleService : IArticleService
             PublishedDate = DateTime.UtcNow,
             Title = dto.Title,
             Authors = existAuthors,
-            Categories = existCategories,
+            Categories = existCategories
         };
         var addedArticle = _articleRepository.Add(article);
 

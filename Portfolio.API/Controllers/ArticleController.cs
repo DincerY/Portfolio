@@ -21,11 +21,24 @@ public class ArticleController : ControllerBase
         var articles = _service.GetArticles();
         return Ok(articles);
     }
+    [HttpGet("/api/getArticlesWithRelation")]
+    public IActionResult GetArticlesWithRelation()
+    {
+        var articles = _service.GetArticlesWithRelation();
+        return Ok(articles);
+    }
 
     [HttpGet("{id}")]
-    public IActionResult GetArticle(int id)
+    public IActionResult GetArticleById(int id)
     {
         var articleDto = _service.GetArticleById(id);
+        return Ok(articleDto);
+    }
+
+    [HttpGet("/api/getArticleWithRelation/{id}")]
+    public IActionResult GetArticleWithRelationById(int id)
+    {
+        var articleDto = _service.GetArticleWithRelationById(id);
         return Ok(articleDto);
     }
 

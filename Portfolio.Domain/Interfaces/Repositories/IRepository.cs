@@ -12,7 +12,7 @@ public interface IRepository<TEntity> where TEntity : BaseEntity
     bool IsExists(Func<TEntity,bool> predicate);
     int Update(TEntity entity);
     int AddAll(IEnumerable<TEntity> entities);
-    IQueryable<TEntity> GetWhere(params Func<TEntity,bool>[] predicate);
+    IEnumerable<TEntity> GetWhere(params Expression<Func<TEntity, bool>>[] predicate);
     IQueryable<TEntity> GetQueryable();
 
     IEnumerable<TEntity> GetAll();
@@ -21,6 +21,5 @@ public interface IRepository<TEntity> where TEntity : BaseEntity
     TEntity GetById(int id);
     IEnumerable<TEntity> GetByIds(List<int> ids);
     TEntity GetByIdWithRelation(int id, params Expression<Func<TEntity, object>>[] expression);
-    int SaveChanges();
 
 }
