@@ -10,10 +10,14 @@ public class CategoryService : ICategoryService
 {
     private readonly ICategoryRepository _categoryRepository;
     private readonly IValidator<CreateCategoryDTO> _createCategoryValidator;
-    public CategoryService(ICategoryRepository categoryRepository, IValidator<CreateCategoryDTO> createCategoryValidator)
+    private readonly IValidator<EntityIdDTO> _entityIdValidator;
+    private readonly IValidator<List<EntityIdDTO>> _entityIdListValidator;
+    public CategoryService(ICategoryRepository categoryRepository, IValidator<CreateCategoryDTO> createCategoryValidator, IValidator<EntityIdDTO> entityIdValidator, IValidator<List<EntityIdDTO>> entityIdListValidator)
     {
         _categoryRepository = categoryRepository;
         _createCategoryValidator = createCategoryValidator;
+        _entityIdValidator = entityIdValidator;
+        _entityIdListValidator = entityIdListValidator;
     }
 
     public IEnumerable<CategoryDTO> GetCategories()
@@ -27,9 +31,19 @@ public class CategoryService : ICategoryService
         }).ToList();
     }
 
-    public CategoryDTO GetCategoryById(int id)
+    public CategoryDTO GetCategoryById(EntityIdDTO dto)
     {
-        var category = _categoryRepository.GetById(id);
+        var res = _entityIdValidator.Validate(dto);
+        if (!res.IsValid)
+        {
+            throw new ValidationException(res.Errors);
+        }
+
+        var category = _categoryRepository.GetById(dto.Id);
+        if (category == null)
+        {
+            throw new Exception("There is no category in the entered id");
+        }
         return new CategoryDTO()
         {
             Id = category.Id,
@@ -37,6 +51,29 @@ public class CategoryService : ICategoryService
             Description = category.Description,
         };
     }
+
+    public List<CategoryDTO> GetCategoriesByIds(List<EntityIdDTO> dtos)
+    {
+        var res = _entityIdListValidator.Validate(dtos);
+        if (!res.IsValid)
+        {
+            throw new ValidationException(res.Errors);
+        }
+
+        var categories = _categoryRepository.GetByIds(dtos.Select(dto => dto.Id).ToList());
+        if (categories.Count() != dtos.Count)
+        {
+            throw new Exception("There is no category in the entered ids");
+        }
+
+        return categories.Select(cat => new CategoryDTO()
+        {
+            Id = cat.Id,
+            Description = cat.Description,
+            Name = cat.Name
+        }).ToList();
+    }
+
     //Hem validasyon hemde iş mantığını bir arada yaptık.
     public int AddCategory(CreateCategoryDTO dto)
     {
@@ -51,7 +88,6 @@ public class CategoryService : ICategoryService
         {
             throw new Exception("Category name already exist.");
         }
-
 
         Category category = new()
         {
@@ -71,9 +107,19 @@ public class CategoryService : ICategoryService
         }
     }
 
-    public List<ArticlesWithCategoryDTO> GetArticlesByCategoryId(int categoryId)
+    public List<ArticlesWithCategoryDTO> GetArticlesByCategoryId(EntityIdDTO dto)
     {
-        var category = _categoryRepository.GetByIdWithRelation(categoryId, cat => cat.Articles);
+        var res = _entityIdValidator.Validate(dto);
+        if (!res.IsValid)
+        {
+            throw new ValidationException(res.Errors);
+        }
+
+        var category = _categoryRepository.GetByIdWithRelation(dto.Id, cat => cat.Articles);
+        if (category == null)
+        {
+            throw new Exception("There is no category in the entered id");
+        }
 
         return category.Articles.Select(art => new ArticlesWithCategoryDTO()
         {

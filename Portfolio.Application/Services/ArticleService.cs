@@ -12,14 +12,18 @@ public class ArticleService : IArticleService
     private readonly IAuthorRepository _authorRepository;
     private readonly ICategoryRepository _categoryRepository;
     private readonly IValidator<CreateArticleDTO> _createArticleValidator;
+    private readonly IValidator<EntityIdDTO> _entityIdValidator;
+    private readonly IValidator<List<EntityIdDTO>> _entityIdListValidator;
 
 
-    public ArticleService(IArticleRepository articlesRepository, IValidator<CreateArticleDTO> createArticleValidator, IAuthorRepository authorRepository, ICategoryRepository categoryRepository)
+    public ArticleService(IArticleRepository articlesRepository, IValidator<CreateArticleDTO> createArticleValidator, IAuthorRepository authorRepository, ICategoryRepository categoryRepository, IValidator<EntityIdDTO> entityIdValidator, IValidator<List<EntityIdDTO>> entityIdListValidator)
     {
         _articleRepository = articlesRepository;
         _createArticleValidator = createArticleValidator;
         _authorRepository = authorRepository;
         _categoryRepository = categoryRepository;
+        _entityIdValidator = entityIdValidator;
+        _entityIdListValidator = entityIdListValidator;
     }
 
     public IEnumerable<ArticleDTO> GetArticles()
@@ -76,31 +80,40 @@ public class ArticleService : IArticleService
     }
 
 
-    public ArticleDTO GetArticleById(int id)
+    public ArticleDTO GetArticleById(EntityIdDTO dto)
     {
-        //business logic devam edecek
-        if (id <= 0)
+        var res = _entityIdValidator.Validate(dto);
+        if (!res.IsValid)
         {
-            throw new Exception("Id can not be less then or equal to 0");
+            throw new ValidationException(res.Errors);
         }
-        Article article = _articleRepository.GetById(id);
-        ArticleDTO dto = new ArticleDTO()
+        
+        Article article = _articleRepository.GetById(dto.Id);
+        ArticleDTO articleDto = new ArticleDTO()
         {
             Id = article.Id,
             Name = article.Name,
             Content = article.Content,
             Title = article.Title
         };
-        return dto;
+        return articleDto;
     }
 
-    public ArticleWithRelationsDTO GetArticleWithRelationById(int id)
+    public ArticleWithRelationsDTO GetArticleWithRelationById(EntityIdDTO dto)
     {
-        if (id <= 0)
+        var res = _entityIdValidator.Validate(dto);
+        if (!res.IsValid)
         {
-            throw new Exception("Id can not be less then or equal to 0");
+            throw new ValidationException(res.Errors);
         }
-        Article article = _articleRepository.GetByIdWithRelation(id,art => art.Authors, art => art.Categories);
+        
+        Article article = _articleRepository.GetByIdWithRelation(dto.Id,art => art.Authors, art => art.Categories);
+
+        if (article == null)
+        {
+            throw new Exception("There is no article in the entered id");
+        }
+
         List<AuthorDTO> authorDtos = article.Authors.Select(aut => new AuthorDTO()
         {
             Id = aut.Id,
@@ -127,16 +140,20 @@ public class ArticleService : IArticleService
         return dtos;
     }
 
-    public List<Article> GetArticlesByIds(List<int> ids)
+    public List<Article> GetArticlesByIds(List<EntityIdDTO> dtos)
     {
-        /*List<Article> articles = new();
-        foreach (int id in ids)
+        var res = _entityIdListValidator.Validate(dtos);
+        if (!res.IsValid)
         {
-            articles.Add(_articleRepository.GetById(id));
+            throw new ValidationException(res.Errors);
         }
-        return articles;*/
 
-        return _articleRepository.GetWhere(art => ids.Contains(art.Id)).ToList();
+        var articles = _articleRepository.GetWhere(art => dtos.Select(dto => dto.Id).Contains(art.Id)).ToList();
+        if (articles.Count != dtos.Count)
+        {
+            throw new Exception("There is no article in the entered ids");
+        }
+        return articles;
     }
 
     //Makale oluştururken makalenin kesinlikle bir yazarı olabilir fakat bir yazar oluştururken
@@ -206,10 +223,23 @@ public class ArticleService : IArticleService
         }
     }
 
-    public List<AuthorDTO> GetAuthorsByArticleId(int articleId)
+    public List<AuthorDTO> GetAuthorsByArticleId(EntityIdDTO dto)
     {
+        var res = _entityIdValidator.Validate(dto);
+        if (!res.IsValid)
+        {
+            throw new ValidationException(res.Errors);
+        }
         List<AuthorDTO> dtos = new List<AuthorDTO>();
-        var authorList = _articleRepository.GetByIdWithRelation(articleId,art => art.Authors).Authors;
+        var articleList = _articleRepository.GetByIdWithRelation(dto.Id,art => art.Authors);
+
+        if (articleList == null)
+        {
+            throw new Exception("There is no article in the entered id");
+        }
+
+        var authorList = articleList.Authors;
+
         foreach (var author in authorList)
         {
             dtos.Add(new AuthorDTO()

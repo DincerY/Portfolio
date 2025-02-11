@@ -6,10 +6,12 @@ namespace Portfolio.Application.Interfaces;
 public interface ICategoryService
 {
     public IEnumerable<CategoryDTO> GetCategories();
-    public CategoryDTO GetCategoryById(int id);
+    public CategoryDTO GetCategoryById(EntityIdDTO dto);
+    public List<CategoryDTO> GetCategoriesByIds(List<EntityIdDTO> dtos);
+
     public int AddCategory(CreateCategoryDTO dto);
 
-    public List<ArticlesWithCategoryDTO> GetArticlesByCategoryId(int categoryId);
+    public List<ArticlesWithCategoryDTO> GetArticlesByCategoryId(EntityIdDTO dto);
 
 
     /*public List<Article> GetArticlesByIds(List<int> ids);

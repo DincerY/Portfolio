@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using Portfolio.Application.DTOs;
 using Portfolio.Application.Interfaces;
 
@@ -21,7 +22,25 @@ public class ArticleController : ControllerBase
         var articles = _service.GetArticles();
         return Ok(articles);
     }
-    [HttpGet("/api/getArticlesWithRelation")]
+    [HttpGet("getArticlesByIds")]
+    public IActionResult GetArticlesWithIds([FromQuery]List<int> ids)
+    {
+        try
+        {
+            var articles = _service.GetArticlesByIds(ids.Select(id => new EntityIdDTO() { Id = id }).ToList());
+            return Ok(articles);
+        }
+        catch (ValidationException validationException)
+        {
+            return BadRequest(new { message = validationException.Message });
+        }
+        catch (Exception ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
+        
+    }
+    [HttpGet("getArticlesWithRelation")]
     public IActionResult GetArticlesWithRelation()
     {
         var articles = _service.GetArticlesWithRelation();
@@ -31,22 +50,46 @@ public class ArticleController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult GetArticleById(int id)
     {
-        var articleDto = _service.GetArticleById(id);
+        var articleDto = _service.GetArticleById(new EntityIdDTO(){Id = id});
         return Ok(articleDto);
     }
 
-    [HttpGet("/api/getArticleWithRelation/{id}")]
+    [HttpGet("getArticleWithRelation/{id}")]
     public IActionResult GetArticleWithRelationById(int id)
     {
-        var articleDto = _service.GetArticleWithRelationById(id);
-        return Ok(articleDto);
+        try
+        {
+            var articleDto = _service.GetArticleWithRelationById(new EntityIdDTO() { Id = id });
+            return Ok(articleDto);
+        }
+        catch (ValidationException validationException)
+        {
+            return BadRequest(new {message = validationException.Message});
+        }
+        catch (Exception ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
+        
     }
 
-    [HttpGet("/api/getArticleAuthors/{articleId}")]
+    [HttpGet("getArticleAuthors/{articleId}")]
     public IActionResult GetArticleAuthors(int articleId)
     {
-        var authorDTOs = _service.GetAuthorsByArticleId(articleId);
-        return Ok(authorDTOs);
+        try
+        {
+            var authorDTOs = _service.GetAuthorsByArticleId(new EntityIdDTO() { Id = articleId });
+            return Ok(authorDTOs);
+        }
+        catch (ValidationException validationException)
+        {
+            return BadRequest(new { message = validationException.Message });
+        }
+        catch (Exception ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
+        
     }
 
 

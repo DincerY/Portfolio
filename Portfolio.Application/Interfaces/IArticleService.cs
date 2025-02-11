@@ -8,13 +8,13 @@ public interface IArticleService
     public IEnumerable<ArticleDTO> GetArticles();
     public IEnumerable<ArticleWithRelationsDTO> GetArticlesWithRelation();
 
-    public ArticleDTO GetArticleById(int id);
-    public ArticleWithRelationsDTO GetArticleWithRelationById(int id);
+    public ArticleDTO GetArticleById(EntityIdDTO dto);
+    public ArticleWithRelationsDTO GetArticleWithRelationById(EntityIdDTO dto);
 
-    public List<Article> GetArticlesByIds(List<int> ids);
+    public List<Article> GetArticlesByIds(List<EntityIdDTO> dtos);
 
     public int AddArticle(CreateArticleDTO dto);
 
-    public List<AuthorDTO> GetAuthorsByArticleId(int id);
+    public List<AuthorDTO> GetAuthorsByArticleId(EntityIdDTO dto);
 
 }

@@ -6,10 +6,10 @@ namespace Portfolio.Application.Interfaces;
 public interface IAuthorService
 {
     public IEnumerable<AuthorDTO> GetAuthors();
-    public Author GetAuthorById(int id);
-    public List<AuthorDTO> GetAuthorsByIds(List<int> ids);
+    public Author GetAuthorById(EntityIdDTO dto);
+    public List<AuthorDTO> GetAuthorsByIds(List<EntityIdDTO> dtos);
     public int AddAuthor(CreateAuthorDTO dto);
-    public List<ArticleDTO> GetArticlesByAuthorId(int authorId);
+    public List<ArticleDTO> GetArticlesByAuthorId(EntityIdDTO dto);
 
 
 }

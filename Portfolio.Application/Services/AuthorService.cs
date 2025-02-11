@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System.Runtime.InteropServices;
+using FluentValidation;
 using Portfolio.Application.DTOs;
 using Portfolio.Application.Interfaces;
 using Portfolio.Domain.Entities;
@@ -16,11 +17,15 @@ public class AuthorService : IAuthorService
 {
     private readonly IAuthorRepository _authorRepository;
     private readonly IValidator<CreateAuthorDTO> _createAuthorValidator;
+    private readonly IValidator<EntityIdDTO> _entityIdValidator;
+    private readonly IValidator<List<EntityIdDTO>> _entityIdListValidator;
 
-    public AuthorService(IAuthorRepository authorRepository, IValidator<CreateAuthorDTO> createAuthorValidator)
+    public AuthorService(IAuthorRepository authorRepository, IValidator<CreateAuthorDTO> createAuthorValidator, IValidator<EntityIdDTO> entityIdValidator, IValidator<List<EntityIdDTO>> entityIdListValidator)
     {
         _authorRepository = authorRepository;
         _createAuthorValidator = createAuthorValidator;
+        _entityIdValidator = entityIdValidator;
+        _entityIdListValidator = entityIdListValidator;
     }
 
     public IEnumerable<AuthorDTO> GetAuthors()
@@ -34,22 +39,33 @@ public class AuthorService : IAuthorService
         }).ToList();
     }
 
-    public Author GetAuthorById(int id)
+    public Author GetAuthorById(EntityIdDTO dto)
     {
-        //bu yapı aslında bir validasyon çünkü id değeri kullanıcı tarafından giriliyor
-        //validasyonları daha sonra iş mantığından ayıralım.
-        //TODO
-        if (id < 0)
+        var res = _entityIdValidator.Validate(dto);
+        if (!res.IsValid)
         {
-            throw new Exception("Id can not less than or equal to 0");
+            throw new ValidationException(res.Errors);
         }
-        return _authorRepository.GetById(id);
+        return _authorRepository.GetById(dto.Id);
         //!!!Id değerinin elle girilmesini engellemek aslında bir iş mantığıdır.
     }
 
-    public List<AuthorDTO> GetAuthorsByIds(List<int> ids)
+    public List<AuthorDTO> GetAuthorsByIds(List<EntityIdDTO> dtos)
     {
-        return _authorRepository.GetWhere(aut => ids.Contains(aut.Id)).ToList().Select(aut => new AuthorDTO()
+        var res = _entityIdListValidator.Validate(dtos);
+        if (!res.IsValid)
+        {
+            throw new ValidationException(res.Errors);
+        }
+
+        var authors = _authorRepository.GetWhere(aut => dtos.Select(dto => dto.Id).Contains(aut.Id)).ToList();
+
+        if (authors.Count != dtos.Count)
+        {
+            throw new Exception("There is no author in the entered ids");
+        }
+
+        return authors.Select(aut => new AuthorDTO()
         {
             Id = aut.Id,
             Name = aut.Name,
@@ -90,20 +106,27 @@ public class AuthorService : IAuthorService
         
     }
 
-    public List<ArticleDTO> GetArticlesByAuthorId(int authorId)
+    public List<ArticleDTO> GetArticlesByAuthorId(EntityIdDTO dto)
     {
-        List<ArticleDTO> dtos = new();
-        var author = _authorRepository.GetByIdWithRelation(authorId, aut => aut.Articles);
-        foreach (var article in author.Articles)
+        var res = _entityIdValidator.Validate(dto);
+        if (!res.IsValid)
         {
-            dtos.Add(new ArticleDTO()
-            {
-                Id = article.Id,
-                Title = article.Title,
-                Name = article.Name,
-                Content = article.Content
-            });
+            throw new ValidationException(res.Errors);
         }
-        return dtos;
+
+        List<ArticleDTO> dtos = new();
+        var author = _authorRepository.GetByIdWithRelation(dto.Id, aut => aut.Articles);
+        if (author == null)
+        {
+            throw new Exception("There is no author in the entered id");
+        }
+
+        return author.Articles.Select(art => new ArticleDTO()
+        {
+            Id = art.Id,
+            Title = art.Title,
+            Name = art.Name,
+            Content = art.Content
+        }).ToList();
     }
 }

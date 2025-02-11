@@ -18,6 +18,8 @@ public static class ApplicationServiceRegistration
         service.AddSingleton<IValidator<CreateCategoryDTO>, CreateCategoryDTOValidator>();
         service.AddSingleton<IValidator<CreateArticleDTO>, CreateArticleDTOValidator>();
         service.AddSingleton<IValidator<CreateAuthorDTO>, CreateAuthorDTOValidator>();
+        service.AddSingleton<IValidator<EntityIdDTO>, EntityIdDTOValidator>();
+        service.AddSingleton<IValidator<List<EntityIdDTO>>, EntityIdDTOListValidator>();
 
         return service;
     }

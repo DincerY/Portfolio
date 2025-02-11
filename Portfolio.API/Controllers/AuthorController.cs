@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using Portfolio.Application.DTOs;
 using Portfolio.Application.Interfaces;
 
@@ -14,6 +15,7 @@ public class AuthorController : ControllerBase
     {
         _service = auhtorService;
     }
+
     //Bu fonksiyon sadece yazarları getirmeli ilişkili olan kısımları başka fonksiyonlar ile halletmeliyiz
     [HttpGet]
     public IActionResult GetAuthors()
@@ -21,12 +23,42 @@ public class AuthorController : ControllerBase
         var authors = _service.GetAuthors();
         return Ok(authors);
     }
+    [HttpGet("getAuthorsByIds")]
+    public IActionResult GetAuthorsByIds([FromQuery]List<int> ids)
+    {
+        try
+        {
+            var authors = _service.GetAuthorsByIds(ids.Select(id => new EntityIdDTO() { Id = id }).ToList());
+            return Ok(authors);
+        }
+        catch (ValidationException validationException)
+        {
+            return BadRequest(new {message = validationException.Message});
+        }
+        catch (Exception ex)
+        {
+            return NotFound(new { message = ex.Message});
+        }
+        
+    }
 
-    [HttpGet("/api/getAuthorArticles/{authorId}")]
+    [HttpGet("getAuthorArticles/{authorId}")]
     public IActionResult GetArticleAuthors(int authorId)
     {
-        var articleDtos = _service.GetArticlesByAuthorId(authorId);
-        return Ok(articleDtos);
+        try
+        {
+            var articleDtos = _service.GetArticlesByAuthorId(new EntityIdDTO() { Id = authorId });
+            return Ok(articleDtos);
+        }
+        catch (ValidationException validationException)
+        {
+            return BadRequest(new { message = validationException.Message});
+        }
+        catch (Exception ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
+        
     }
 
     [HttpPost]
