@@ -1,8 +1,11 @@
 ﻿using FluentValidation;
 using Portfolio.Application.DTOs;
 using Portfolio.Application.Interfaces;
+using Portfolio.CrossCuttingConcerns.Exceptions;
 using Portfolio.Domain.Entities;
 using Portfolio.Domain.Interfaces.Repositories;
+using ValidationException = Portfolio.CrossCuttingConcerns.Exceptions.ValidationException;
+//using ValidationException = FluentValidation.ValidationException;
 
 namespace Portfolio.Application.Services;
 
@@ -36,13 +39,19 @@ public class CategoryService : ICategoryService
         var res = _entityIdValidator.Validate(dto);
         if (!res.IsValid)
         {
-            throw new ValidationException(res.Errors);
+            
+            throw new ValidationException(res.Errors.Select(er => new ValidationErrors()
+            {
+                Domain = er.PropertyName,
+                Message = er.ErrorMessage,
+                Reason = "GetCategoryById" //-belki ileride reflection ile hatanın oluştuğu metodu döneriz
+            }).ToList());
         }
 
         var category = _categoryRepository.GetById(dto.Id);
         if (category == null)
         {
-            throw new Exception("There is no category in the entered id");
+            throw new NotFoundException("There is no category in the entered id");
         }
         return new CategoryDTO()
         {
@@ -57,7 +66,12 @@ public class CategoryService : ICategoryService
         var res = _entityIdListValidator.Validate(dtos);
         if (!res.IsValid)
         {
-            throw new ValidationException(res.Errors);
+            throw new ValidationException(res.Errors.Select(er => new ValidationErrors()
+            {
+                Domain = er.PropertyName,
+                Message = er.ErrorMessage,
+                Reason = "GetCategoriesByIds"
+            }).ToList());
         }
 
         var categories = _categoryRepository.GetByIds(dtos.Select(dto => dto.Id).ToList());
@@ -80,7 +94,12 @@ public class CategoryService : ICategoryService
         var res = _createCategoryValidator.Validate(dto);
         if (!res.IsValid)
         {
-            throw new ValidationException(res.Errors);
+            throw new ValidationException(res.Errors.Select(er => new ValidationErrors()
+            {
+                Domain = er.PropertyName,
+                Message = er.ErrorMessage,
+                Reason = "AddCategory"
+            }).ToList());
         }
 
         bool isNameExist = _categoryRepository.IsExists(cat => cat.Name.ToLower() == dto.Name.ToLower());
@@ -112,7 +131,12 @@ public class CategoryService : ICategoryService
         var res = _entityIdValidator.Validate(dto);
         if (!res.IsValid)
         {
-            throw new ValidationException(res.Errors);
+            throw new ValidationException(res.Errors.Select(er => new ValidationErrors()
+            {
+                Domain = er.PropertyName,
+                Message = er.ErrorMessage,
+                Reason = "GetArticlesByCategoryId"
+            }).ToList());
         }
 
         var category = _categoryRepository.GetByIdWithRelation(dto.Id, cat => cat.Articles);

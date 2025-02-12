@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Portfolio.CrossCuttingConcerns\Portfolio.CrossCuttingConcerns.csproj" />
     <ProjectReference Include="..\Portfolio.Domain\Portfolio.Domain.csproj" />
   </ItemGroup>
 

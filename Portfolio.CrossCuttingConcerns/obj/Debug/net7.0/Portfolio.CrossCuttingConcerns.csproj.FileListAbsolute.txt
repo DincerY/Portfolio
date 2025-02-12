@@ -1,0 +1,12 @@
+C:\Users\dince\source\repos\Portfolio\Portfolio.CrossCuttingConcerns\bin\Debug\net7.0\Portfolio.CrossCuttingConcerns.deps.json
+C:\Users\dince\source\repos\Portfolio\Portfolio.CrossCuttingConcerns\bin\Debug\net7.0\Portfolio.CrossCuttingConcerns.dll
+C:\Users\dince\source\repos\Portfolio\Portfolio.CrossCuttingConcerns\bin\Debug\net7.0\Portfolio.CrossCuttingConcerns.pdb
+C:\Users\dince\source\repos\Portfolio\Portfolio.CrossCuttingConcerns\obj\Debug\net7.0\Portfolio.CrossCuttingConcerns.csproj.AssemblyReference.cache
+C:\Users\dince\source\repos\Portfolio\Portfolio.CrossCuttingConcerns\obj\Debug\net7.0\Portfolio.CrossCuttingConcerns.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\dince\source\repos\Portfolio\Portfolio.CrossCuttingConcerns\obj\Debug\net7.0\Portfolio.CrossCuttingConcerns.AssemblyInfoInputs.cache
+C:\Users\dince\source\repos\Portfolio\Portfolio.CrossCuttingConcerns\obj\Debug\net7.0\Portfolio.CrossCuttingConcerns.AssemblyInfo.cs
+C:\Users\dince\source\repos\Portfolio\Portfolio.CrossCuttingConcerns\obj\Debug\net7.0\Portfolio.CrossCuttingConcerns.csproj.CoreCompileInputs.cache
+C:\Users\dince\source\repos\Portfolio\Portfolio.CrossCuttingConcerns\obj\Debug\net7.0\Portfolio.CrossCuttingConcerns.dll
+C:\Users\dince\source\repos\Portfolio\Portfolio.CrossCuttingConcerns\obj\Debug\net7.0\refint\Portfolio.CrossCuttingConcerns.dll
+C:\Users\dince\source\repos\Portfolio\Portfolio.CrossCuttingConcerns\obj\Debug\net7.0\Portfolio.CrossCuttingConcerns.pdb
+C:\Users\dince\source\repos\Portfolio\Portfolio.CrossCuttingConcerns\obj\Debug\net7.0\ref\Portfolio.CrossCuttingConcerns.dll

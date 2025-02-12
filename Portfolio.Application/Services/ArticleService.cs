@@ -1,8 +1,12 @@
 ﻿using FluentValidation;
 using Portfolio.Application.DTOs;
 using Portfolio.Application.Interfaces;
+using Portfolio.CrossCuttingConcerns.Exceptions;
 using Portfolio.Domain.Entities;
 using Portfolio.Domain.Interfaces.Repositories;
+using ValidationException = Portfolio.CrossCuttingConcerns.Exceptions.ValidationException;
+
+//using ValidationException = FluentValidation.ValidationException;
 
 namespace Portfolio.Application.Services;
 
@@ -85,7 +89,7 @@ public class ArticleService : IArticleService
         var res = _entityIdValidator.Validate(dto);
         if (!res.IsValid)
         {
-            throw new ValidationException(res.Errors);
+            //throw new ValidationException(res.Errors);
         }
         
         Article article = _articleRepository.GetById(dto.Id);
@@ -104,7 +108,7 @@ public class ArticleService : IArticleService
         var res = _entityIdValidator.Validate(dto);
         if (!res.IsValid)
         {
-            throw new ValidationException(res.Errors);
+            //throw new ValidationException(res.Errors);
         }
         
         Article article = _articleRepository.GetByIdWithRelation(dto.Id,art => art.Authors, art => art.Categories);
@@ -145,13 +149,13 @@ public class ArticleService : IArticleService
         var res = _entityIdListValidator.Validate(dtos);
         if (!res.IsValid)
         {
-            throw new ValidationException(res.Errors);
+            //throw new ValidationException(res.Errors);
         }
 
         var articles = _articleRepository.GetWhere(art => dtos.Select(dto => dto.Id).Contains(art.Id)).ToList();
         if (articles.Count != dtos.Count)
         {
-            throw new Exception("There is no article in the entered ids");
+            throw new NotFoundException("There is no article in the entered ids");
         }
         return articles;
     }
@@ -163,7 +167,7 @@ public class ArticleService : IArticleService
         var res= _createArticleValidator.Validate(dto);
         if (!res.IsValid)
         {
-            throw new ValidationException(res.Errors);
+            //throw new ValidationException(res.Errors);
         }
 
         bool isArticleExits = _articleRepository.IsExists(art => art.Name.ToLower() == dto.Name.ToLower());
@@ -228,7 +232,7 @@ public class ArticleService : IArticleService
         var res = _entityIdValidator.Validate(dto);
         if (!res.IsValid)
         {
-            throw new ValidationException(res.Errors);
+            //throw new ValidationException(res.Errors);
         }
         List<AuthorDTO> dtos = new List<AuthorDTO>();
         var articleList = _articleRepository.GetByIdWithRelation(dto.Id,art => art.Authors);

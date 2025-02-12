@@ -7,6 +7,9 @@ namespace Portfolio.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+//Burada çok büyük bir hata yaptım çünkü controllerda try catch yazılmaz.
+//Bir çok sebebi var fakat en mantıklısı yeni bir hata türü oluşturduğumuzda bütün controller ları
+//tek tek güncellemeliyiz. Burada çözüm middleware kullanmak.
 public class ArticleController : ControllerBase
 {
     private readonly IArticleService _service;
@@ -15,30 +18,21 @@ public class ArticleController : ControllerBase
     {
         _service = service;
     }
-
+    //Burada exception handling yapmadık fakat burada da bir hata meydana gelebilir. Örnek olarak veri tabanı
+    //bağlantısı kopması bazı güncelemeler ile bağımlılıkların değişmesi vs. Bunun için middleware ile bunu
+    //yönetmek çok daha mantıklı.
     [HttpGet]
     public IActionResult GetArticles()
     {
         var articles = _service.GetArticles();
         return Ok(articles);
+        
     }
     [HttpGet("getArticlesByIds")]
     public IActionResult GetArticlesWithIds([FromQuery]List<int> ids)
     {
-        try
-        {
-            var articles = _service.GetArticlesByIds(ids.Select(id => new EntityIdDTO() { Id = id }).ToList());
-            return Ok(articles);
-        }
-        catch (ValidationException validationException)
-        {
-            return BadRequest(new { message = validationException.Message });
-        }
-        catch (Exception ex)
-        {
-            return NotFound(new { message = ex.Message });
-        }
-        
+        var articles = _service.GetArticlesByIds(ids.Select(id => new EntityIdDTO() { Id = id }).ToList());
+        return Ok(articles);
     }
     [HttpGet("getArticlesWithRelation")]
     public IActionResult GetArticlesWithRelation()
@@ -57,38 +51,15 @@ public class ArticleController : ControllerBase
     [HttpGet("getArticleWithRelation/{id}")]
     public IActionResult GetArticleWithRelationById(int id)
     {
-        try
-        {
-            var articleDto = _service.GetArticleWithRelationById(new EntityIdDTO() { Id = id });
-            return Ok(articleDto);
-        }
-        catch (ValidationException validationException)
-        {
-            return BadRequest(new {message = validationException.Message});
-        }
-        catch (Exception ex)
-        {
-            return NotFound(new { message = ex.Message });
-        }
-        
+        var articleDto = _service.GetArticleWithRelationById(new EntityIdDTO() { Id = id });
+        return Ok(articleDto);
     }
 
     [HttpGet("getArticleAuthors/{articleId}")]
     public IActionResult GetArticleAuthors(int articleId)
     {
-        try
-        {
-            var authorDTOs = _service.GetAuthorsByArticleId(new EntityIdDTO() { Id = articleId });
-            return Ok(authorDTOs);
-        }
-        catch (ValidationException validationException)
-        {
-            return BadRequest(new { message = validationException.Message });
-        }
-        catch (Exception ex)
-        {
-            return NotFound(new { message = ex.Message });
-        }
+        var authorDTOs = _service.GetAuthorsByArticleId(new EntityIdDTO() { Id = articleId });
+        return Ok(authorDTOs);
         
     }
 

@@ -26,39 +26,15 @@ public class AuthorController : ControllerBase
     [HttpGet("getAuthorsByIds")]
     public IActionResult GetAuthorsByIds([FromQuery]List<int> ids)
     {
-        try
-        {
-            var authors = _service.GetAuthorsByIds(ids.Select(id => new EntityIdDTO() { Id = id }).ToList());
-            return Ok(authors);
-        }
-        catch (ValidationException validationException)
-        {
-            return BadRequest(new {message = validationException.Message});
-        }
-        catch (Exception ex)
-        {
-            return NotFound(new { message = ex.Message});
-        }
-        
+        var authors = _service.GetAuthorsByIds(ids.Select(id => new EntityIdDTO() { Id = id }).ToList());
+        return Ok(authors);
     }
 
     [HttpGet("getAuthorArticles/{authorId}")]
     public IActionResult GetArticleAuthors(int authorId)
     {
-        try
-        {
-            var articleDtos = _service.GetArticlesByAuthorId(new EntityIdDTO() { Id = authorId });
-            return Ok(articleDtos);
-        }
-        catch (ValidationException validationException)
-        {
-            return BadRequest(new { message = validationException.Message});
-        }
-        catch (Exception ex)
-        {
-            return NotFound(new { message = ex.Message });
-        }
-        
+        var articleDtos = _service.GetArticlesByAuthorId(new EntityIdDTO() { Id = authorId });
+        return Ok(articleDtos);
     }
 
     [HttpPost]

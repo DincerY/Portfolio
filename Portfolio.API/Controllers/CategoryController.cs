@@ -34,19 +34,9 @@ public class CategoryController : ControllerBase
         //durumunda id nin olmadığını anlamak ve hatayı ona göre işlemek.
 
         //Yukarıda bahsettiğim durumun bir nevi bir çözümü ama daha farklı bir yaklaşımı ileride uygulayacağım.
-        try
-        {
-            var res = _categoryService.GetCategoryById(new EntityIdDTO() { Id = id });
-            return Ok(res);
-        }
-        catch (ValidationException validationException)
-        {
-            return BadRequest(new { message = validationException.Message });
-        }
-        catch (Exception e)
-        {
-            return NotFound(new {message = e.Message});
-        }
+
+        var res = _categoryService.GetCategoryById(new EntityIdDTO() { Id = id });
+        return Ok(res);
     }
 
     [HttpGet("getCategoriesByIds")]

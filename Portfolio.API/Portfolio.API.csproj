@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Portfolio.Application\Portfolio.Application.csproj" />
+    <ProjectReference Include="..\Portfolio.CrossCuttingConcerns\Portfolio.CrossCuttingConcerns.csproj" />
     <ProjectReference Include="..\Portfolio.Infrastructure\Portfolio.Infrastructure.csproj" />
   </ItemGroup>
 

@@ -13,3 +13,5 @@ C:\Users\dince\source\repos\Portfolio\Portfolio.Application\obj\Debug\net7.0\ref
 C:\Users\dince\source\repos\Portfolio\Portfolio.Application\bin\Debug\net7.0\Portfolio.Domain.dll
 C:\Users\dince\source\repos\Portfolio\Portfolio.Application\bin\Debug\net7.0\Portfolio.Domain.pdb
 C:\Users\dince\source\repos\Portfolio\Portfolio.Application\obj\Debug\net7.0\Portfolio.Application.csproj.CopyComplete
+C:\Users\dince\source\repos\Portfolio\Portfolio.Application\bin\Debug\net7.0\Portfolio.CrossCuttingConcerns.dll
+C:\Users\dince\source\repos\Portfolio\Portfolio.Application\bin\Debug\net7.0\Portfolio.CrossCuttingConcerns.pdb

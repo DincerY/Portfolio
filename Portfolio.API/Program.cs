@@ -1,5 +1,6 @@
 using FluentValidation.AspNetCore;
 using Portfolio.Application;
+using Portfolio.CrossCuttingConcerns;
 using Portfolio.Infrastructure;
 using Portfolio.Infrastructure.Contexts;
 
@@ -26,6 +27,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCrossCuttingMiddleware();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
