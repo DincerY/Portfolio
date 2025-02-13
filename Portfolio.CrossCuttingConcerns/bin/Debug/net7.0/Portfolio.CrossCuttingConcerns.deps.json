@@ -9,7 +9,8 @@
       "Portfolio.CrossCuttingConcerns/1.0.0": {
         "dependencies": {
           "Microsoft.AspNetCore.Http": "2.3.0",
-          "Newtonsoft.Json": "13.0.3"
+          "Newtonsoft.Json": "13.0.3",
+          "Portfolio.Common": "1.0.0"
         },
         "runtime": {
           "Portfolio.CrossCuttingConcerns.dll": {}
@@ -137,6 +138,11 @@
             "fileVersion": "8.0.23.53103"
           }
         }
+      },
+      "Portfolio.Common/1.0.0": {
+        "runtime": {
+          "Portfolio.Common.dll": {}
+        }
       }
     }
   },
@@ -229,6 +235,11 @@
       "sha512": "sha512-yev/k9GHAEGx2Rg3/tU6MQh4HGBXJs70y7j1LaM1i/ER9po+6nnQ6RRqTJn1E7Xu0fbIFK80Nh5EoODxrbxwBQ==",
       "path": "system.text.encodings.web/8.0.0",
       "hashPath": "system.text.encodings.web.8.0.0.nupkg.sha512"
+    },
+    "Portfolio.Common/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }

@@ -92,3 +92,5 @@ C:\Users\dince\source\repos\Portfolio\Portfolio.API\bin\Debug\net7.0\runtimes\br
 C:\Users\dince\source\repos\Portfolio\Portfolio.API\bin\Debug\net7.0\Portfolio.CrossCuttingConcerns.dll
 C:\Users\dince\source\repos\Portfolio\Portfolio.API\bin\Debug\net7.0\Portfolio.CrossCuttingConcerns.pdb
 C:\Users\dince\source\repos\Portfolio\Portfolio.API\bin\Debug\net7.0\Newtonsoft.Json.dll
+C:\Users\dince\source\repos\Portfolio\Portfolio.API\bin\Debug\net7.0\Portfolio.Common.dll
+C:\Users\dince\source\repos\Portfolio\Portfolio.API\bin\Debug\net7.0\Portfolio.Common.pdb

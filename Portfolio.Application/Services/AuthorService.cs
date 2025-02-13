@@ -2,8 +2,11 @@
 using FluentValidation;
 using Portfolio.Application.DTOs;
 using Portfolio.Application.Interfaces;
+using Portfolio.Common.Response;
+using Portfolio.CrossCuttingConcerns.Exceptions;
 using Portfolio.Domain.Entities;
 using Portfolio.Domain.Interfaces.Repositories;
+using ValidationException = Portfolio.CrossCuttingConcerns.Exceptions.ValidationException;
 
 namespace Portfolio.Application.Services;
 /// <summary>
@@ -44,7 +47,12 @@ public class AuthorService : IAuthorService
         var res = _entityIdValidator.Validate(dto);
         if (!res.IsValid)
         {
-            throw new ValidationException(res.Errors);
+            throw new ValidationException(res.Errors.Select(er => new ValidationError()
+            {
+                Domain = er.PropertyName,
+                Message = er.ErrorMessage,
+                Reason = nameof(GetAuthorById)
+            }).ToList());
         }
         return _authorRepository.GetById(dto.Id);
         //!!!Id değerinin elle girilmesini engellemek aslında bir iş mantığıdır.
@@ -55,14 +63,19 @@ public class AuthorService : IAuthorService
         var res = _entityIdListValidator.Validate(dtos);
         if (!res.IsValid)
         {
-            throw new ValidationException(res.Errors);
+            throw new ValidationException(res.Errors.Select(er => new ValidationError()
+            {
+                Domain = er.PropertyName,
+                Message = er.ErrorMessage,
+                Reason = nameof(GetAuthorsByIds)
+            }).ToList());
         }
 
         var authors = _authorRepository.GetWhere(aut => dtos.Select(dto => dto.Id).Contains(aut.Id)).ToList();
 
         if (authors.Count != dtos.Count)
         {
-            throw new Exception("There is no author in the entered ids");
+            throw new NotFoundException("There is no author in the entered ids");
         }
 
         return authors.Select(aut => new AuthorDTO()
@@ -78,14 +91,19 @@ public class AuthorService : IAuthorService
         var res = _createAuthorValidator.Validate(dto);
         if (!res.IsValid)
         {
-            throw new ValidationException(res.Errors);
+            throw new ValidationException(res.Errors.Select(er => new ValidationError()
+            {
+                Domain = er.PropertyName,
+                Message = er.ErrorMessage,
+                Reason = nameof(AddAuthor)
+            }).ToList());
         }
 
 
         bool isAuthorExist = _authorRepository.IsExists(aut => aut.Name.ToLower() == dto.Name.ToLower());
         if (isAuthorExist)
         {
-            throw new Exception("Author's name is already exist");
+            throw new BusinessException("Author's name is already exist");
         }
 
         Author author = new Author()
@@ -101,7 +119,7 @@ public class AuthorService : IAuthorService
         }
         else
         {
-            throw new Exception("Adding is not successful");
+            throw new BusinessException("Adding is not successful");
         }
         
     }
@@ -111,14 +129,19 @@ public class AuthorService : IAuthorService
         var res = _entityIdValidator.Validate(dto);
         if (!res.IsValid)
         {
-            throw new ValidationException(res.Errors);
+            throw new ValidationException(res.Errors.Select(er => new ValidationError()
+            {
+                Domain = er.PropertyName,
+                Message = er.ErrorMessage,
+                Reason = nameof(GetArticlesByAuthorId)
+            }).ToList());
         }
 
         List<ArticleDTO> dtos = new();
         var author = _authorRepository.GetByIdWithRelation(dto.Id, aut => aut.Articles);
         if (author == null)
         {
-            throw new Exception("There is no author in the entered id");
+            throw new NotFoundException("There is no author in the entered id");
         }
 
         return author.Articles.Select(art => new ArticleDTO()

@@ -777,6 +777,7 @@
       "Portfolio.Application/1.0.0": {
         "dependencies": {
           "FluentValidation": "11.11.0",
+          "Portfolio.Common": "1.0.0",
           "Portfolio.CrossCuttingConcerns": "1.0.0",
           "Portfolio.Domain": "1.0.0"
         },
@@ -784,10 +785,16 @@
           "Portfolio.Application.dll": {}
         }
       },
+      "Portfolio.Common/1.0.0": {
+        "runtime": {
+          "Portfolio.Common.dll": {}
+        }
+      },
       "Portfolio.CrossCuttingConcerns/1.0.0": {
         "dependencies": {
           "Microsoft.AspNetCore.Http": "2.3.0",
-          "Newtonsoft.Json": "13.0.3"
+          "Newtonsoft.Json": "13.0.3",
+          "Portfolio.Common": "1.0.0"
         },
         "runtime": {
           "Portfolio.CrossCuttingConcerns.dll": {}
@@ -1335,6 +1342,11 @@
       "hashPath": "system.windows.extensions.5.0.0.nupkg.sha512"
     },
     "Portfolio.Application/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Portfolio.Common/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

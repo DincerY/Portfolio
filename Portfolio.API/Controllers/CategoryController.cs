@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Portfolio.Application.DTOs;
 using Portfolio.Application.Interfaces;
+using Portfolio.Common.Response;
 
 namespace Portfolio.API.Controllers;
 
@@ -18,10 +19,9 @@ public class CategoryController : ControllerBase
     [HttpGet]
     public IActionResult GetCategories()
     {
-        var res = _categoryService.GetCategories();
+        var res = _categoryService.GetCategories().ToList();
         return Ok(res);
     }
-
  
 
     [HttpGet("{id}")]
@@ -42,35 +42,16 @@ public class CategoryController : ControllerBase
     [HttpGet("getCategoriesByIds")]
     public IActionResult GetCategoriesByIds([FromQuery]List<int> ids)
     {
-        try
-        {
-            var res = _categoryService.GetCategoriesByIds(ids.Select(id => new EntityIdDTO() { Id = id }).ToList());
-            return Ok(res);
-        }
-        catch (ValidationException validationException)
-        {
-            return BadRequest(new { message = validationException.Message });
-        }
-        catch (Exception e)
-        {
-            return NotFound(new { message = e.Message });
-        }
+        var res = _categoryService.GetCategoriesByIds(ids.Select(id => new EntityIdDTO() { Id = id }).ToList());
+        return Ok(res);
         
     }
 
     [HttpGet("getCategoryArticles/{id}")]
     public IActionResult GetCategoryWithArticles(int id)
     {
-        try
-        {
-            var res = _categoryService.GetArticlesByCategoryId(new EntityIdDTO(){Id = id});
-            return Ok(res);
-        }
-        catch (Exception e)
-        {
-            return NotFound(new {message = e.Message});
-        }
-        
+        var res = _categoryService.GetArticlesByCategoryId(new EntityIdDTO() { Id = id });
+        return Ok(res);
     }
 
     [HttpPost]

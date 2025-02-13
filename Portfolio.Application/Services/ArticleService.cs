@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Portfolio.Application.DTOs;
 using Portfolio.Application.Interfaces;
+using Portfolio.Common.Response;
 using Portfolio.CrossCuttingConcerns.Exceptions;
 using Portfolio.Domain.Entities;
 using Portfolio.Domain.Interfaces.Repositories;
@@ -58,7 +59,6 @@ public class ArticleService : IArticleService
                     Name = articleAuthor.Name,
                     Surname = articleAuthor.Surname
                 });
-
             }
 
             foreach (var articleCategory in article.Categories)
@@ -83,16 +83,24 @@ public class ArticleService : IArticleService
         return dtos;
     }
 
-
     public ArticleDTO GetArticleById(EntityIdDTO dto)
     {
         var res = _entityIdValidator.Validate(dto);
         if (!res.IsValid)
         {
-            //throw new ValidationException(res.Errors);
+            throw new ValidationException(res.Errors.Select(er => new ValidationError()
+            {
+                Domain = er.PropertyName,
+                Message = er.ErrorMessage,
+                Reason = nameof(GetArticleById)
+            }).ToList());
         }
         
         Article article = _articleRepository.GetById(dto.Id);
+        if (article == null)
+        {
+            throw new NotFoundException("There is no article in the entered id");
+        }
         ArticleDTO articleDto = new ArticleDTO()
         {
             Id = article.Id,
@@ -108,14 +116,19 @@ public class ArticleService : IArticleService
         var res = _entityIdValidator.Validate(dto);
         if (!res.IsValid)
         {
-            //throw new ValidationException(res.Errors);
+            throw new ValidationException(res.Errors.Select(er => new ValidationError()
+            {
+                Domain = er.PropertyName,
+                Message = er.ErrorMessage,
+                Reason = nameof(GetArticleWithRelationById)
+            }).ToList());
         }
         
         Article article = _articleRepository.GetByIdWithRelation(dto.Id,art => art.Authors, art => art.Categories);
 
         if (article == null)
         {
-            throw new Exception("There is no article in the entered id");
+            throw new NotFoundException("There is no article in the entered id");
         }
 
         List<AuthorDTO> authorDtos = article.Authors.Select(aut => new AuthorDTO()
@@ -149,7 +162,12 @@ public class ArticleService : IArticleService
         var res = _entityIdListValidator.Validate(dtos);
         if (!res.IsValid)
         {
-            //throw new ValidationException(res.Errors);
+            throw new ValidationException(res.Errors.Select(er => new ValidationError()
+            {
+                Domain = er.PropertyName,
+                Message = er.ErrorMessage,
+                Reason = nameof(GetArticlesByIds)
+            }).ToList());
         }
 
         var articles = _articleRepository.GetWhere(art => dtos.Select(dto => dto.Id).Contains(art.Id)).ToList();
@@ -167,19 +185,24 @@ public class ArticleService : IArticleService
         var res= _createArticleValidator.Validate(dto);
         if (!res.IsValid)
         {
-            //throw new ValidationException(res.Errors);
+            throw new ValidationException(res.Errors.Select(er => new ValidationError()
+            {
+                Domain = er.PropertyName,
+                Message = er.ErrorMessage,
+                Reason = nameof(AddArticle)
+            }).ToList());
         }
 
         bool isArticleExits = _articleRepository.IsExists(art => art.Name.ToLower() == dto.Name.ToLower());
         if (isArticleExits)
         {
-            throw new Exception("Article's name is already exist");
+            throw new BusinessException("Article's name is already exist");
         }
 
         isArticleExits = _articleRepository.IsExists(art => art.Title.ToLower() == dto.Title.ToLower());
         if (isArticleExits)
         {
-            throw new Exception("Article's title is already exist");
+            throw new BusinessException("Article's title is already exist");
         }
 
         //Business Logic
@@ -193,13 +216,13 @@ public class ArticleService : IArticleService
         var existAuthors = _authorRepository.GetByIds(dto.Authors).ToList();
         if (existAuthors.Count != dto.Authors.Count)
         {
-            throw new Exception("Entered invalid author IDs.");
+            throw new NotFoundException("Entered invalid author IDs.");
         }
 
         var existCategories = _categoryRepository.GetByIds(dto.Categories).ToList();
         if (existCategories.Count != dto.Categories.Count)
         {
-            throw new Exception("Entered invalid categories IDs.");
+            throw new NotFoundException("Entered invalid categories IDs.");
         }
 
         Article article = new Article()
@@ -219,7 +242,7 @@ public class ArticleService : IArticleService
 
         if (addedArticle == null)
         {
-            throw new Exception("Adding is not successful");
+            throw new BusinessException("Adding is not successful");
         }
         else
         {
@@ -232,14 +255,19 @@ public class ArticleService : IArticleService
         var res = _entityIdValidator.Validate(dto);
         if (!res.IsValid)
         {
-            //throw new ValidationException(res.Errors);
+            throw new ValidationException(res.Errors.Select(er => new ValidationError()
+            {
+                Domain = er.PropertyName,
+                Message = er.ErrorMessage,
+                Reason = nameof(GetAuthorsByArticleId)
+            }).ToList());
         }
         List<AuthorDTO> dtos = new List<AuthorDTO>();
         var articleList = _articleRepository.GetByIdWithRelation(dto.Id,art => art.Authors);
 
         if (articleList == null)
         {
-            throw new Exception("There is no article in the entered id");
+            throw new NotFoundException("There is no article in the entered id");
         }
 
         var authorList = articleList.Authors;

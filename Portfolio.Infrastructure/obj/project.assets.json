@@ -1264,6 +1264,7 @@
         "framework": ".NETCoreApp,Version=v7.0",
         "dependencies": {
           "FluentValidation": "11.11.0",
+          "Portfolio.Common": "1.0.0",
           "Portfolio.CrossCuttingConcerns": "1.0.0",
           "Portfolio.Domain": "1.0.0"
         },
@@ -1274,12 +1275,23 @@
           "bin/placeholder/Portfolio.Application.dll": {}
         }
       },
+      "Portfolio.Common/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "compile": {
+          "bin/placeholder/Portfolio.Common.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Portfolio.Common.dll": {}
+        }
+      },
       "Portfolio.CrossCuttingConcerns/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v7.0",
         "dependencies": {
           "Microsoft.AspNetCore.Http": "2.3.0",
-          "Newtonsoft.Json": "13.0.3"
+          "Newtonsoft.Json": "13.0.3",
+          "Portfolio.Common": "1.0.0"
         },
         "compile": {
           "bin/placeholder/Portfolio.CrossCuttingConcerns.dll": {}
@@ -3781,6 +3793,11 @@
       "type": "project",
       "path": "../Portfolio.Application/Portfolio.Application.csproj",
       "msbuildProject": "../Portfolio.Application/Portfolio.Application.csproj"
+    },
+    "Portfolio.Common/1.0.0": {
+      "type": "project",
+      "path": "../Portfolio.Common/Portfolio.Common.csproj",
+      "msbuildProject": "../Portfolio.Common/Portfolio.Common.csproj"
     },
     "Portfolio.CrossCuttingConcerns/1.0.0": {
       "type": "project",

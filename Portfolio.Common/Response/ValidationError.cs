@@ -1,6 +1,6 @@
-﻿namespace Portfolio.CrossCuttingConcerns.Exceptions;
+﻿namespace Portfolio.Common.Response;
 
-public class ValidationErrors
+public class ValidationError
 {
     public string Reason { get; set; }
     public string Message { get; set; }

@@ -355,12 +355,23 @@
           }
         }
       },
+      "Portfolio.Common/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "compile": {
+          "bin/placeholder/Portfolio.Common.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Portfolio.Common.dll": {}
+        }
+      },
       "Portfolio.CrossCuttingConcerns/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v7.0",
         "dependencies": {
           "Microsoft.AspNetCore.Http": "2.3.0",
-          "Newtonsoft.Json": "13.0.3"
+          "Newtonsoft.Json": "13.0.3",
+          "Portfolio.Common": "1.0.0"
         },
         "compile": {
           "bin/placeholder/Portfolio.CrossCuttingConcerns.dll": {}
@@ -913,6 +924,11 @@
         "useSharedDesignerContext.txt"
       ]
     },
+    "Portfolio.Common/1.0.0": {
+      "type": "project",
+      "path": "../Portfolio.Common/Portfolio.Common.csproj",
+      "msbuildProject": "../Portfolio.Common/Portfolio.Common.csproj"
+    },
     "Portfolio.CrossCuttingConcerns/1.0.0": {
       "type": "project",
       "path": "../Portfolio.CrossCuttingConcerns/Portfolio.CrossCuttingConcerns.csproj",
@@ -927,6 +943,7 @@
   "projectFileDependencyGroups": {
     "net7.0": [
       "FluentValidation >= 11.11.0",
+      "Portfolio.Common >= 1.0.0",
       "Portfolio.CrossCuttingConcerns >= 1.0.0",
       "Portfolio.Domain >= 1.0.0"
     ]
@@ -964,6 +981,9 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
+            "C:\\Users\\dince\\source\\repos\\Portfolio\\Portfolio.Common\\Portfolio.Common.csproj": {
+              "projectPath": "C:\\Users\\dince\\source\\repos\\Portfolio\\Portfolio.Common\\Portfolio.Common.csproj"
+            },
             "C:\\Users\\dince\\source\\repos\\Portfolio\\Portfolio.CrossCuttingConcerns\\Portfolio.CrossCuttingConcerns.csproj": {
               "projectPath": "C:\\Users\\dince\\source\\repos\\Portfolio\\Portfolio.CrossCuttingConcerns\\Portfolio.CrossCuttingConcerns.csproj"
             },

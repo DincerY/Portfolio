@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Portfolio.Application", "Po
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Portfolio.Infrastructure", "Portfolio.Infrastructure\Portfolio.Infrastructure.csproj", "{8F2CE654-80CC-4A83-A991-CAC2B2D42779}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portfolio.CrossCuttingConcerns", "Portfolio.CrossCuttingConcerns\Portfolio.CrossCuttingConcerns.csproj", "{8460B55C-D00A-4BC5-B912-5039A0C7C864}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Portfolio.CrossCuttingConcerns", "Portfolio.CrossCuttingConcerns\Portfolio.CrossCuttingConcerns.csproj", "{8460B55C-D00A-4BC5-B912-5039A0C7C864}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portfolio.Common", "Portfolio.Common\Portfolio.Common.csproj", "{DDF2787F-9DFC-49C9-A1A3-4462575DC7F4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{8460B55C-D00A-4BC5-B912-5039A0C7C864}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8460B55C-D00A-4BC5-B912-5039A0C7C864}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8460B55C-D00A-4BC5-B912-5039A0C7C864}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDF2787F-9DFC-49C9-A1A3-4462575DC7F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDF2787F-9DFC-49C9-A1A3-4462575DC7F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDF2787F-9DFC-49C9-A1A3-4462575DC7F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDF2787F-9DFC-49C9-A1A3-4462575DC7F4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

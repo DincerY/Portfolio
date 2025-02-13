@@ -10,3 +10,6 @@ C:\Users\dince\source\repos\Portfolio\Portfolio.CrossCuttingConcerns\obj\Debug\n
 C:\Users\dince\source\repos\Portfolio\Portfolio.CrossCuttingConcerns\obj\Debug\net7.0\refint\Portfolio.CrossCuttingConcerns.dll
 C:\Users\dince\source\repos\Portfolio\Portfolio.CrossCuttingConcerns\obj\Debug\net7.0\Portfolio.CrossCuttingConcerns.pdb
 C:\Users\dince\source\repos\Portfolio\Portfolio.CrossCuttingConcerns\obj\Debug\net7.0\ref\Portfolio.CrossCuttingConcerns.dll
+C:\Users\dince\source\repos\Portfolio\Portfolio.CrossCuttingConcerns\bin\Debug\net7.0\Portfolio.Common.dll
+C:\Users\dince\source\repos\Portfolio\Portfolio.CrossCuttingConcerns\bin\Debug\net7.0\Portfolio.Common.pdb
+C:\Users\dince\source\repos\Portfolio\Portfolio.CrossCuttingConcerns\obj\Debug\net7.0\Portfolio.CrossCuttingConcerns.csproj.CopyComplete

@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Portfolio.Application.DTOs;
 using Portfolio.Application.Interfaces;
+using Portfolio.Common.Response;
 using Portfolio.CrossCuttingConcerns.Exceptions;
 using Portfolio.Domain.Entities;
 using Portfolio.Domain.Interfaces.Repositories;
@@ -40,7 +41,7 @@ public class CategoryService : ICategoryService
         if (!res.IsValid)
         {
             
-            throw new ValidationException(res.Errors.Select(er => new ValidationErrors()
+            throw new ValidationException(res.Errors.Select(er => new ValidationError()
             {
                 Domain = er.PropertyName,
                 Message = er.ErrorMessage,
@@ -66,7 +67,7 @@ public class CategoryService : ICategoryService
         var res = _entityIdListValidator.Validate(dtos);
         if (!res.IsValid)
         {
-            throw new ValidationException(res.Errors.Select(er => new ValidationErrors()
+            throw new ValidationException(res.Errors.Select(er => new ValidationError()
             {
                 Domain = er.PropertyName,
                 Message = er.ErrorMessage,
@@ -77,7 +78,7 @@ public class CategoryService : ICategoryService
         var categories = _categoryRepository.GetByIds(dtos.Select(dto => dto.Id).ToList());
         if (categories.Count() != dtos.Count)
         {
-            throw new Exception("There is no category in the entered ids");
+            throw new NotFoundException("There is no category in the entered ids");
         }
 
         return categories.Select(cat => new CategoryDTO()
@@ -94,7 +95,7 @@ public class CategoryService : ICategoryService
         var res = _createCategoryValidator.Validate(dto);
         if (!res.IsValid)
         {
-            throw new ValidationException(res.Errors.Select(er => new ValidationErrors()
+            throw new ValidationException(res.Errors.Select(er => new ValidationError()
             {
                 Domain = er.PropertyName,
                 Message = er.ErrorMessage,
@@ -105,7 +106,7 @@ public class CategoryService : ICategoryService
         bool isNameExist = _categoryRepository.IsExists(cat => cat.Name.ToLower() == dto.Name.ToLower());
         if (isNameExist)
         {
-            throw new Exception("Category name already exist.");
+            throw new BusinessException("Category name already exist.");
         }
 
         Category category = new()
@@ -122,7 +123,7 @@ public class CategoryService : ICategoryService
         }
         else
         {
-            throw new Exception("Adding is not successful");
+            throw new BusinessException("Adding is not successful");
         }
     }
 
@@ -131,7 +132,7 @@ public class CategoryService : ICategoryService
         var res = _entityIdValidator.Validate(dto);
         if (!res.IsValid)
         {
-            throw new ValidationException(res.Errors.Select(er => new ValidationErrors()
+            throw new ValidationException(res.Errors.Select(er => new ValidationError()
             {
                 Domain = er.PropertyName,
                 Message = er.ErrorMessage,
@@ -142,7 +143,7 @@ public class CategoryService : ICategoryService
         var category = _categoryRepository.GetByIdWithRelation(dto.Id, cat => cat.Articles);
         if (category == null)
         {
-            throw new Exception("There is no category in the entered id");
+            throw new NotFoundException("There is no category in the entered id");
         }
 
         return category.Articles.Select(art => new ArticlesWithCategoryDTO()

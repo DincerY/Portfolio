@@ -1,4 +1,5 @@
 using FluentValidation.AspNetCore;
+using Portfolio.API.Filters;
 using Portfolio.Application;
 using Portfolio.CrossCuttingConcerns;
 using Portfolio.Infrastructure;
@@ -8,7 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(opt =>
+{
+    opt.Filters.Add<ApiResponseFilter>();
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

@@ -1,10 +1,12 @@
-﻿namespace Portfolio.CrossCuttingConcerns.Exceptions;
+﻿using Portfolio.Common.Response;
+
+namespace Portfolio.CrossCuttingConcerns.Exceptions;
 
 public class ValidationException : Exception
 {
-    public List<ValidationErrors> Errors { get; set; }
+    public List<ValidationError> Errors { get; set; }
 
-    public ValidationException(List<ValidationErrors> errors) : base("Validation error occurred")
+    public ValidationException(List<ValidationError> errors) : base("Validation error occurred")
     {
         Errors = errors;
     }

@@ -19,3 +19,5 @@ C:\Users\dince\source\repos\Portfolio\Portfolio.Infrastructure\obj\Debug\net7.0\
 C:\Users\dince\source\repos\Portfolio\Portfolio.Infrastructure\obj\Debug\net7.0\ref\Portfolio.Infrastructure.dll
 C:\Users\dince\source\repos\Portfolio\Portfolio.Infrastructure\bin\Debug\net7.0\Portfolio.CrossCuttingConcerns.dll
 C:\Users\dince\source\repos\Portfolio\Portfolio.Infrastructure\bin\Debug\net7.0\Portfolio.CrossCuttingConcerns.pdb
+C:\Users\dince\source\repos\Portfolio\Portfolio.Infrastructure\bin\Debug\net7.0\Portfolio.Common.dll
+C:\Users\dince\source\repos\Portfolio\Portfolio.Infrastructure\bin\Debug\net7.0\Portfolio.Common.pdb
