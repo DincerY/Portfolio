@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Net.Mime;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Portfolio.Common.Response;
 using Portfolio.CrossCuttingConcerns.Exceptions;
@@ -10,10 +11,12 @@ namespace Portfolio.CrossCuttingConcerns.Middleware;
 public class ExceptionHandlerMiddleware
 {
     private readonly RequestDelegate _next;
+    private readonly ILogger<ExceptionHandlerMiddleware> _logger;
 
-    public ExceptionHandlerMiddleware(RequestDelegate next)
+    public ExceptionHandlerMiddleware(RequestDelegate next, ILogger<ExceptionHandlerMiddleware> logger)
     {
         _next = next;
+        _logger = logger;
     }
 
     public async Task Invoke(HttpContext context)
@@ -36,6 +39,7 @@ public class ExceptionHandlerMiddleware
         switch (exception)
         {
             case NotFoundException notFoundException:
+                _logger.LogError("Not found...");
                 context.Response.StatusCode = StatusCodes.Status404NotFound;
                 response.StatusCode = StatusCodes.Status404NotFound;
                 response.Message = notFoundException.Message;

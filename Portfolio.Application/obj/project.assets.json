@@ -370,6 +370,7 @@
         "framework": ".NETCoreApp,Version=v7.0",
         "dependencies": {
           "Microsoft.AspNetCore.Http": "2.3.0",
+          "Microsoft.Extensions.Logging.Abstractions": "7.0.0",
           "Newtonsoft.Json": "13.0.3",
           "Portfolio.Common": "1.0.0"
         },

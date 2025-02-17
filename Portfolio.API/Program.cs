@@ -4,8 +4,18 @@ using Portfolio.Application;
 using Portfolio.CrossCuttingConcerns;
 using Portfolio.Infrastructure;
 using Portfolio.Infrastructure.Contexts;
+using Serilog;
+using Serilog.Core;
 
 var builder = WebApplication.CreateBuilder(args);
+
+Logger log = new LoggerConfiguration()
+    .WriteTo.Console()
+    //.WriteTo.File("logs/log.txt")
+    .MinimumLevel.Information()
+    .CreateLogger();
+
+builder.Host.UseSerilog(log);
 
 // Add services to the container.
 
@@ -30,6 +40,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+//Log middleware
+app.UseSerilogRequestLogging();
 
 app.UseCrossCuttingMiddleware();
 app.UseHttpsRedirection();

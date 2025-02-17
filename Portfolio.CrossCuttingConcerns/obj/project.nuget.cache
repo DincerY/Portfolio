@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "vqQ1CFBNnjW4cZa4C2U+w2TtCkFoEihaO73K1ooQVz/shh2XFuV9+j7pumBzHpIh0tWCan+1ShoVdnXK3+Eg5g==",
+  "dgSpecHash": "ZyuUIemuSw+mHpDgeJXFaTMimPDZsJ8dIvuxlvaPh6CrJIXrnlbdT7GysCJTMnex7btiBYiBMuoGSiMLOiDlhw==",
   "success": true,
   "projectFilePath": "C:\\Users\\dince\\source\\repos\\Portfolio\\Portfolio.CrossCuttingConcerns\\Portfolio.CrossCuttingConcerns.csproj",
   "expectedPackageFiles": [
@@ -9,6 +9,7 @@
     "C:\\Users\\dince\\.nuget\\packages\\microsoft.aspnetcore.http.features\\2.3.0\\microsoft.aspnetcore.http.features.2.3.0.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\microsoft.aspnetcore.webutilities\\2.3.0\\microsoft.aspnetcore.webutilities.2.3.0.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\dince\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\7.0.0\\microsoft.extensions.logging.abstractions.7.0.0.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\microsoft.extensions.objectpool\\8.0.11\\microsoft.extensions.objectpool.8.0.11.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\microsoft.extensions.options\\8.0.2\\microsoft.extensions.options.8.0.2.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\microsoft.extensions.primitives\\8.0.0\\microsoft.extensions.primitives.8.0.0.nupkg.sha512",

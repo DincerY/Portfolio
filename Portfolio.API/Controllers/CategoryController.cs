@@ -1,8 +1,7 @@
-﻿using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Portfolio.Application.DTOs;
 using Portfolio.Application.Interfaces;
-using Portfolio.Common.Response;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Portfolio.API.Controllers;
 
@@ -11,14 +10,17 @@ namespace Portfolio.API.Controllers;
 public class CategoryController : ControllerBase
 {
     private readonly ICategoryService _categoryService;
-    public CategoryController(ICategoryService categoryService)
+    private readonly ILogger _logger;
+    public CategoryController(ICategoryService categoryService, ILogger<CategoryController> logger)
     {
         _categoryService = categoryService;
+        _logger = logger;
     }
 
     [HttpGet]
     public IActionResult GetCategories()
     {
+        _logger.LogInformation("deneme deneme dneeme");
         var res = _categoryService.GetCategories().ToList();
         return Ok(res);
     }
@@ -27,6 +29,8 @@ public class CategoryController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult GetCategoryById(int id)
     {
+        _logger.LogWarning("Get method was called");
+
         //Aşağıda ki yaklaşım biraz yanlış çünkü o an başka bir hata meydana gelmişte olabilir fakat
         //hangi hata gelirse gelsin biz NotFound dönücez belkide veri tabanında bir sıkıntı var
         //bunun çözümünü ileride ele alıcam. Çözüm döndürülen hataları özelleştirmek. Mesela id değeri
