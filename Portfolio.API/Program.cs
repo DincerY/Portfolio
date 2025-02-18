@@ -11,7 +11,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 Logger log = new LoggerConfiguration()
     .WriteTo.Console()
-    //.WriteTo.File("logs/log.txt")
     .MinimumLevel.Information()
     .CreateLogger();
 
@@ -42,7 +41,7 @@ if (app.Environment.IsDevelopment())
 }
 
 //Log middleware
-app.UseSerilogRequestLogging();
+//app.UseSerilogRequestLogging();
 
 app.UseCrossCuttingMiddleware();
 app.UseHttpsRedirection();

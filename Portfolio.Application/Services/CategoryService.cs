@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.Extensions.Logging;
 using Portfolio.Application.DTOs;
 using Portfolio.Application.Interfaces;
 using Portfolio.Common.Response;
@@ -16,12 +17,14 @@ public class CategoryService : ICategoryService
     private readonly IValidator<CreateCategoryDTO> _createCategoryValidator;
     private readonly IValidator<EntityIdDTO> _entityIdValidator;
     private readonly IValidator<List<EntityIdDTO>> _entityIdListValidator;
-    public CategoryService(ICategoryRepository categoryRepository, IValidator<CreateCategoryDTO> createCategoryValidator, IValidator<EntityIdDTO> entityIdValidator, IValidator<List<EntityIdDTO>> entityIdListValidator)
+    private readonly ILogger<CategoryService> _logger;
+    public CategoryService(ICategoryRepository categoryRepository, IValidator<CreateCategoryDTO> createCategoryValidator, IValidator<EntityIdDTO> entityIdValidator, IValidator<List<EntityIdDTO>> entityIdListValidator, ILogger<CategoryService> logger)
     {
         _categoryRepository = categoryRepository;
         _createCategoryValidator = createCategoryValidator;
         _entityIdValidator = entityIdValidator;
         _entityIdListValidator = entityIdListValidator;
+        _logger = logger;
     }
 
     public IEnumerable<CategoryDTO> GetCategories()
@@ -119,6 +122,7 @@ public class CategoryService : ICategoryService
         var addedCategory = _categoryRepository.Add(category);
         if (addedCategory != null)
         {
+            _logger.LogCritical("Category added...");
             return addedCategory.Id;
         }
         else

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "mvWP7kiYLqoJ0xG2MXXFSBUrTdY6kHzHO+v6RNG+Tz9zDDqoNZL1qDjTVRvrjdyEmFuk6yJ4zGdK45z8w4iLnA==",
+  "dgSpecHash": "/IipgWemuNuZQpBiYMMupjOxrwmsVHS7Xxad4deqH/I5/JDNjFJy3pFgQQ19NH72Su6jhntyp4D6HqMrjXYdpA==",
   "success": true,
   "projectFilePath": "C:\\Users\\dince\\source\\repos\\Portfolio\\Portfolio.Application\\Portfolio.Application.csproj",
   "expectedPackageFiles": [
@@ -23,6 +23,8 @@
     "C:\\Users\\dince\\.nuget\\packages\\microsoft.extensions.primitives\\8.0.0\\microsoft.extensions.primitives.8.0.0.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\microsoft.net.http.headers\\2.3.0\\microsoft.net.http.headers.2.3.0.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\dince\\.nuget\\packages\\serilog\\4.2.0\\serilog.4.2.0.nupkg.sha512",
+    "C:\\Users\\dince\\.nuget\\packages\\serilog.sinks.file\\6.0.0\\serilog.sinks.file.6.0.0.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\system.buffers\\4.6.0\\system.buffers.4.6.0.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\system.text.encodings.web\\8.0.0\\system.text.encodings.web.8.0.0.nupkg.sha512"
   ],

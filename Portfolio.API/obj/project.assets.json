@@ -1785,7 +1785,9 @@
           "Microsoft.AspNetCore.Http": "2.3.0",
           "Microsoft.Extensions.Logging.Abstractions": "7.0.0",
           "Newtonsoft.Json": "13.0.3",
-          "Portfolio.Common": "1.0.0"
+          "Portfolio.Common": "1.0.0",
+          "Serilog": "4.2.0",
+          "Serilog.Sinks.File": "6.0.0"
         },
         "compile": {
           "bin/placeholder/Portfolio.CrossCuttingConcerns.dll": {}
