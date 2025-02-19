@@ -1,12 +1,8 @@
-﻿using System.Runtime.InteropServices;
-using FluentValidation;
-using Portfolio.Application.DTOs;
+﻿using Portfolio.Application.DTOs;
 using Portfolio.Application.Interfaces;
-using Portfolio.Common.Response;
 using Portfolio.CrossCuttingConcerns.Exceptions;
 using Portfolio.Domain.Entities;
 using Portfolio.Domain.Interfaces.Repositories;
-using ValidationException = Portfolio.CrossCuttingConcerns.Exceptions.ValidationException;
 
 namespace Portfolio.Application.Services;
 /// <summary>
@@ -19,16 +15,11 @@ namespace Portfolio.Application.Services;
 public class AuthorService : IAuthorService
 {
     private readonly IAuthorRepository _authorRepository;
-    private readonly IValidator<CreateAuthorDTO> _createAuthorValidator;
-    private readonly IValidator<EntityIdDTO> _entityIdValidator;
-    private readonly IValidator<List<EntityIdDTO>> _entityIdListValidator;
 
-    public AuthorService(IAuthorRepository authorRepository, IValidator<CreateAuthorDTO> createAuthorValidator, IValidator<EntityIdDTO> entityIdValidator, IValidator<List<EntityIdDTO>> entityIdListValidator)
+
+    public AuthorService(IAuthorRepository authorRepository)
     {
         _authorRepository = authorRepository;
-        _createAuthorValidator = createAuthorValidator;
-        _entityIdValidator = entityIdValidator;
-        _entityIdListValidator = entityIdListValidator;
     }
 
     public IEnumerable<AuthorDTO> GetAuthors()
@@ -44,33 +35,12 @@ public class AuthorService : IAuthorService
 
     public Author GetAuthorById(EntityIdDTO dto)
     {
-        var res = _entityIdValidator.Validate(dto);
-        if (!res.IsValid)
-        {
-            throw new ValidationException(res.Errors.Select(er => new ValidationError()
-            {
-                Domain = er.PropertyName,
-                Message = er.ErrorMessage,
-                Reason = nameof(GetAuthorById)
-            }).ToList());
-        }
         return _authorRepository.GetById(dto.Id);
         //!!!Id değerinin elle girilmesini engellemek aslında bir iş mantığıdır.
     }
 
     public List<AuthorDTO> GetAuthorsByIds(List<EntityIdDTO> dtos)
     {
-        var res = _entityIdListValidator.Validate(dtos);
-        if (!res.IsValid)
-        {
-            throw new ValidationException(res.Errors.Select(er => new ValidationError()
-            {
-                Domain = er.PropertyName,
-                Message = er.ErrorMessage,
-                Reason = nameof(GetAuthorsByIds)
-            }).ToList());
-        }
-
         var authors = _authorRepository.GetWhere(aut => dtos.Select(dto => dto.Id).Contains(aut.Id)).ToList();
 
         if (authors.Count != dtos.Count)
@@ -88,18 +58,6 @@ public class AuthorService : IAuthorService
 
     public int AddAuthor(CreateAuthorDTO dto)
     {
-        var res = _createAuthorValidator.Validate(dto);
-        if (!res.IsValid)
-        {
-            throw new ValidationException(res.Errors.Select(er => new ValidationError()
-            {
-                Domain = er.PropertyName,
-                Message = er.ErrorMessage,
-                Reason = nameof(AddAuthor)
-            }).ToList());
-        }
-
-
         bool isAuthorExist = _authorRepository.IsExists(aut => aut.Name.ToLower() == dto.Name.ToLower());
         if (isAuthorExist)
         {
@@ -126,17 +84,6 @@ public class AuthorService : IAuthorService
 
     public List<ArticleDTO> GetArticlesByAuthorId(EntityIdDTO dto)
     {
-        var res = _entityIdValidator.Validate(dto);
-        if (!res.IsValid)
-        {
-            throw new ValidationException(res.Errors.Select(er => new ValidationError()
-            {
-                Domain = er.PropertyName,
-                Message = er.ErrorMessage,
-                Reason = nameof(GetArticlesByAuthorId)
-            }).ToList());
-        }
-
         List<ArticleDTO> dtos = new();
         var author = _authorRepository.GetByIdWithRelation(dto.Id, aut => aut.Articles);
         if (author == null)

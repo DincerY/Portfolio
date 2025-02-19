@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Portfolio.Application.DTOs;
 using Portfolio.Application.Interfaces;
 
@@ -17,6 +16,7 @@ public class ArticleController : ControllerBase
     public ArticleController(IArticleService service)
     {
         _service = service;
+
     }
     //Burada exception handling yapmadık fakat burada da bir hata meydana gelebilir. Örnek olarak veri tabanı
     //bağlantısı kopması bazı güncelemeler ile bağımlılıkların değişmesi vs. Bunun için middleware ile bunu
@@ -31,7 +31,8 @@ public class ArticleController : ControllerBase
     [HttpGet("getArticlesByIds")]
     public IActionResult GetArticlesWithIds([FromQuery]List<int> ids)
     {
-        var articles = _service.GetArticlesByIds(ids.Select(id => new EntityIdDTO() { Id = id }).ToList());
+        var dtos = ids.Select(id => new EntityIdDTO() { Id = id }).ToList();
+        var articles = _service.GetArticlesByIds(dtos);
         return Ok(articles);
     }
     [HttpGet("getArticlesWithRelation")]
@@ -44,21 +45,24 @@ public class ArticleController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult GetArticleById(int id)
     {
-        var articleDto = _service.GetArticleById(new EntityIdDTO(){Id = id});
+        var dto = new EntityIdDTO() { Id = id };
+        var articleDto = _service.GetArticleById(dto);
         return Ok(articleDto);
     }
 
     [HttpGet("getArticleWithRelation/{id}")]
     public IActionResult GetArticleWithRelationById(int id)
     {
-        var articleDto = _service.GetArticleWithRelationById(new EntityIdDTO() { Id = id });
+        var dto = new EntityIdDTO() { Id = id };
+        var articleDto = _service.GetArticleWithRelationById(dto);
         return Ok(articleDto);
     }
 
     [HttpGet("getArticleAuthors/{articleId}")]
     public IActionResult GetArticleAuthors(int articleId)
     {
-        var authorDTOs = _service.GetAuthorsByArticleId(new EntityIdDTO() { Id = articleId });
+        var dto = new EntityIdDTO() { Id = articleId };
+        var authorDTOs = _service.GetAuthorsByArticleId(dto);
         return Ok(authorDTOs);
         
     }
@@ -68,10 +72,10 @@ public class ArticleController : ControllerBase
     //problem olabilir. Örnek olarak burada bir makalenin yazarlarını bütün olarak almaktansa sadace
     //idlerini bir liste olarak alıp bunları ilişkilendiricez.
     [HttpPost]
-    public IActionResult AddArticle(CreateArticleDTO dto)
+    public IActionResult AddArticle([FromBody]CreateArticleDTO dto)
     {
         //İşin çalışıp çalışmadığını servis katmanında kontrol etmeliyiz.
-        int res = _service.AddArticle(dto);
-        return Ok(res);
+        int added = _service.AddArticle(dto);
+        return Ok(added);
     }
 }

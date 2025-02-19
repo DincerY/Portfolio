@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v7.0": {
       "Portfolio.API/1.0.0": {
         "dependencies": {
+          "FluentValidation": "11.11.0",
           "FluentValidation.AspNetCore": "11.3.0",
           "FluentValidation.DependencyInjectionExtensions": "11.11.0",
           "Microsoft.AspNetCore.OpenApi": "7.0.9",
@@ -16,6 +17,7 @@
           "Portfolio.CrossCuttingConcerns": "1.0.0",
           "Portfolio.Infrastructure": "1.0.0",
           "Serilog.AspNetCore": "9.0.0",
+          "SharpGrip.FluentValidation.AutoValidation.Mvc": "1.5.0",
           "Swashbuckle.AspNetCore": "6.5.0"
         },
         "runtime": {
@@ -723,6 +725,28 @@
           }
         }
       },
+      "SharpGrip.FluentValidation.AutoValidation.Mvc/1.5.0": {
+        "dependencies": {
+          "SharpGrip.FluentValidation.AutoValidation.Shared": "1.5.0"
+        },
+        "runtime": {
+          "lib/net7.0/SharpGrip.FluentValidation.AutoValidation.Mvc.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "SharpGrip.FluentValidation.AutoValidation.Shared/1.5.0": {
+        "dependencies": {
+          "FluentValidation": "11.11.0"
+        },
+        "runtime": {
+          "lib/net7.0/SharpGrip.FluentValidation.AutoValidation.Shared.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
       "Swashbuckle.AspNetCore/6.5.0": {
         "dependencies": {
           "Microsoft.Extensions.ApiDescription.Server": "6.0.5",
@@ -1039,9 +1063,12 @@
       "Portfolio.Application/1.0.0": {
         "dependencies": {
           "FluentValidation": "11.11.0",
+          "FluentValidation.AspNetCore": "11.3.0",
+          "FluentValidation.DependencyInjectionExtensions": "11.11.0",
           "Portfolio.Common": "1.0.0",
           "Portfolio.CrossCuttingConcerns": "1.0.0",
-          "Portfolio.Domain": "1.0.0"
+          "Portfolio.Domain": "1.0.0",
+          "SharpGrip.FluentValidation.AutoValidation.Shared": "1.5.0"
         },
         "runtime": {
           "Portfolio.Application.dll": {}
@@ -1546,6 +1573,20 @@
       "sha512": "sha512-lxjg89Y8gJMmFxVkbZ+qDgjl+T4yC5F7WSLTvA+5q0R04tfKVLRL/EHpYoJ/MEQd2EeCKDuylBIVnAYMotmh2A==",
       "path": "serilog.sinks.file/6.0.0",
       "hashPath": "serilog.sinks.file.6.0.0.nupkg.sha512"
+    },
+    "SharpGrip.FluentValidation.AutoValidation.Mvc/1.5.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-gqzRTuyZSn8eGbOg0OVQIY9mHCW78WMq1sLg+tqTDQVZJC/clbi9g9AV0ErZj1PZfuGIqG35cBo32Px0MVW5Ow==",
+      "path": "sharpgrip.fluentvalidation.autovalidation.mvc/1.5.0",
+      "hashPath": "sharpgrip.fluentvalidation.autovalidation.mvc.1.5.0.nupkg.sha512"
+    },
+    "SharpGrip.FluentValidation.AutoValidation.Shared/1.5.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-vTZhTWRrTk051yXEOmkU9jMbHuckcBTW7P/3o1SX7R7arJ+JhTNinVeECkLJRcliW6qMto5aYRI2GEOP+DR4Dg==",
+      "path": "sharpgrip.fluentvalidation.autovalidation.shared/1.5.0",
+      "hashPath": "sharpgrip.fluentvalidation.autovalidation.shared.1.5.0.nupkg.sha512"
     },
     "Swashbuckle.AspNetCore/6.5.0": {
       "type": "package",

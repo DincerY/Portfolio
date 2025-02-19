@@ -1,12 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "nUyxiCEUnujlK2N+tnh1GFpe3L95auKruKAESVm4E4kBtev6yJHa47JF2DehvUgRgTFe+I9jIA86cSKMb6q9Gw==",
+  "dgSpecHash": "0dtqj4ZlPpzZ6ZKMoRdGiz1CeqULhkUaBlAn1zYKK6CmC+WX9YBKwwV81rDhbQBo7YTc+VjFu5ks7aRJy7w6lA==",
   "success": true,
   "projectFilePath": "C:\\Users\\dince\\source\\repos\\Portfolio\\Portfolio.Infrastructure\\Portfolio.Infrastructure.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\dince\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\fluentvalidation\\11.11.0\\fluentvalidation.11.11.0.nupkg.sha512",
+    "C:\\Users\\dince\\.nuget\\packages\\fluentvalidation.aspnetcore\\11.3.0\\fluentvalidation.aspnetcore.11.3.0.nupkg.sha512",
+    "C:\\Users\\dince\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\11.11.0\\fluentvalidation.dependencyinjectionextensions.11.11.0.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\microsoft.aspnetcore.http\\2.3.0\\microsoft.aspnetcore.http.2.3.0.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\microsoft.aspnetcore.http.abstractions\\2.3.0\\microsoft.aspnetcore.http.abstractions.2.3.0.nupkg.sha512",
@@ -52,6 +54,7 @@
     "C:\\Users\\dince\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\serilog\\4.2.0\\serilog.4.2.0.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\serilog.sinks.file\\6.0.0\\serilog.sinks.file.6.0.0.nupkg.sha512",
+    "C:\\Users\\dince\\.nuget\\packages\\sharpgrip.fluentvalidation.autovalidation.shared\\1.5.0\\sharpgrip.fluentvalidation.autovalidation.shared.1.5.0.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\system.buffers\\4.6.0\\system.buffers.4.6.0.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\system.codedom\\4.4.0\\system.codedom.4.4.0.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\system.configuration.configurationmanager\\5.0.0\\system.configuration.configurationmanager.5.0.0.nupkg.sha512",

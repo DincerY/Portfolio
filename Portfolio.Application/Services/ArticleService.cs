@@ -16,19 +16,12 @@ public class ArticleService : IArticleService
     private readonly IArticleRepository _articleRepository;
     private readonly IAuthorRepository _authorRepository;
     private readonly ICategoryRepository _categoryRepository;
-    private readonly IValidator<CreateArticleDTO> _createArticleValidator;
-    private readonly IValidator<EntityIdDTO> _entityIdValidator;
-    private readonly IValidator<List<EntityIdDTO>> _entityIdListValidator;
 
-
-    public ArticleService(IArticleRepository articlesRepository, IValidator<CreateArticleDTO> createArticleValidator, IAuthorRepository authorRepository, ICategoryRepository categoryRepository, IValidator<EntityIdDTO> entityIdValidator, IValidator<List<EntityIdDTO>> entityIdListValidator)
+    public ArticleService(IArticleRepository articlesRepository, IAuthorRepository authorRepository, ICategoryRepository categoryRepository)
     {
         _articleRepository = articlesRepository;
-        _createArticleValidator = createArticleValidator;
         _authorRepository = authorRepository;
         _categoryRepository = categoryRepository;
-        _entityIdValidator = entityIdValidator;
-        _entityIdListValidator = entityIdListValidator;
     }
 
     public IEnumerable<ArticleDTO> GetArticles()
@@ -85,16 +78,6 @@ public class ArticleService : IArticleService
 
     public ArticleDTO GetArticleById(EntityIdDTO dto)
     {
-        var res = _entityIdValidator.Validate(dto);
-        if (!res.IsValid)
-        {
-            throw new ValidationException(res.Errors.Select(er => new ValidationError()
-            {
-                Domain = er.PropertyName,
-                Message = er.ErrorMessage,
-                Reason = nameof(GetArticleById)
-            }).ToList());
-        }
         
         Article article = _articleRepository.GetById(dto.Id);
         if (article == null)
@@ -113,17 +96,6 @@ public class ArticleService : IArticleService
 
     public ArticleWithRelationsDTO GetArticleWithRelationById(EntityIdDTO dto)
     {
-        var res = _entityIdValidator.Validate(dto);
-        if (!res.IsValid)
-        {
-            throw new ValidationException(res.Errors.Select(er => new ValidationError()
-            {
-                Domain = er.PropertyName,
-                Message = er.ErrorMessage,
-                Reason = nameof(GetArticleWithRelationById)
-            }).ToList());
-        }
-        
         Article article = _articleRepository.GetByIdWithRelation(dto.Id,art => art.Authors, art => art.Categories);
 
         if (article == null)
@@ -159,17 +131,6 @@ public class ArticleService : IArticleService
 
     public List<Article> GetArticlesByIds(List<EntityIdDTO> dtos)
     {
-        var res = _entityIdListValidator.Validate(dtos);
-        if (!res.IsValid)
-        {
-            throw new ValidationException(res.Errors.Select(er => new ValidationError()
-            {
-                Domain = er.PropertyName,
-                Message = er.ErrorMessage,
-                Reason = nameof(GetArticlesByIds)
-            }).ToList());
-        }
-
         var articles = _articleRepository.GetWhere(art => dtos.Select(dto => dto.Id).Contains(art.Id)).ToList();
         if (articles.Count != dtos.Count)
         {
@@ -182,17 +143,6 @@ public class ArticleService : IArticleService
     //o yazarın o ana kadar bir makalesi olmayabilir. Arada ki ilişki çoka çok ilişki türü.
     public int AddArticle(CreateArticleDTO dto)
     {
-        var res= _createArticleValidator.Validate(dto);
-        if (!res.IsValid)
-        {
-            throw new ValidationException(res.Errors.Select(er => new ValidationError()
-            {
-                Domain = er.PropertyName,
-                Message = er.ErrorMessage,
-                Reason = nameof(AddArticle)
-            }).ToList());
-        }
-
         bool isArticleExits = _articleRepository.IsExists(art => art.Name.ToLower() == dto.Name.ToLower());
         if (isArticleExits)
         {
@@ -252,16 +202,6 @@ public class ArticleService : IArticleService
 
     public List<AuthorDTO> GetAuthorsByArticleId(EntityIdDTO dto)
     {
-        var res = _entityIdValidator.Validate(dto);
-        if (!res.IsValid)
-        {
-            throw new ValidationException(res.Errors.Select(er => new ValidationError()
-            {
-                Domain = er.PropertyName,
-                Message = er.ErrorMessage,
-                Reason = nameof(GetAuthorsByArticleId)
-            }).ToList());
-        }
         List<AuthorDTO> dtos = new List<AuthorDTO>();
         var articleList = _articleRepository.GetByIdWithRelation(dto.Id,art => art.Authors);
 

@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using Portfolio.Application.DTOs;
 using Portfolio.Application.Interfaces;
+using Portfolio.Common.Response;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
+using ValidationException = Portfolio.CrossCuttingConcerns.Exceptions.ValidationException;
 
 namespace Portfolio.API.Controllers;
 
@@ -38,31 +41,34 @@ public class CategoryController : ControllerBase
         //durumunda id nin olmadığını anlamak ve hatayı ona göre işlemek.
 
         //Yukarıda bahsettiğim durumun bir nevi bir çözümü ama daha farklı bir yaklaşımı ileride uygulayacağım.
+        var dto = new EntityIdDTO() { Id = id };
 
-        var res = _categoryService.GetCategoryById(new EntityIdDTO() { Id = id });
-        return Ok(res);
+        var category = _categoryService.GetCategoryById(dto);
+        return Ok(category);
     }
 
     [HttpGet("getCategoriesByIds")]
     public IActionResult GetCategoriesByIds([FromQuery]List<int> ids)
     {
-        var res = _categoryService.GetCategoriesByIds(ids.Select(id => new EntityIdDTO() { Id = id }).ToList());
-        return Ok(res);
+        var dtos = ids.Select(id => new EntityIdDTO() { Id = id }).ToList();
+        var categories = _categoryService.GetCategoriesByIds(dtos);
+        return Ok(categories);
         
     }
 
     [HttpGet("getCategoryArticles/{id}")]
     public IActionResult GetCategoryWithArticles(int id)
     {
-        var res = _categoryService.GetArticlesByCategoryId(new EntityIdDTO() { Id = id });
-        return Ok(res);
+        var dto = new EntityIdDTO() { Id = id };
+        var categories = _categoryService.GetArticlesByCategoryId(dto);
+        return Ok(categories);
     }
 
     [HttpPost]
     public ActionResult<int> AddCategory(CreateCategoryDTO dto)
     {
-        var res = _categoryService.AddCategory(dto);
-        return Ok(res);
+        var added = _categoryService.AddCategory(dto);
+        return Ok(added);
     }
 
 

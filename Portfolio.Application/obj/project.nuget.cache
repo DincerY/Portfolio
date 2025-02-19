@@ -1,10 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "/IipgWemuNuZQpBiYMMupjOxrwmsVHS7Xxad4deqH/I5/JDNjFJy3pFgQQ19NH72Su6jhntyp4D6HqMrjXYdpA==",
+  "dgSpecHash": "mMXhRNJlEISKwUuCaBuFXEemqnc6bFdHd9sO3UtINC6cYCXor9plZSixLpJRFEn1C010X88asSAwcnhE4vQOwQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\dince\\source\\repos\\Portfolio\\Portfolio.Application\\Portfolio.Application.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\dince\\.nuget\\packages\\fluentvalidation\\11.11.0\\fluentvalidation.11.11.0.nupkg.sha512",
+    "C:\\Users\\dince\\.nuget\\packages\\fluentvalidation.aspnetcore\\11.3.0\\fluentvalidation.aspnetcore.11.3.0.nupkg.sha512",
+    "C:\\Users\\dince\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\11.11.0\\fluentvalidation.dependencyinjectionextensions.11.11.0.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\microsoft.aspnetcore.http\\2.3.0\\microsoft.aspnetcore.http.2.3.0.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\microsoft.aspnetcore.http.abstractions\\2.3.0\\microsoft.aspnetcore.http.abstractions.2.3.0.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\microsoft.aspnetcore.http.features\\2.3.0\\microsoft.aspnetcore.http.features.2.3.0.nupkg.sha512",
@@ -25,6 +27,7 @@
     "C:\\Users\\dince\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\serilog\\4.2.0\\serilog.4.2.0.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\serilog.sinks.file\\6.0.0\\serilog.sinks.file.6.0.0.nupkg.sha512",
+    "C:\\Users\\dince\\.nuget\\packages\\sharpgrip.fluentvalidation.autovalidation.shared\\1.5.0\\sharpgrip.fluentvalidation.autovalidation.shared.1.5.0.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\system.buffers\\4.6.0\\system.buffers.4.6.0.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\system.text.encodings.web\\8.0.0\\system.text.encodings.web.8.0.0.nupkg.sha512"
   ],

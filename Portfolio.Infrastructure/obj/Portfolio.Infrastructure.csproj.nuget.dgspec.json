@@ -58,6 +58,18 @@
             "FluentValidation": {
               "target": "Package",
               "version": "[11.11.0, )"
+            },
+            "FluentValidation.AspNetCore": {
+              "target": "Package",
+              "version": "[11.3.0, )"
+            },
+            "FluentValidation.DependencyInjectionExtensions": {
+              "target": "Package",
+              "version": "[11.11.0, )"
+            },
+            "SharpGrip.FluentValidation.AutoValidation.Shared": {
+              "target": "Package",
+              "version": "[1.5.0, )"
             }
           },
           "imports": [

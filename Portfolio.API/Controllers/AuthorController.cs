@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Portfolio.Application.DTOs;
 using Portfolio.Application.Interfaces;
 
@@ -11,9 +10,11 @@ public class AuthorController : ControllerBase
 {
     private readonly IAuthorService _service;
 
+
     public AuthorController(IAuthorService auhtorService)
     {
         _service = auhtorService;
+        
     }
 
     //Bu fonksiyon sadece yazarları getirmeli ilişkili olan kısımları başka fonksiyonlar ile halletmeliyiz
@@ -23,25 +24,34 @@ public class AuthorController : ControllerBase
         var authors = _service.GetAuthors();
         return Ok(authors);
     }
+    [HttpGet("{id}")]
+    public IActionResult GetAuthorById(int id)
+    {
+        var dto = new EntityIdDTO() { Id = id };
+        var articleDtos = _service.GetAuthorById(dto);
+        return Ok(articleDtos);
+    }
     [HttpGet("getAuthorsByIds")]
     public IActionResult GetAuthorsByIds([FromQuery]List<int> ids)
     {
-        var authors = _service.GetAuthorsByIds(ids.Select(id => new EntityIdDTO() { Id = id }).ToList());
+        var dtos = ids.Select(id => new EntityIdDTO() { Id = id }).ToList();
+        var authors = _service.GetAuthorsByIds(dtos);
         return Ok(authors);
     }
 
     [HttpGet("getAuthorArticles/{authorId}")]
     public IActionResult GetArticleAuthors(int authorId)
     {
-        var articleDtos = _service.GetArticlesByAuthorId(new EntityIdDTO() { Id = authorId });
+        var dto = new EntityIdDTO() { Id = authorId };
+        var articleDtos = _service.GetArticlesByAuthorId(dto);
         return Ok(articleDtos);
     }
 
     [HttpPost]
     public IActionResult AddAuthor(CreateAuthorDTO dto)
     {
-        var res = _service.AddAuthor(dto);
-        return Ok(res);
+        var added = _service.AddAuthor(dto);
+        return Ok(added);
     }
 
     

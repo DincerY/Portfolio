@@ -1,29 +1,20 @@
-﻿using FluentValidation;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Portfolio.Application.DTOs;
 using Portfolio.Application.Interfaces;
-using Portfolio.Common.Response;
 using Portfolio.CrossCuttingConcerns.Exceptions;
 using Portfolio.Domain.Entities;
 using Portfolio.Domain.Interfaces.Repositories;
-using ValidationException = Portfolio.CrossCuttingConcerns.Exceptions.ValidationException;
-//using ValidationException = FluentValidation.ValidationException;
 
 namespace Portfolio.Application.Services;
 
 public class CategoryService : ICategoryService
 {
     private readonly ICategoryRepository _categoryRepository;
-    private readonly IValidator<CreateCategoryDTO> _createCategoryValidator;
-    private readonly IValidator<EntityIdDTO> _entityIdValidator;
-    private readonly IValidator<List<EntityIdDTO>> _entityIdListValidator;
+    
     private readonly ILogger<CategoryService> _logger;
-    public CategoryService(ICategoryRepository categoryRepository, IValidator<CreateCategoryDTO> createCategoryValidator, IValidator<EntityIdDTO> entityIdValidator, IValidator<List<EntityIdDTO>> entityIdListValidator, ILogger<CategoryService> logger)
+    public CategoryService(ICategoryRepository categoryRepository,ILogger<CategoryService> logger)
     {
         _categoryRepository = categoryRepository;
-        _createCategoryValidator = createCategoryValidator;
-        _entityIdValidator = entityIdValidator;
-        _entityIdListValidator = entityIdListValidator;
         _logger = logger;
     }
 
@@ -40,18 +31,6 @@ public class CategoryService : ICategoryService
 
     public CategoryDTO GetCategoryById(EntityIdDTO dto)
     {
-        var res = _entityIdValidator.Validate(dto);
-        if (!res.IsValid)
-        {
-            
-            throw new ValidationException(res.Errors.Select(er => new ValidationError()
-            {
-                Domain = er.PropertyName,
-                Message = er.ErrorMessage,
-                Reason = "GetCategoryById" //-belki ileride reflection ile hatanın oluştuğu metodu döneriz
-            }).ToList());
-        }
-
         var category = _categoryRepository.GetById(dto.Id);
         if (category == null)
         {
@@ -67,17 +46,6 @@ public class CategoryService : ICategoryService
 
     public List<CategoryDTO> GetCategoriesByIds(List<EntityIdDTO> dtos)
     {
-        var res = _entityIdListValidator.Validate(dtos);
-        if (!res.IsValid)
-        {
-            throw new ValidationException(res.Errors.Select(er => new ValidationError()
-            {
-                Domain = er.PropertyName,
-                Message = er.ErrorMessage,
-                Reason = "GetCategoriesByIds"
-            }).ToList());
-        }
-
         var categories = _categoryRepository.GetByIds(dtos.Select(dto => dto.Id).ToList());
         if (categories.Count() != dtos.Count)
         {
@@ -92,20 +60,9 @@ public class CategoryService : ICategoryService
         }).ToList();
     }
 
-    //Hem validasyon hemde iş mantığını bir arada yaptık.
+
     public int AddCategory(CreateCategoryDTO dto)
     {
-        var res = _createCategoryValidator.Validate(dto);
-        if (!res.IsValid)
-        {
-            throw new ValidationException(res.Errors.Select(er => new ValidationError()
-            {
-                Domain = er.PropertyName,
-                Message = er.ErrorMessage,
-                Reason = "AddCategory"
-            }).ToList());
-        }
-
         bool isNameExist = _categoryRepository.IsExists(cat => cat.Name.ToLower() == dto.Name.ToLower());
         if (isNameExist)
         {
@@ -133,17 +90,6 @@ public class CategoryService : ICategoryService
 
     public List<ArticlesWithCategoryDTO> GetArticlesByCategoryId(EntityIdDTO dto)
     {
-        var res = _entityIdValidator.Validate(dto);
-        if (!res.IsValid)
-        {
-            throw new ValidationException(res.Errors.Select(er => new ValidationError()
-            {
-                Domain = er.PropertyName,
-                Message = er.ErrorMessage,
-                Reason = "GetArticlesByCategoryId"
-            }).ToList());
-        }
-
         var category = _categoryRepository.GetByIdWithRelation(dto.Id, cat => cat.Articles);
         if (category == null)
         {

@@ -113,3 +113,5 @@ C:\Users\dince\source\repos\Portfolio\Portfolio.API\bin\Debug\net7.0\Serilog.Sin
 C:\Users\dince\source\repos\Portfolio\Portfolio.API\bin\Debug\net7.0\System.Diagnostics.DiagnosticSource.dll
 C:\Users\dince\source\repos\Portfolio\Portfolio.API\bin\Debug\net7.0\System.IO.Pipelines.dll
 C:\Users\dince\source\repos\Portfolio\Portfolio.API\bin\Debug\net7.0\System.Text.Json.dll
+C:\Users\dince\source\repos\Portfolio\Portfolio.API\bin\Debug\net7.0\SharpGrip.FluentValidation.AutoValidation.Mvc.dll
+C:\Users\dince\source\repos\Portfolio\Portfolio.API\bin\Debug\net7.0\SharpGrip.FluentValidation.AutoValidation.Shared.dll
