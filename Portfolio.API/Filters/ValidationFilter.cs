@@ -11,6 +11,10 @@ public class ValidationFilter : IActionFilter
 {
     public void OnActionExecuting(ActionExecutingContext context)
     {
+        if (context.ActionArguments.Count <= 0)
+        {
+            return;
+        }
         var value = context.ActionArguments.Values.First();
 
         if (value == null)

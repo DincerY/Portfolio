@@ -21,6 +21,7 @@ public class ArticleController : ControllerBase
     //Burada exception handling yapmadık fakat burada da bir hata meydana gelebilir. Örnek olarak veri tabanı
     //bağlantısı kopması bazı güncelemeler ile bağımlılıkların değişmesi vs. Bunun için middleware ile bunu
     //yönetmek çok daha mantıklı.
+    [ResponseCache(Duration = 10)]
     [HttpGet]
     public IActionResult GetArticles()
     {

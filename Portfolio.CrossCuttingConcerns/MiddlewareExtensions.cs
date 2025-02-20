@@ -7,7 +7,7 @@ public static class MiddlewareExtensions
 {
     public static IApplicationBuilder UseCrossCuttingMiddleware(this IApplicationBuilder applicationBuilder)
     {
-        applicationBuilder.UseMiddleware<RequestLoggingMiddleware>();
+        applicationBuilder.UseMiddleware<RequestResponseMiddleware>();
 
         applicationBuilder.UseMiddleware<ExceptionHandlerMiddleware>();
 

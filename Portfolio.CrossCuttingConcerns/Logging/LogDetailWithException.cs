@@ -2,15 +2,17 @@
 
 public class LogDetailWithException : LogDetail
 {
-    public LogDetailWithException()
-    {
-        ExceptionMessage = string.Empty;
+    
 
-    }
-    public LogDetailWithException(string fullName, string methodName, string user, List<LogParameter> parameters, string exceptionMessage) : base(fullName, methodName, user, parameters)
+    public string ExceptionMessage { get; set; }
+
+    public LogDetailWithException(string user, string traceId, string httpMethod, string path, Dictionary<string, string> queryParams, int? statusCode, string userAgent, string controller, string exceptionMessage) : base(user, traceId, httpMethod, path, queryParams, statusCode, userAgent, controller)
     {
         ExceptionMessage = exceptionMessage;
     }
 
-    public string ExceptionMessage { get; set; }
+    public LogDetailWithException()
+    {
+        
+    }
 }

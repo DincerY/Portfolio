@@ -71,18 +71,20 @@ public class ExceptionHandlerMiddleware
 
     private Task LogException(HttpContext context, Exception exception)
     {
-        List<LogParameter> logParameters = new List<LogParameter>()
-        {
-            new LogParameter() { Type = context.GetType().Name, Value = exception.ToString() }
-        };
+        var path = context.Request.Path.Value;
+        var controller = path.Split('/')[2];
+
         LogDetailWithException logDetailWithException = new()
         {
+            User = context.User.Identity?.Name ?? "?",
+            HttpMethod = context.Request.Method,
+            QueryParams = context.Request.Query.ToDictionary(q => q.Key, q => q.Value.ToString()),
+            UserAgent = context.Request.Headers["User-Agent"].ToString(),
+            StatusCode = context.Response.StatusCode,
+            TraceId = context.TraceIdentifier,
+            Path = path,
+            Controller = controller,
             ExceptionMessage = exception.Message,
-            MethodName = _next.Method.Name,
-            Parameters = logParameters,
-            //TODO:Authentication ekledikten sonra düzenleyebiliriz.
-            User = "?",
-            FullName = context.GetType().FullName
         };
         _loggerServiceBase.Error(JsonConvert.SerializeObject(logDetailWithException));
 

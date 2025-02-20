@@ -15,16 +15,18 @@ public static class ApplicationServiceRegistration
     public static IServiceCollection AddApplicationServices(this IServiceCollection service)
     {
         service.AddValidatorsFromAssemblyContaining<CreateArticleDTOValidator>();
+        //service.AddFluentValidationAutoValidation();
+
 
         service.AddScoped<IArticleService, ArticleService>();
         service.AddScoped<IAuthorService, AuthorService>();
         service.AddScoped<ICategoryService, CategoryService>();
 
-        /*service.AddSingleton<IValidator<CreateCategoryDTO>, CreateCategoryDTOValidator>();
-        service.AddSingleton<IValidator<CreateArticleDTO>, CreateArticleDTOValidator>();
-        service.AddSingleton<IValidator<CreateAuthorDTO>, CreateAuthorDTOValidator>();
-        service.AddSingleton<IValidator<EntityIdDTO>, EntityIdDTOValidator>();
-        service.AddSingleton<IValidator<List<EntityIdDTO>>, EntityIdDTOListValidator>();*/
+        /*service.AddTransient<IValidator<CreateCategoryDTO>, CreateCategoryDTOValidator>();
+        service.AddTransient<IValidator<CreateArticleDTO>, CreateArticleDTOValidator>();
+        service.AddTransient<IValidator<CreateAuthorDTO>, CreateAuthorDTOValidator>();
+        service.AddTransient<IValidator<EntityIdDTO>, EntityIdDTOValidator>();
+        service.AddTransient<IValidator<List<EntityIdDTO>>, EntityIdDTOListValidator>();*/
         
 
 
