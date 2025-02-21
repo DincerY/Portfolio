@@ -8,6 +8,7 @@ using Portfolio.CrossCuttingConcerns.Exceptions;
 using Portfolio.CrossCuttingConcerns.Logging;
 using Portfolio.CrossCuttingConcerns.Logging.Serilog;
 
+
 namespace Portfolio.CrossCuttingConcerns.Middleware;
 
 public class ExceptionHandlerMiddleware
@@ -55,6 +56,11 @@ public class ExceptionHandlerMiddleware
                 response.StatusCode = StatusCodes.Status400BadRequest;
                 response.ValidationErrors = validationException.Errors;
                 response.Message = validationException.Message;
+                break;
+            case BadRequestException badRequestException:
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                response.StatusCode = StatusCodes.Status400BadRequest;
+                response.Message = badRequestException.Message;
                 break;
             default:
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError;

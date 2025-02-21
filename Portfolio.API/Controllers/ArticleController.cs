@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Portfolio.Application.DTOs;
 using Portfolio.Application.Interfaces;
+using Portfolio.CrossCuttingConcerns.Exceptions;
 
 namespace Portfolio.API.Controllers;
 
@@ -32,6 +33,13 @@ public class ArticleController : ControllerBase
     [HttpGet("getArticlesByIds")]
     public IActionResult GetArticlesWithIds([FromQuery]List<int> ids)
     {
+        foreach (var id in ids)
+        {
+            if (id <= 0)
+            {
+                throw new BadRequestException("Ids must be greater than zero.");
+            }
+        }
         var dtos = ids.Select(id => new EntityIdDTO() { Id = id }).ToList();
         var articles = _service.GetArticlesByIds(dtos);
         return Ok(articles);
@@ -46,6 +54,10 @@ public class ArticleController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult GetArticleById(int id)
     {
+        if (id <= 0)
+        {
+            throw new BadRequestException("Id must be greater than zero.");
+        }
         var dto = new EntityIdDTO() { Id = id };
         var articleDto = _service.GetArticleById(dto);
         return Ok(articleDto);
@@ -54,6 +66,10 @@ public class ArticleController : ControllerBase
     [HttpGet("getArticleWithRelation/{id}")]
     public IActionResult GetArticleWithRelationById(int id)
     {
+        if (id <= 0)
+        {
+            throw new BadRequestException("Id must be greater than zero.");
+        }
         var dto = new EntityIdDTO() { Id = id };
         var articleDto = _service.GetArticleWithRelationById(dto);
         return Ok(articleDto);
@@ -62,6 +78,10 @@ public class ArticleController : ControllerBase
     [HttpGet("getArticleAuthors/{articleId}")]
     public IActionResult GetArticleAuthors(int articleId)
     {
+        if (articleId <= 0)
+        {
+            throw new BadRequestException("Id must be greater than zero.");
+        }
         var dto = new EntityIdDTO() { Id = articleId };
         var authorDTOs = _service.GetAuthorsByArticleId(dto);
         return Ok(authorDTOs);

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Portfolio.Application.DTOs;
 using Portfolio.Application.Interfaces;
 using Portfolio.Common.Response;
+using Portfolio.CrossCuttingConcerns.Exceptions;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 using ValidationException = Portfolio.CrossCuttingConcerns.Exceptions.ValidationException;
 
@@ -32,6 +33,10 @@ public class CategoryController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult GetCategoryById(int id)
     {
+        if (id <= 0)
+        {
+            throw new BadRequestException("Id must be greater than zero.");
+        }
         _logger.LogWarning("Get method was called");
 
         //Aşağıda ki yaklaşım biraz yanlış çünkü o an başka bir hata meydana gelmişte olabilir fakat
@@ -50,6 +55,13 @@ public class CategoryController : ControllerBase
     [HttpGet("getCategoriesByIds")]
     public IActionResult GetCategoriesByIds([FromQuery]List<int> ids)
     {
+        foreach (var id in ids)
+        {
+            if (id <= 0)
+            {
+                throw new BadRequestException("Ids must be greater than zero.");
+            }
+        }
         var dtos = ids.Select(id => new EntityIdDTO() { Id = id }).ToList();
         var categories = _categoryService.GetCategoriesByIds(dtos);
         return Ok(categories);
@@ -59,6 +71,10 @@ public class CategoryController : ControllerBase
     [HttpGet("getCategoryArticles/{id}")]
     public IActionResult GetCategoryWithArticles(int id)
     {
+        if (id <= 0)
+        {
+            throw new BadRequestException("Id must be greater than zero.");
+        }
         var dto = new EntityIdDTO() { Id = id };
         var categories = _categoryService.GetArticlesByCategoryId(dto);
         return Ok(categories);

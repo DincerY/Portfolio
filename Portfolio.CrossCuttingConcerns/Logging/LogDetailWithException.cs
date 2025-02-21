@@ -1,6 +1,8 @@
-﻿namespace Portfolio.CrossCuttingConcerns.Logging;
+﻿using Portfolio.CrossCuttingConcerns.Logging.Serilog;
 
-public class LogDetailWithException : LogDetail
+namespace Portfolio.CrossCuttingConcerns.Logging;
+
+public class LogDetailWithException : ResponseLogDetail
 {
     
 

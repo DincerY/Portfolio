@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Portfolio.Application.DTOs;
 using Portfolio.Application.Interfaces;
+using Portfolio.CrossCuttingConcerns.Exceptions;
 
 namespace Portfolio.API.Controllers;
 
@@ -27,6 +28,10 @@ public class AuthorController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult GetAuthorById(int id)
     {
+        if (id <= 0)
+        {
+            throw new BadRequestException("Id must be greater than zero.");
+        }
         var dto = new EntityIdDTO() { Id = id };
         var articleDtos = _service.GetAuthorById(dto);
         return Ok(articleDtos);
@@ -34,6 +39,13 @@ public class AuthorController : ControllerBase
     [HttpGet("getAuthorsByIds")]
     public IActionResult GetAuthorsByIds([FromQuery]List<int> ids)
     {
+        foreach (var id in ids)
+        {
+            if (id <= 0)
+            {
+                throw new BadRequestException("Ids must be greater than zero.");
+            }
+        }
         var dtos = ids.Select(id => new EntityIdDTO() { Id = id }).ToList();
         var authors = _service.GetAuthorsByIds(dtos);
         return Ok(authors);
@@ -42,6 +54,10 @@ public class AuthorController : ControllerBase
     [HttpGet("getAuthorArticles/{authorId}")]
     public IActionResult GetArticleAuthors(int authorId)
     {
+        if (authorId <= 0)
+        {
+            throw new BadRequestException("Id must be greater than zero.");
+        }
         var dto = new EntityIdDTO() { Id = authorId };
         var articleDtos = _service.GetArticlesByAuthorId(dto);
         return Ok(articleDtos);

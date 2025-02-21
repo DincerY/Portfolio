@@ -22,13 +22,13 @@ public static class ApplicationServiceRegistration
         service.AddScoped<IAuthorService, AuthorService>();
         service.AddScoped<ICategoryService, CategoryService>();
 
+
+        //Yukarıda bütün validatorları otomatik kayıt ettik
         /*service.AddTransient<IValidator<CreateCategoryDTO>, CreateCategoryDTOValidator>();
         service.AddTransient<IValidator<CreateArticleDTO>, CreateArticleDTOValidator>();
         service.AddTransient<IValidator<CreateAuthorDTO>, CreateAuthorDTOValidator>();
         service.AddTransient<IValidator<EntityIdDTO>, EntityIdDTOValidator>();
         service.AddTransient<IValidator<List<EntityIdDTO>>, EntityIdDTOListValidator>();*/
-        
-
 
         service.AddSingleton<LoggerServiceBase, FileLogger>();
 

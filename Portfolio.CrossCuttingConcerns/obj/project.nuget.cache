@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "VHTjFNZ84Hxh/HiS6iEjuG65SmL2m0Vy2hmhj/FlmiGataeJM/NeERqphBHoqGNYhP+4M1+8mOsq+KmHmRveWg==",
+  "dgSpecHash": "ekRZF076Q8hcsdpDiv9IhmXn4znWEPDDBzR3fm0bYulNGThkcOo3AB+JOKecw/50PbKXqYInxYH3EMMlN7euag==",
   "success": true,
   "projectFilePath": "C:\\Users\\dince\\source\\repos\\Portfolio\\Portfolio.CrossCuttingConcerns\\Portfolio.CrossCuttingConcerns.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\dince\\.nuget\\packages\\fluentvalidation\\11.11.0\\fluentvalidation.11.11.0.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\microsoft.aspnetcore.http\\2.3.0\\microsoft.aspnetcore.http.2.3.0.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\microsoft.aspnetcore.http.abstractions\\2.3.0\\microsoft.aspnetcore.http.abstractions.2.3.0.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\microsoft.aspnetcore.http.features\\2.3.0\\microsoft.aspnetcore.http.features.2.3.0.nupkg.sha512",

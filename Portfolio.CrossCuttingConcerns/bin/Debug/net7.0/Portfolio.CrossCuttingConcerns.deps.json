@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v7.0": {
       "Portfolio.CrossCuttingConcerns/1.0.0": {
         "dependencies": {
+          "FluentValidation": "11.11.0",
           "Microsoft.AspNetCore.Http": "2.3.0",
           "Microsoft.Extensions.Logging.Abstractions": "7.0.0",
           "Newtonsoft.Json": "13.0.3",
@@ -17,6 +18,14 @@
         },
         "runtime": {
           "Portfolio.CrossCuttingConcerns.dll": {}
+        }
+      },
+      "FluentValidation/11.11.0": {
+        "runtime": {
+          "lib/net7.0/FluentValidation.dll": {
+            "assemblyVersion": "11.0.0.0",
+            "fileVersion": "11.11.0.0"
+          }
         }
       },
       "Microsoft.AspNetCore.Http/2.3.0": {
@@ -181,6 +190,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "FluentValidation/11.11.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-cyIVdQBwSipxWG8MA3Rqox7iNbUNUTK5bfJi9tIdm4CAfH71Oo5ABLP4/QyrUwuakqpUEPGtE43BDddvEehuYw==",
+      "path": "fluentvalidation/11.11.0",
+      "hashPath": "fluentvalidation.11.11.0.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Http/2.3.0": {
       "type": "package",

@@ -14,14 +14,15 @@ using Serilog.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-
-Logger log = new LoggerConfiguration()
+//Log aslýnda serilog yapýsýnýn log'u bu yüzden log oluþturup onu UseSerilog içerisinde 
+//kullanmamýza gerek kalmadý
+Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .MinimumLevel.Information()
     .CreateLogger();
 
-builder.Host.UseSerilog(log);
+//Bu þekilde kullanarak uyuglamanýn bütün log sistemini serilog olarak güncelledik
+builder.Host.UseSerilog();
 
 // Add services to the container.
 
@@ -30,6 +31,13 @@ builder.Services.AddControllers(opt =>
     opt.Filters.Add<ValidationFilter>();
     opt.Filters.Add<ApiResponseFilter>();
 });
+
+//Bu þekilde kullanýldýðýnda ise ILogger interface'ini serilog olarak IoC'ye attýk
+
+/*builder.Services.AddSerilog(new LoggerConfiguration()
+    .WriteTo.Console()
+    .MinimumLevel.Information()
+    .CreateLogger());*/
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
