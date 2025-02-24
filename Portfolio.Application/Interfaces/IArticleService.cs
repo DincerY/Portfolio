@@ -11,10 +11,10 @@ public interface IArticleService
     public ArticleDTO GetArticleById(EntityIdDTO dto);
     public ArticleWithRelationsDTO GetArticleWithRelationById(EntityIdDTO dto);
 
-    public List<Article> GetArticlesByIds(List<EntityIdDTO> dtos);
+    public IEnumerable<ArticleDTO> GetArticlesByIds(List<EntityIdDTO> dtos);
 
     public int AddArticle(CreateArticleDTO dto);
 
-    public List<AuthorDTO> GetAuthorsByArticleId(EntityIdDTO dto);
+    public IEnumerable<AuthorDTO> GetAuthorsByArticleId(EntityIdDTO dto);
 
 }

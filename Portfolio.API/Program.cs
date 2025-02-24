@@ -1,16 +1,11 @@
-using FluentValidation;
-using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Portfolio.API.Extensions;
 using Portfolio.API.Filters;
 using Portfolio.Application;
-using Portfolio.Application.Validators;
 using Portfolio.CrossCuttingConcerns;
-using Portfolio.CrossCuttingConcerns.Logging.Serilog;
 using Portfolio.Infrastructure;
 using Portfolio.Infrastructure.Contexts;
 using Serilog;
-using Serilog.Core;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,7 +53,11 @@ app.UseCustomHealthChech();
 
 //buraya yazma sebebimiz hatalarý ve loglarý kullanýlan bütün middlewareler için 
 //geçerli kýlmak istememiz.
-app.UseCrossCuttingMiddleware();
+if (app.Environment.IsDevelopment())
+{
+    app.UseCrossCuttingMiddleware();
+
+}
 
 app.UseResponseCaching();
 
@@ -69,6 +68,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+
 
 //Log middleware
 //app.UseSerilogRequestLogging();

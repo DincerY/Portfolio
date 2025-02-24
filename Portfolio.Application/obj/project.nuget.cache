@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "bdJVthxRft7jwHqr74Bp+17iq25qwd1lK/dcLpMb/2C1PqpMDohkGb4z08jM4k7BJIVemvIL/4csFobEz0YWhg==",
+  "dgSpecHash": "54JcyY7oop/8AkaDWyu/LfyQvqZe9a9vcC8HUc6QbDmEST+9QBe58y74cmtVsqYSBI1PD1vAC/2XUtioKNf3Aw==",
   "success": true,
   "projectFilePath": "C:\\Users\\dince\\source\\repos\\Portfolio\\Portfolio.Application\\Portfolio.Application.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\dince\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\fluentvalidation\\11.11.0\\fluentvalidation.11.11.0.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\fluentvalidation.aspnetcore\\11.3.0\\fluentvalidation.aspnetcore.11.3.0.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\11.11.0\\fluentvalidation.dependencyinjectionextensions.11.11.0.nupkg.sha512",

@@ -1,6 +1,4 @@
-﻿using Portfolio.CrossCuttingConcerns.Logging.Serilog;
-
-namespace Portfolio.CrossCuttingConcerns.Logging;
+﻿namespace Portfolio.CrossCuttingConcerns.Logging;
 
 public class LogDetailWithException : ResponseLogDetail
 {

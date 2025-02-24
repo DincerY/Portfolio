@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System.Reflection;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
 using Portfolio.Application.DTOs;
@@ -31,6 +32,7 @@ public static class ApplicationServiceRegistration
         service.AddTransient<IValidator<List<EntityIdDTO>>, EntityIdDTOListValidator>();*/
 
         service.AddSingleton<LoggerServiceBase, FileLogger>();
+        service.AddAutoMapper(Assembly.GetExecutingAssembly());
 
         return service;
     }

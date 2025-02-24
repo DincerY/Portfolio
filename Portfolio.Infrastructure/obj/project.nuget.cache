@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "xplSeuAnHtJp6z/4SDlOcmmc2x3CTTvCocSrnmnIMfFMrVFAGwIR8Pgte7U62dwe3TMbdCmYY9r6KKgBXhOsIg==",
+  "dgSpecHash": "6LY5JPmVwhFs391T/U8sirAxSJJDtgIdPYi9O3z+uYRdWcX+U4eDsQdrT7XxLsKsRNDlrj4cfBPHzK5lQlBvTw==",
   "success": true,
   "projectFilePath": "C:\\Users\\dince\\source\\repos\\Portfolio\\Portfolio.Infrastructure\\Portfolio.Infrastructure.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\dince\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
     "C:\\Users\\dince\\.nuget\\packages\\fluentvalidation\\11.11.0\\fluentvalidation.11.11.0.nupkg.sha512",

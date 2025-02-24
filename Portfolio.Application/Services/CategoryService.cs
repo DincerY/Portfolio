@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using AutoMapper;
+using Microsoft.Extensions.Logging;
 using Portfolio.Application.DTOs;
 using Portfolio.Application.Interfaces;
 using Portfolio.CrossCuttingConcerns.Exceptions;
@@ -10,23 +11,20 @@ namespace Portfolio.Application.Services;
 public class CategoryService : ICategoryService
 {
     private readonly ICategoryRepository _categoryRepository;
+    private readonly IMapper _mapper;
     
     private readonly ILogger<CategoryService> _logger;
-    public CategoryService(ICategoryRepository categoryRepository,ILogger<CategoryService> logger)
+    public CategoryService(ICategoryRepository categoryRepository,ILogger<CategoryService> logger, IMapper mapper)
     {
         _categoryRepository = categoryRepository;
         _logger = logger;
+        _mapper = mapper;
     }
 
     public IEnumerable<CategoryDTO> GetCategories()
     {
-        var category = _categoryRepository.GetAll();
-        return category.Select(cat => new CategoryDTO()
-        {
-            Id = cat.Id,
-            Name = cat.Name,
-            Description = cat.Description,
-        }).ToList();
+        var categories = _categoryRepository.GetAll();
+        return _mapper.Map<IEnumerable<CategoryDTO>>(categories);
     }
 
     public CategoryDTO GetCategoryById(EntityIdDTO dto)
@@ -36,28 +34,18 @@ public class CategoryService : ICategoryService
         {
             throw new NotFoundException("There is no category in the entered id");
         }
-        return new CategoryDTO()
-        {
-            Id = category.Id,
-            Name = category.Name,
-            Description = category.Description,
-        };
+
+        return _mapper.Map<CategoryDTO>(category);
     }
 
-    public List<CategoryDTO> GetCategoriesByIds(List<EntityIdDTO> dtos)
+    public IEnumerable<CategoryDTO> GetCategoriesByIds(List<EntityIdDTO> dtos)
     {
         var categories = _categoryRepository.GetByIds(dtos.Select(dto => dto.Id).ToList());
         if (categories.Count() != dtos.Count)
         {
             throw new NotFoundException("There is no category in the entered ids");
         }
-
-        return categories.Select(cat => new CategoryDTO()
-        {
-            Id = cat.Id,
-            Description = cat.Description,
-            Name = cat.Name
-        }).ToList();
+        return _mapper.Map<IEnumerable<CategoryDTO>>(categories);
     }
 
 
@@ -69,12 +57,7 @@ public class CategoryService : ICategoryService
             throw new BusinessException("Category name already exist.");
         }
 
-        Category category = new()
-        {
-            Name = dto.Name,
-            Description = dto.Description,
-            PublishedDate = DateTime.UtcNow
-        };
+        Category category = _mapper.Map<Category>(dto);
             
         var addedCategory = _categoryRepository.Add(category);
         if (addedCategory != null)
@@ -88,13 +71,15 @@ public class CategoryService : ICategoryService
         }
     }
 
-    public List<ArticlesWithCategoryDTO> GetArticlesByCategoryId(EntityIdDTO dto)
+    public IEnumerable<ArticlesWithCategoryDTO> GetArticlesByCategoryId(EntityIdDTO dto)
     {
         var category = _categoryRepository.GetByIdWithRelation(dto.Id, cat => cat.Articles);
         if (category == null)
         {
             throw new NotFoundException("There is no category in the entered id");
         }
+
+        //return _mapper.Map<IEnumerable<ArticlesWithCategoryDTO>>(category);
 
         return category.Articles.Select(art => new ArticlesWithCategoryDTO()
         {

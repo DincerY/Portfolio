@@ -7,11 +7,11 @@ public interface ICategoryService
 {
     public IEnumerable<CategoryDTO> GetCategories();
     public CategoryDTO GetCategoryById(EntityIdDTO dto);
-    public List<CategoryDTO> GetCategoriesByIds(List<EntityIdDTO> dtos);
+    public IEnumerable<CategoryDTO> GetCategoriesByIds(List<EntityIdDTO> dtos);
 
     public int AddCategory(CreateCategoryDTO dto);
 
-    public List<ArticlesWithCategoryDTO> GetArticlesByCategoryId(EntityIdDTO dto);
+    public IEnumerable<ArticlesWithCategoryDTO> GetArticlesByCategoryId(EntityIdDTO dto);
 
 
     /*public List<Article> GetArticlesByIds(List<int> ids);

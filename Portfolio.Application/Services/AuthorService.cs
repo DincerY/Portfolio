@@ -1,4 +1,5 @@
-﻿using Portfolio.Application.DTOs;
+﻿using AutoMapper;
+using Portfolio.Application.DTOs;
 using Portfolio.Application.Interfaces;
 using Portfolio.CrossCuttingConcerns.Exceptions;
 using Portfolio.Domain.Entities;
@@ -15,31 +16,32 @@ namespace Portfolio.Application.Services;
 public class AuthorService : IAuthorService
 {
     private readonly IAuthorRepository _authorRepository;
+    private readonly IMapper _mapper;
 
-
-    public AuthorService(IAuthorRepository authorRepository)
+    public AuthorService(IAuthorRepository authorRepository, IMapper mapper)
     {
         _authorRepository = authorRepository;
+        _mapper = mapper;
     }
 
     public IEnumerable<AuthorDTO> GetAuthors()
     {
         var authors = _authorRepository.GetAllWithRelation(aut => aut.Articles);
-        return authors.Select(aut => new AuthorDTO()
-        {
-            Id = aut.Id,
-            Name = aut.Name,
-            Surname = aut.Surname,
-        }).ToList();
+        return _mapper.Map<IEnumerable<AuthorDTO>>(authors);
     }
 
-    public Author GetAuthorById(EntityIdDTO dto)
+    public AuthorDTO GetAuthorById(EntityIdDTO dto)
     {
-        return _authorRepository.GetById(dto.Id);
-        //!!!Id değerinin elle girilmesini engellemek aslında bir iş mantığıdır.
+        var author = _authorRepository.GetById(dto.Id);
+        if (author == null)
+        {
+            throw new NotFoundException("There is no author in the entered id");
+        }
+
+        return _mapper.Map<AuthorDTO>(author);
     }
 
-    public List<AuthorDTO> GetAuthorsByIds(List<EntityIdDTO> dtos)
+    public IEnumerable<AuthorDTO> GetAuthorsByIds(List<EntityIdDTO> dtos)
     {
         var authors = _authorRepository.GetWhere(aut => dtos.Select(dto => dto.Id).Contains(aut.Id)).ToList();
 
@@ -48,12 +50,7 @@ public class AuthorService : IAuthorService
             throw new NotFoundException("There is no author in the entered ids");
         }
 
-        return authors.Select(aut => new AuthorDTO()
-        {
-            Id = aut.Id,
-            Name = aut.Name,
-            Surname = aut.Surname,
-        }).ToList();
+        return _mapper.Map<IEnumerable<AuthorDTO>>(authors);
     }
 
     public int AddAuthor(CreateAuthorDTO dto)
@@ -64,12 +61,7 @@ public class AuthorService : IAuthorService
             throw new BusinessException("Author's name is already exist");
         }
 
-        Author author = new Author()
-        {
-            Name = dto.Name,
-            Surname = dto.Surname,
-            PublishedDate = DateTime.UtcNow,
-        };
+        Author author = _mapper.Map<Author>(dto);
         var addedAuthor = _authorRepository.Add(author);
         if (addedAuthor != null)
         {
@@ -82,21 +74,14 @@ public class AuthorService : IAuthorService
         
     }
 
-    public List<ArticleDTO> GetArticlesByAuthorId(EntityIdDTO dto)
+    public IEnumerable<ArticleDTO> GetArticlesByAuthorId(EntityIdDTO dto)
     {
-        List<ArticleDTO> dtos = new();
-        var author = _authorRepository.GetByIdWithRelation(dto.Id, aut => aut.Articles);
-        if (author == null)
+        var articles = _authorRepository.GetByIdWithRelation(dto.Id, aut => aut.Articles).Articles;
+        if (articles == null)
         {
             throw new NotFoundException("There is no author in the entered id");
         }
 
-        return author.Articles.Select(art => new ArticleDTO()
-        {
-            Id = art.Id,
-            Title = art.Title,
-            Name = art.Name,
-            Content = art.Content
-        }).ToList();
+        return _mapper.Map<IEnumerable<ArticleDTO>>(articles);
     }
 }

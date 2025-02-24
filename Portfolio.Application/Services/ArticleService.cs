@@ -1,11 +1,9 @@
-﻿using FluentValidation;
+﻿using AutoMapper;
 using Portfolio.Application.DTOs;
 using Portfolio.Application.Interfaces;
-using Portfolio.Common.Response;
 using Portfolio.CrossCuttingConcerns.Exceptions;
 using Portfolio.Domain.Entities;
 using Portfolio.Domain.Interfaces.Repositories;
-using ValidationException = Portfolio.CrossCuttingConcerns.Exceptions.ValidationException;
 
 //using ValidationException = FluentValidation.ValidationException;
 
@@ -16,64 +14,28 @@ public class ArticleService : IArticleService
     private readonly IArticleRepository _articleRepository;
     private readonly IAuthorRepository _authorRepository;
     private readonly ICategoryRepository _categoryRepository;
+    private readonly IMapper _mapper;
 
-    public ArticleService(IArticleRepository articlesRepository, IAuthorRepository authorRepository, ICategoryRepository categoryRepository)
+    public ArticleService(IArticleRepository articlesRepository, IAuthorRepository authorRepository, ICategoryRepository categoryRepository, IMapper mapper)
     {
         _articleRepository = articlesRepository;
         _authorRepository = authorRepository;
         _categoryRepository = categoryRepository;
+        _mapper = mapper;
     }
 
     public IEnumerable<ArticleDTO> GetArticles()
     {
         var articles = _articleRepository.GetAll();
-        return articles.Select(art => new ArticleDTO()
-        {
-            Id = art.Id,
-            Title = art.Title,
-            Content = art.Content,
-            Name = art.Name
-        });
+        return _mapper.Map<IEnumerable<ArticleDTO>>(articles);
     }
 
     public IEnumerable<ArticleWithRelationsDTO> GetArticlesWithRelation()
     {
         List<ArticleWithRelationsDTO> dtos = new();
         var articles = _articleRepository.GetAllWithRelation(art => art.Authors, art => art.Categories);
-        foreach (var article in articles)
-        {
-            List<AuthorDTO> authorDtos = new();
-            List<CategoryDTO> categoryDtos = new();
-            foreach (var articleAuthor in article.Authors)
-            {
-                authorDtos.Add(new AuthorDTO()
-                {
-                    Id = articleAuthor.Id,
-                    Name = articleAuthor.Name,
-                    Surname = articleAuthor.Surname
-                });
-            }
 
-            foreach (var articleCategory in article.Categories)
-            {
-                categoryDtos.Add(new CategoryDTO()
-                {
-                    Id = articleCategory.Id,
-                    Name = articleCategory.Name,
-                    Description = articleCategory.Description
-                });
-            }
-            dtos.Add(new ArticleWithRelationsDTO()
-            {
-                Id = article.Id,
-                Name = article.Name,
-                Title = article.Title,
-                Content = article.Content,
-                Authors = authorDtos,
-                Categories = categoryDtos
-            });
-        }
-        return dtos;
+        return _mapper.Map<IEnumerable<ArticleWithRelationsDTO>>(articles);
     }
 
     public ArticleDTO GetArticleById(EntityIdDTO dto)
@@ -84,14 +46,7 @@ public class ArticleService : IArticleService
         {
             throw new NotFoundException("There is no article in the entered id");
         }
-        ArticleDTO articleDto = new ArticleDTO()
-        {
-            Id = article.Id,
-            Name = article.Name,
-            Content = article.Content,
-            Title = article.Title
-        };
-        return articleDto;
+        return _mapper.Map<ArticleDTO>(article);
     }
 
     public ArticleWithRelationsDTO GetArticleWithRelationById(EntityIdDTO dto)
@@ -102,41 +57,17 @@ public class ArticleService : IArticleService
         {
             throw new NotFoundException("There is no article in the entered id");
         }
-
-        List<AuthorDTO> authorDtos = article.Authors.Select(aut => new AuthorDTO()
-        {
-            Id = aut.Id,
-            Name = aut.Name,
-            Surname = aut.Surname
-        }).ToList();
-
-        List<CategoryDTO> categoryDtos = article.Categories.Select(cat => new CategoryDTO()
-        {
-            Id = cat.Id,
-            Name = cat.Name,
-            Description = cat.Description
-        }).ToList();
-
-        ArticleWithRelationsDTO dtos = new()
-        {
-            Id = article.Id,
-            Authors = authorDtos,
-            Categories = categoryDtos,
-            Content = article.Content,
-            Name = article.Name,
-            Title = article.Title,
-        };
-        return dtos;
+        return _mapper.Map<ArticleWithRelationsDTO>(article);
     }
 
-    public List<Article> GetArticlesByIds(List<EntityIdDTO> dtos)
+    public IEnumerable<ArticleDTO> GetArticlesByIds(List<EntityIdDTO> dtos)
     {
         var articles = _articleRepository.GetWhere(art => dtos.Select(dto => dto.Id).Contains(art.Id)).ToList();
         if (articles.Count != dtos.Count)
         {
             throw new NotFoundException("There is no article in the entered ids");
         }
-        return articles;
+        return _mapper.Map<List<ArticleDTO>>(articles);
     }
 
     //Makale oluştururken makalenin kesinlikle bir yazarı olabilir fakat bir yazar oluştururken
@@ -200,28 +131,14 @@ public class ArticleService : IArticleService
         }
     }
 
-    public List<AuthorDTO> GetAuthorsByArticleId(EntityIdDTO dto)
+    public IEnumerable<AuthorDTO> GetAuthorsByArticleId(EntityIdDTO dto)
     {
-        List<AuthorDTO> dtos = new List<AuthorDTO>();
-        var articleList = _articleRepository.GetByIdWithRelation(dto.Id,art => art.Authors);
-
-        if (articleList == null)
+        var authorList = _articleRepository.GetByIdWithRelation(dto.Id,art => art.Authors).Authors;
+        if (authorList == null)
         {
             throw new NotFoundException("There is no article in the entered id");
         }
-
-        var authorList = articleList.Authors;
-
-        foreach (var author in authorList)
-        {
-            dtos.Add(new AuthorDTO()
-            {
-                Id = author.Id,
-                Name = author.Name,
-                Surname = author.Surname,
-            });
-        }
-        return dtos;
+        return _mapper.Map<List<AuthorDTO>>(authorList);
     }
 
 }
