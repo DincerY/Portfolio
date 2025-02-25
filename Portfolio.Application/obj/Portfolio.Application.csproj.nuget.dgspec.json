@@ -71,6 +71,10 @@
               "target": "Package",
               "version": "[11.11.0, )"
             },
+            "MediatR": {
+              "target": "Package",
+              "version": "[12.4.1, )"
+            },
             "SharpGrip.FluentValidation.AutoValidation.Shared": {
               "target": "Package",
               "version": "[1.5.0, )"

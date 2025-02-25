@@ -34,6 +34,8 @@ public static class ApplicationServiceRegistration
         service.AddSingleton<LoggerServiceBase, FileLogger>();
         service.AddAutoMapper(Assembly.GetExecutingAssembly());
 
+        service.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+
         return service;
     }
 }

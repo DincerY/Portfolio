@@ -27,9 +27,9 @@ public class CategoryService : ICategoryService
         return _mapper.Map<IEnumerable<CategoryDTO>>(categories);
     }
 
-    public CategoryDTO GetCategoryById(EntityIdDTO dto)
+    public CategoryDTO GetCategoryById(int id)
     {
-        var category = _categoryRepository.GetById(dto.Id);
+        var category = _categoryRepository.GetById(id);
         if (category == null)
         {
             throw new NotFoundException("There is no category in the entered id");

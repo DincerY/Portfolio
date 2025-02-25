@@ -1,11 +1,10 @@
-﻿using FluentValidation;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Portfolio.Application.DTOs;
+using Portfolio.Application.Features.Category.Requests;
 using Portfolio.Application.Interfaces;
-using Portfolio.Common.Response;
 using Portfolio.CrossCuttingConcerns.Exceptions;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
-using ValidationException = Portfolio.CrossCuttingConcerns.Exceptions.ValidationException;
 
 namespace Portfolio.API.Controllers;
 
@@ -15,17 +14,19 @@ public class CategoryController : ControllerBase
 {
     private readonly ICategoryService _categoryService;
     private readonly ILogger _logger;
-    public CategoryController(ICategoryService categoryService, ILogger<CategoryController> logger)
+    private readonly IMediator _mediator;
+    public CategoryController(ICategoryService categoryService, ILogger<CategoryController> logger, IMediator mediator)
     {
         _categoryService = categoryService;
         _logger = logger;
+        _mediator = mediator;
     }
 
     [HttpGet]
     public IActionResult GetCategories()
     {
         _logger.LogInformation("deneme deneme dneeme");
-        var res = _categoryService.GetCategories().ToList();
+        var res = _mediator.Send(new GetCategoriesRequest());
         return Ok(res);
     }
  
@@ -46,9 +47,13 @@ public class CategoryController : ControllerBase
         //durumunda id nin olmadığını anlamak ve hatayı ona göre işlemek.
 
         //Yukarıda bahsettiğim durumun bir nevi bir çözümü ama daha farklı bir yaklaşımı ileride uygulayacağım.
-        var dto = new EntityIdDTO() { Id = id };
 
-        var category = _categoryService.GetCategoryById(dto);
+        /*var dto = new EntityIdDTO() { Id = id };
+
+        var category = _categoryService.GetCategoryById(dto);*/
+
+        var category = _mediator.Send(new GetCategoryRequest() { Id = id }).Result;
+
         return Ok(category);
     }
 
