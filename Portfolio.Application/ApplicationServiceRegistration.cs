@@ -1,10 +1,8 @@
 ﻿using System.Reflection;
 using FluentValidation;
-using FluentValidation.AspNetCore;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using Portfolio.Application.DTOs;
-using Portfolio.Application.Interfaces;
-using Portfolio.Application.Services;
+using Portfolio.Application.Behaviors;
 using Portfolio.Application.Validators;
 using Portfolio.CrossCuttingConcerns.Logging.Serilog;
 using Portfolio.CrossCuttingConcerns.Logging.Serilog.Logger;
@@ -18,12 +16,6 @@ public static class ApplicationServiceRegistration
         service.AddValidatorsFromAssemblyContaining<CreateArticleDTOValidator>();
         //service.AddFluentValidationAutoValidation();
 
-
-        service.AddScoped<IArticleService, ArticleService>();
-        service.AddScoped<IAuthorService, AuthorService>();
-        service.AddScoped<ICategoryService, CategoryService>();
-
-
         //Yukarıda bütün validatorları otomatik kayıt ettik
         /*service.AddTransient<IValidator<CreateCategoryDTO>, CreateCategoryDTOValidator>();
         service.AddTransient<IValidator<CreateArticleDTO>, CreateArticleDTOValidator>();
@@ -35,6 +27,7 @@ public static class ApplicationServiceRegistration
         service.AddAutoMapper(Assembly.GetExecutingAssembly());
 
         service.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+        service.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
         return service;
     }

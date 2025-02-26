@@ -1,8 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Portfolio.Application.DTOs;
-using Portfolio.Application.Features.Category.Requests;
-using Portfolio.Application.Interfaces;
+using Portfolio.Application.Features.Categories.CreateCategory;
+using Portfolio.Application.Features.Categories.GetArticlesByCategoryId;
+using Portfolio.Application.Features.Categories.GetCategories;
+using Portfolio.Application.Features.Categories.GetCategoriesByIds;
+using Portfolio.Application.Features.Categories.GetCategoryById;
 using Portfolio.CrossCuttingConcerns.Exceptions;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
@@ -12,12 +14,10 @@ namespace Portfolio.API.Controllers;
 [ApiController]
 public class CategoryController : ControllerBase
 {
-    private readonly ICategoryService _categoryService;
     private readonly ILogger _logger;
     private readonly IMediator _mediator;
-    public CategoryController(ICategoryService categoryService, ILogger<CategoryController> logger, IMediator mediator)
+    public CategoryController(ILogger<CategoryController> logger, IMediator mediator)
     {
-        _categoryService = categoryService;
         _logger = logger;
         _mediator = mediator;
     }
@@ -26,7 +26,7 @@ public class CategoryController : ControllerBase
     public IActionResult GetCategories()
     {
         _logger.LogInformation("deneme deneme dneeme");
-        var res = _mediator.Send(new GetCategoriesRequest());
+        var res = _mediator.Send(new GetCategoriesRequest()).Result;
         return Ok(res);
     }
  
@@ -52,7 +52,7 @@ public class CategoryController : ControllerBase
 
         var category = _categoryService.GetCategoryById(dto);*/
 
-        var category = _mediator.Send(new GetCategoryRequest() { Id = id }).Result;
+        var category = _mediator.Send(new GetCategoryByIdRequest() { Id = id }).Result;
 
         return Ok(category);
     }
@@ -67,29 +67,37 @@ public class CategoryController : ControllerBase
                 throw new BadRequestException("Ids must be greater than zero.");
             }
         }
-        var dtos = ids.Select(id => new EntityIdDTO() { Id = id }).ToList();
-        var categories = _categoryService.GetCategoriesByIds(dtos);
+
+        var categories = _mediator.Send(new GetCategoriesByIdsRequest() { Ids = ids }).Result;
         return Ok(categories);
         
     }
 
     [HttpGet("getCategoryArticles/{id}")]
-    public IActionResult GetCategoryWithArticles(int id)
+    public IActionResult GetArticlesWithCategoryId(int id)
     {
         if (id <= 0)
         {
             throw new BadRequestException("Id must be greater than zero.");
         }
-        var dto = new EntityIdDTO() { Id = id };
-        var categories = _categoryService.GetArticlesByCategoryId(dto);
-        return Ok(categories);
+
+        var articles = _mediator.Send(new GetArticlesByCategoryIdRequest() { Id = id }).Result;
+        return Ok(articles);
     }
 
     [HttpPost]
-    public ActionResult<int> AddCategory(CreateCategoryDTO dto)
+    public ActionResult<int> AddCategory([FromBody]CreateCategoryRequest request)
     {
-        var added = _categoryService.AddCategory(dto);
-        return Ok(added);
+        var response = _mediator.Send(request).Result;
+        if (response != null)
+        {
+            return Ok(response);
+
+        }
+        else
+        {
+            return BadRequest("Added not success");
+        }
     }
 
 

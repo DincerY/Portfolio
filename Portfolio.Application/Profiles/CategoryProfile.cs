@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Portfolio.Application.DTOs;
+using Portfolio.Application.Features.Categories.CreateCategory;
 using Portfolio.Domain.Entities;
 
 namespace Portfolio.Application.Profiles;
@@ -10,7 +11,7 @@ public class CategoryProfile : Profile
     {
         CreateMap<Category, CategoryDTO>().ReverseMap();
         //Tek yönlü
-        CreateMap<CreateCategoryDTO, Category>().ForMember(dest => dest.PublishedDate, opt => opt.MapFrom(src => DateTime.UtcNow));
+        CreateMap<CreateCategoryRequest, Category>().ForMember(dest => dest.PublishedDate, opt => opt.MapFrom(src => DateTime.UtcNow));
 
         /*CreateMap<Category, ArticlesWithCategoryDTO>()
             .ForMember(dest => dest.ArticleDtos, opt => opt.MapFrom(o => o.Articles))

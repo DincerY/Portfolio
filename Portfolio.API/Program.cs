@@ -23,7 +23,6 @@ builder.Host.UseSerilog();
 
 builder.Services.AddControllers(opt =>
 {
-    opt.Filters.Add<ValidationFilter>();
     opt.Filters.Add<ApiResponseFilter>();
 });
 

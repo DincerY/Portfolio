@@ -1,6 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Portfolio.Application.DTOs;
-using Portfolio.Application.Interfaces;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Portfolio.Application.Features.Articles.CreateArticle;
+using Portfolio.Application.Features.Articles.GetArticleById;
+using Portfolio.Application.Features.Articles.GetArticles;
+using Portfolio.Application.Features.Articles.GetArticlesByIds;
+using Portfolio.Application.Features.Articles.GetArticlesWithRelation;
+using Portfolio.Application.Features.Articles.GetArticleWithRelationById;
+using Portfolio.Application.Features.Authors.GetArticlesByAuthorId;
 using Portfolio.CrossCuttingConcerns.Exceptions;
 
 namespace Portfolio.API.Controllers;
@@ -12,26 +18,22 @@ namespace Portfolio.API.Controllers;
 //tek tek güncellemeliyiz. Burada çözüm middleware kullanmak.
 public class ArticleController : ControllerBase
 {
-    private readonly IArticleService _service;
+    private readonly IMediator _mediator;
 
-    public ArticleController(IArticleService service)
+    public ArticleController(IMediator mediator)
     {
-        _service = service;
-
+        _mediator = mediator;
     }
-    //Burada exception handling yapmadık fakat burada da bir hata meydana gelebilir. Örnek olarak veri tabanı
-    //bağlantısı kopması bazı güncelemeler ile bağımlılıkların değişmesi vs. Bunun için middleware ile bunu
-    //yönetmek çok daha mantıklı.
     [ResponseCache(Duration = 10)]
     [HttpGet]
     public IActionResult GetArticles()
     {
-        var articles = _service.GetArticles();
+        var articles = _mediator.Send(new GetArticlesRequest()).Result;
         return Ok(articles);
         
     }
     [HttpGet("getArticlesByIds")]
-    public IActionResult GetArticlesWithIds([FromQuery]List<int> ids)
+    public IActionResult GetArticlesByIds([FromQuery]List<int> ids)
     {
         foreach (var id in ids)
         {
@@ -40,14 +42,13 @@ public class ArticleController : ControllerBase
                 throw new BadRequestException("Ids must be greater than zero.");
             }
         }
-        var dtos = ids.Select(id => new EntityIdDTO() { Id = id }).ToList();
-        var articles = _service.GetArticlesByIds(dtos);
+        var articles = _mediator.Send(new GetArticlesByIdsRequest() { Ids = ids }).Result;
         return Ok(articles);
     }
     [HttpGet("getArticlesWithRelation")]
     public IActionResult GetArticlesWithRelation()
     {
-        var articles = _service.GetArticlesWithRelation();
+        var articles = _mediator.Send(new GetArticlesWithRelationRequest()).Result;
         return Ok(articles);
     }
 
@@ -58,8 +59,7 @@ public class ArticleController : ControllerBase
         {
             throw new BadRequestException("Id must be greater than zero.");
         }
-        var dto = new EntityIdDTO() { Id = id };
-        var articleDto = _service.GetArticleById(dto);
+        var articleDto = _mediator.Send(new GetArticleByIdRequest() { Id = id }).Result;
         return Ok(articleDto);
     }
 
@@ -70,8 +70,7 @@ public class ArticleController : ControllerBase
         {
             throw new BadRequestException("Id must be greater than zero.");
         }
-        var dto = new EntityIdDTO() { Id = id };
-        var articleDto = _service.GetArticleWithRelationById(dto);
+        var articleDto = _mediator.Send(new GetArticleWithRelationByIdRequest() { Id = id });
         return Ok(articleDto);
     }
 
@@ -82,21 +81,15 @@ public class ArticleController : ControllerBase
         {
             throw new BadRequestException("Id must be greater than zero.");
         }
-        var dto = new EntityIdDTO() { Id = articleId };
-        var authorDTOs = _service.GetAuthorsByArticleId(dto);
-        return Ok(authorDTOs);
+        var articleDto = _mediator.Send(new GetArticlesByAuthorIdRequest() { Id = articleId }).Result;
+        return Ok(articleDto);
         
     }
 
-
-    //Veri tabanında kullandığımız nesleri direkt olarak dışarıdan alamak hem güvenlik hem işleyiş açısından
-    //problem olabilir. Örnek olarak burada bir makalenin yazarlarını bütün olarak almaktansa sadace
-    //idlerini bir liste olarak alıp bunları ilişkilendiricez.
     [HttpPost]
-    public IActionResult AddArticle([FromBody]CreateArticleDTO dto)
+    public IActionResult AddArticle([FromBody]CreateArticleRequest request)
     {
-        //İşin çalışıp çalışmadığını servis katmanında kontrol etmeliyiz.
-        int added = _service.AddArticle(dto);
-        return Ok(added);
+        var response = _mediator.Send(request);
+        return Ok(response);
     }
 }
