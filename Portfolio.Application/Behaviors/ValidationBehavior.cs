@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Portfolio.Common.Response;
 using ValidationException = Portfolio.CrossCuttingConcerns.Exceptions.ValidationException;
 
@@ -8,6 +9,7 @@ namespace Portfolio.Application.Behaviors;
 public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest,TResponse>
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators;
+
 
     public ValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
     {

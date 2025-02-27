@@ -26,8 +26,18 @@ public static class ApplicationServiceRegistration
         service.AddSingleton<LoggerServiceBase, FileLogger>();
         service.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-        service.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
-        service.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        service.AddMediatR(cfg =>
+        {
+            cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+            cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
+            cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
+        });
+
+        /*service.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        service.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>)); */
+        
+
+        
 
         return service;
     }

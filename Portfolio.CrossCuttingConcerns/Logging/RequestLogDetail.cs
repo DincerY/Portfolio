@@ -6,4 +6,5 @@ public class RequestLogDetail
     public string HttpMethod { get; set; }
     public string ContentType { get; set; }
     public string Path { get; set; }
+    public string User { get; set; }
 }

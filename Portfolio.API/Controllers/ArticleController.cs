@@ -89,7 +89,7 @@ public class ArticleController : ControllerBase
     [HttpPost]
     public IActionResult AddArticle([FromBody]CreateArticleRequest request)
     {
-        var response = _mediator.Send(request);
+        var response = _mediator.Send(request).Result;
         return Ok(response);
     }
 }

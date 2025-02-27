@@ -62,6 +62,9 @@ public class ExceptionHandlerMiddleware
                 response.StatusCode = StatusCodes.Status400BadRequest;
                 response.Message = badRequestException.Message;
                 break;
+            case AggregateException aggregateException:
+                //TODO
+                break;
             default:
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError;
                 response.StatusCode = StatusCodes.Status500InternalServerError;
