@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Portfolio.Common.Response;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 using ValidationException = Portfolio.CrossCuttingConcerns.Exceptions.ValidationException;
 
 namespace Portfolio.Application.Behaviors;

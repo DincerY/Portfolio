@@ -6,7 +6,6 @@ using Portfolio.Application.Features.Categories.GetCategories;
 using Portfolio.Application.Features.Categories.GetCategoriesByIds;
 using Portfolio.Application.Features.Categories.GetCategoryById;
 using Portfolio.CrossCuttingConcerns.Exceptions;
-using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Portfolio.API.Controllers;
 
@@ -14,32 +13,22 @@ namespace Portfolio.API.Controllers;
 [ApiController]
 public class CategoryController : ControllerBase
 {
-    private readonly ILogger _logger;
     private readonly IMediator _mediator;
-    public CategoryController(ILogger<CategoryController> logger, IMediator mediator)
+    public CategoryController(IMediator mediator)
     {
-        _logger = logger;
         _mediator = mediator;
     }
 
     [HttpGet]
-    public IActionResult GetCategories()
+    public async Task<IActionResult> GetCategories()
     {
-        _logger.LogInformation("deneme deneme dneeme");
-        var res = _mediator.Send(new GetCategoriesRequest()).Result;
+        var res = await _mediator.Send(new GetCategoriesRequest());
         return Ok(res);
     }
- 
 
     [HttpGet("{id}")]
-    public IActionResult GetCategoryById(int id)
+    public async Task<IActionResult> GetCategoryById(int id)
     {
-        if (id <= 0)
-        {
-            throw new BadRequestException("Id must be greater than zero.");
-        }
-        _logger.LogWarning("Get method was called");
-
         //Aşağıda ki yaklaşım biraz yanlış çünkü o an başka bir hata meydana gelmişte olabilir fakat
         //hangi hata gelirse gelsin biz NotFound dönücez belkide veri tabanında bir sıkıntı var
         //bunun çözümünü ileride ele alıcam. Çözüm döndürülen hataları özelleştirmek. Mesela id değeri
@@ -52,52 +41,31 @@ public class CategoryController : ControllerBase
 
         var category = _categoryService.GetCategoryById(dto);*/
 
-        var category = _mediator.Send(new GetCategoryByIdRequest() { Id = id }).Result;
+        var category =await _mediator.Send(new GetCategoryByIdRequest() { Id = id });
 
         return Ok(category);
     }
 
     [HttpGet("getCategoriesByIds")]
-    public IActionResult GetCategoriesByIds([FromQuery]List<int> ids)
+    public async Task<IActionResult> GetCategoriesByIds([FromQuery]List<int> ids)
     {
-        foreach (var id in ids)
-        {
-            if (id <= 0)
-            {
-                throw new BadRequestException("Ids must be greater than zero.");
-            }
-        }
-
-        var categories = _mediator.Send(new GetCategoriesByIdsRequest() { Ids = ids }).Result;
+        var categories = await _mediator.Send(new GetCategoriesByIdsRequest() { Ids = ids });
         return Ok(categories);
         
     }
 
     [HttpGet("getCategoryArticles/{id}")]
-    public IActionResult GetArticlesWithCategoryId(int id)
+    public async Task<IActionResult> GetArticlesWithCategoryId(int id)
     {
-        if (id <= 0)
-        {
-            throw new BadRequestException("Id must be greater than zero.");
-        }
-
-        var articles = _mediator.Send(new GetArticlesByCategoryIdRequest() { Id = id }).Result;
+        var articles = await _mediator.Send(new GetArticlesByCategoryIdRequest() { Id = id });
         return Ok(articles);
     }
 
     [HttpPost]
-    public ActionResult<int> AddCategory([FromBody]CreateCategoryRequest request)
+    public async Task<IActionResult> AddCategory([FromBody]CreateCategoryRequest request)
     {
-        var response = _mediator.Send(request).Result;
-        if (response != null)
-        {
-            return Ok(response);
-
-        }
-        else
-        {
-            return BadRequest("Added not success");
-        }
+        var response = await _mediator.Send(request);
+        return Ok(response);
     }
 
 

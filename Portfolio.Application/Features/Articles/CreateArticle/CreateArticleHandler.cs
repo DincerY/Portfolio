@@ -33,14 +33,6 @@ public class CreateArticleHandler : IRequestHandler<CreateArticleRequest,CreateA
             throw new BusinessException("Article's title is already exist");
         }
 
-        //Business Logic
-        //Bütün veri yerine sadece id değerlerini çekip bunların kontrolünü yapıcam
-        //Daha sonra bu id değerlerini ara tablolara eklicem yada yeni nesneler oluşturup
-        //sadece onların id kısımlarını doldurucam. Aşağıda ki gibi
-
-        /*var test = existAuthorIds.Select(id => new Author { Id = id }).ToList();*/
-
-        //_authorRepository.GetWhere().Select()
         var existAuthors = _authorRepository.GetByIds(request.Authors).ToList();
         if (existAuthors.Count != request.Authors.Count)
         {

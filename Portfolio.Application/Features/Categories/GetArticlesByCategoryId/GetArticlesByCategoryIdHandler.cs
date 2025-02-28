@@ -5,7 +5,7 @@ using Portfolio.Domain.Interfaces.Repositories;
 
 namespace Portfolio.Application.Features.Categories.GetArticlesByCategoryId;
 
-public class GetArticlesByCategoryIdHandler : IRequestHandler<GetArticlesByCategoryIdRequest,IEnumerable<ArticlesWithCategoryDTO>>
+public class GetArticlesByCategoryIdHandler : IRequestHandler<GetArticlesByCategoryIdRequest,IEnumerable<GetArticlesByCategoryIdResponse>>
 {
     private readonly ICategoryRepository _categoryRepository;
 
@@ -14,7 +14,8 @@ public class GetArticlesByCategoryIdHandler : IRequestHandler<GetArticlesByCateg
         _categoryRepository = categoryRepository;
     }
 
-    public async Task<IEnumerable<ArticlesWithCategoryDTO>> Handle(GetArticlesByCategoryIdRequest request, CancellationToken cancellationToken)
+    //TODO : Burası ya article altında olmamalı yada başka bir çözüm getirilmeli çünkü bu handleri category controller kullanıyor bu yaklaşım doğru mu bilmiyorum buna bakacağım.
+    public async Task<IEnumerable<GetArticlesByCategoryIdResponse>> Handle(GetArticlesByCategoryIdRequest request, CancellationToken cancellationToken)
     {
         var category = _categoryRepository.GetByIdWithRelation(request.Id, cat => cat.Articles);
         if (category == null)
@@ -24,7 +25,7 @@ public class GetArticlesByCategoryIdHandler : IRequestHandler<GetArticlesByCateg
 
         //return _mapper.Map<IEnumerable<ArticlesWithCategoryDTO>>(category);
 
-        return category.Articles.Select(art => new ArticlesWithCategoryDTO()
+        return category.Articles.Select(art => new GetArticlesByCategoryIdResponse()
         {
             Title = art.Title,
             Content = art.Content,

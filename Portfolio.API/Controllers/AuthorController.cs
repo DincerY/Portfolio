@@ -22,52 +22,35 @@ public class AuthorController : ControllerBase
 
     //Bu fonksiyon sadece yazarları getirmeli ilişkili olan kısımları başka fonksiyonlar ile halletmeliyiz
     [HttpGet]
-    public IActionResult GetAuthors()
+    public async Task<IActionResult> GetAuthors()
     {
-        var authors = _mediator.Send(new GetAuthorsRequest()).Result;
+        var authors = await _mediator.Send(new GetAuthorsRequest());
         return Ok(authors);
     }
     [HttpGet("{id}")]
-    public IActionResult GetAuthorById(int id)
+    public async Task<IActionResult> GetAuthorById(int id)
     {
-        if (id <= 0)
-        {
-            throw new BadRequestException("Id must be greater than zero.");
-        }
-
-        var articleDto = _mediator.Send(new GetAuthorByIdRequest() { Id = id }).Result;
+        var articleDto = await _mediator.Send(new GetAuthorByIdRequest() { Id = id });
         return Ok(articleDto);
     }
     [HttpGet("getAuthorsByIds")]
-    public IActionResult GetAuthorsByIds([FromQuery]List<int> ids)
+    public async Task<IActionResult> GetAuthorsByIds([FromQuery]List<int> ids)
     {
-        foreach (var id in ids)
-        {
-            if (id <= 0)
-            {
-                throw new BadRequestException("Ids must be greater than zero.");
-            }
-        }
-
-        var authors = _mediator.Send(new GetAuthorsByIdsRequest() { Ids = ids });
+        var authors = await _mediator.Send(new GetAuthorsByIdsRequest() { Ids = ids });
         return Ok(authors);
     }
 
     [HttpGet("getAuthorArticles/{authorId}")]
-    public IActionResult GetArticleAuthors(int authorId)
+    public async Task<IActionResult> GetArticleAuthors(int authorId)
     {
-        if (authorId <= 0)
-        {
-            throw new BadRequestException("Id must be greater than zero.");
-        }
-        var articleDtos = _mediator.Send(new GetArticlesByAuthorIdRequest() { Id = authorId }).Result;
+        var articleDtos = await _mediator.Send(new GetArticlesByAuthorIdRequest() { Id = authorId });
         return Ok(articleDtos);
     }
 
     [HttpPost]
-    public IActionResult AddAuthor([FromBody] CreateAuthorRequest request)
+    public async Task<IActionResult> AddAuthor([FromBody] CreateAuthorRequest request)
     {
-        var added = _mediator.Send(request).Result;
+        var added = await _mediator.Send(request);
         return Ok(added);
     }
 

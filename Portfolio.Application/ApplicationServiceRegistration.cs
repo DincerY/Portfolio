@@ -3,7 +3,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Portfolio.Application.Behaviors;
-using Portfolio.Application.Validators;
+using Portfolio.Application.Features.Articles.CreateArticle;
 using Portfolio.CrossCuttingConcerns.Logging.Serilog;
 using Portfolio.CrossCuttingConcerns.Logging.Serilog.Logger;
 
@@ -13,31 +13,24 @@ public static class ApplicationServiceRegistration
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection service)
     {
-        service.AddValidatorsFromAssemblyContaining<CreateArticleDTOValidator>();
-        //service.AddFluentValidationAutoValidation();
+        service.AddValidatorsFromAssemblyContaining<CreateArticleRequestValidator>();
 
         //Yukarıda bütün validatorları otomatik kayıt ettik
-        /*service.AddTransient<IValidator<CreateCategoryDTO>, CreateCategoryDTOValidator>();
-        service.AddTransient<IValidator<CreateArticleDTO>, CreateArticleDTOValidator>();
-        service.AddTransient<IValidator<CreateAuthorDTO>, CreateAuthorDTOValidator>();
-        service.AddTransient<IValidator<EntityIdDTO>, EntityIdDTOValidator>();
-        service.AddTransient<IValidator<List<EntityIdDTO>>, EntityIdDTOListValidator>();*/
+        /*service.AddTransient<IValidator<CreateAuthorRequest>, CreateAuthorRequestValidator>();
+        service.AddTransient<IValidator<CreateArticleRequest>, CreateArticleRequestValidator>();
+        service.AddTransient<IValidator<CreateCategoryRequest>, CreateCategoryRequestValidator>();*/
 
         service.AddSingleton<LoggerServiceBase, FileLogger>();
         service.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-        service.AddMediatR(cfg =>
+        service.AddMediatR(configuration =>
         {
-            cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-            cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
-            cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
+            configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+            configuration.AddOpenBehavior(typeof(IdValidationBehavior<,>));
+            configuration.AddOpenBehavior(typeof(MappingBehavior<,>));
+            configuration.AddOpenBehavior(typeof(ValidationBehavior<,>));
+            configuration.AddOpenBehavior(typeof(LoggingBehavior<,>));
         });
-
-        /*service.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-        service.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>)); */
-        
-
-        
 
         return service;
     }
