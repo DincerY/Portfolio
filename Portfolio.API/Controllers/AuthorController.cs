@@ -1,11 +1,11 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Portfolio.Application.Features.Articles.GetArticlesByAuthorId;
 using Portfolio.Application.Features.Authors.CreateAuthor;
-using Portfolio.Application.Features.Authors.GetArticlesByAuthorId;
 using Portfolio.Application.Features.Authors.GetAuthorById;
 using Portfolio.Application.Features.Authors.GetAuthors;
+using Portfolio.Application.Features.Authors.GetAuthorsByArticleId;
 using Portfolio.Application.Features.Authors.GetAuthorsByIds;
-using Portfolio.CrossCuttingConcerns.Exceptions;
 
 namespace Portfolio.API.Controllers;
 
@@ -39,11 +39,18 @@ public class AuthorController : ControllerBase
         var authors = await _mediator.Send(new GetAuthorsByIdsRequest() { Ids = ids });
         return Ok(authors);
     }
-
-    [HttpGet("getAuthorArticles/{authorId}")]
+    //TODO : diğer controller taraflarında da bazı yerleri taşıyacağım
+    /*[HttpGet("getAuthorArticles/{authorId}")]
     public async Task<IActionResult> GetArticleAuthors(int authorId)
     {
         var articleDtos = await _mediator.Send(new GetArticlesByAuthorIdRequest() { Id = authorId });
+        return Ok(articleDtos);
+    }*/
+
+    [HttpGet("getArticleAuthors/{articleId}")]
+    public async Task<IActionResult> GetAuthors(int articleId)
+    {
+        var articleDtos = await _mediator.Send(new GetAuthorsByArticleIdRequest() { Id = articleId });
         return Ok(articleDtos);
     }
 

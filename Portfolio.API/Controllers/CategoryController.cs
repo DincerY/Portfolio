@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Portfolio.Application.Features.Articles.GetArticlesByCategoryId;
 using Portfolio.Application.Features.Categories.CreateCategory;
-using Portfolio.Application.Features.Categories.GetArticlesByCategoryId;
 using Portfolio.Application.Features.Categories.GetCategories;
 using Portfolio.Application.Features.Categories.GetCategoriesByIds;
 using Portfolio.Application.Features.Categories.GetCategoryById;
@@ -53,7 +53,7 @@ public class CategoryController : ControllerBase
         return Ok(categories);
         
     }
-
+    //TODO:Konumu yanlış
     [HttpGet("getCategoryArticles/{id}")]
     public async Task<IActionResult> GetArticlesWithCategoryId(int id)
     {

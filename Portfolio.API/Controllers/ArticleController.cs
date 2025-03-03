@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Portfolio.Application.Features.Articles.CreateArticle;
 using Portfolio.Application.Features.Articles.GetArticleById;
 using Portfolio.Application.Features.Articles.GetArticles;
+using Portfolio.Application.Features.Articles.GetArticlesByAuthorId;
 using Portfolio.Application.Features.Articles.GetArticlesByIds;
 using Portfolio.Application.Features.Articles.GetArticlesWithRelation;
 using Portfolio.Application.Features.Articles.GetArticleWithRelationById;
-using Portfolio.Application.Features.Authors.GetArticlesByAuthorId;
-using Portfolio.CrossCuttingConcerns.Exceptions;
+
 
 namespace Portfolio.API.Controllers;
 

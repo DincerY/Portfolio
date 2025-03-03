@@ -9,6 +9,7 @@ namespace Portfolio.Application.Features.Articles.GetArticleWithRelationById;
 
 public class GetArticleWithRelationByIdHandler : IRequestHandler<GetArticleWithRelationByIdRequest,ArticleWithRelationsDTO>
 {
+    //TODO : Buarada neden articleRepo kullandık diğerlerinde kullanmadık
     private readonly IArticleRepository _articleRepository;
     private readonly IMapper _mapper;
 
@@ -21,7 +22,7 @@ public class GetArticleWithRelationByIdHandler : IRequestHandler<GetArticleWithR
 
     public async Task<ArticleWithRelationsDTO> Handle(GetArticleWithRelationByIdRequest request, CancellationToken cancellationToken)
     {
-        Article article = _articleRepository.GetByIdWithRelation(request.Id, art => art.Authors, art => art.Categories);
+        var article = _articleRepository.GetByIdWithRelation(request.Id, art => art.Authors, art => art.Categories).First();
 
         if (article == null)
         {
