@@ -1,13 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Portfolio.Domain.Entities;
 
 namespace Portfolio.Infrastructure.Contexts;
 
 public class AppDbContext : DbContext
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+    private readonly IConfiguration _configuration;
+    public AppDbContext(DbContextOptions<AppDbContext> options, IConfiguration configuration) : base(options)
     {
-        
+        _configuration = configuration;
     }
 
     public DbSet<Article> Articles { get; set; }
@@ -16,8 +18,8 @@ public class AppDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer(
-            @"Server=(localdb)\mssqllocaldb;Database=PortfolioDb;Trusted_Connection=True");
+        var conString = _configuration.GetConnectionString("DefaultConnection");
+        optionsBuilder.UseSqlServer(conString);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

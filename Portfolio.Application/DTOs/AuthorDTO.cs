@@ -1,4 +1,5 @@
-﻿namespace Portfolio.Application.DTOs;
+﻿
+namespace Portfolio.Application.DTOs;
 
 public class AuthorDTO
 {

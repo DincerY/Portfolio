@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Portfolio.API.Extensions;
 using Portfolio.API.Filters;
 using Portfolio.Application;
@@ -50,7 +51,7 @@ if (app.Environment.IsDevelopment())
 
 }
 
-app.UseResponseCaching();
+//app.UseResponseCaching();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

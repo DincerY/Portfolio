@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using Portfolio.Application.DTOs;
+
 
 namespace Portfolio.Application.Features.Articles.GetArticlesByIds;
 
-public class GetArticlesByIdsRequest : IRequest<IEnumerable<ArticleDTO>>
+public class GetArticlesByIdsRequest : IRequest<IEnumerable<GetArticlesByIdsResponse>>
 {
     public List<int> Ids { get; set; }
 }

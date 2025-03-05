@@ -4,6 +4,7 @@ using Portfolio.Application.Features.Articles.CreateArticle;
 using Portfolio.Application.Features.Articles.GetArticleById;
 using Portfolio.Application.Features.Articles.GetArticles;
 using Portfolio.Application.Features.Articles.GetArticlesByAuthorId;
+using Portfolio.Application.Features.Articles.GetArticlesByCategoryId;
 using Portfolio.Application.Features.Articles.GetArticlesByIds;
 using Portfolio.Application.Features.Articles.GetArticlesWithRelation;
 using Portfolio.Application.Features.Articles.GetArticleWithRelationById;
@@ -56,12 +57,18 @@ public class ArticleController : ControllerBase
         return Ok(articleDto);
     }
 
-    [HttpGet("getArticleAuthors/{articleId}")]
-    public async Task<IActionResult> GetArticleAuthors(int articleId)
+    [HttpGet("getArticlesByAuthorId/{id}")]
+    public async Task<IActionResult> GetArticlesAuthors(int id)
     {
-        var articleDto = await _mediator.Send(new GetArticlesByAuthorIdRequest() { Id = articleId });
+        var articleDto = await _mediator.Send(new GetArticlesByAuthorIdRequest() { Id = id });
         return Ok(articleDto);
-        
+    }
+
+    [HttpGet("getArticlesByCategoryId/{id}")]
+    public async Task<IActionResult> GetArticlesByCategoryId(int id)
+    {
+        var articles = await _mediator.Send(new GetArticlesByCategoryIdRequest() { Id = id });
+        return Ok(articles);
     }
 
     [HttpPost]

@@ -98,8 +98,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
 
     //Getirilecek veriye birden fazla tabloyu dahil etmek için yazılan fonksiyon
     //Ayrıca generic yapıyı destekliyor.
-    //TODO : Bu kısımda değişiklik yapacağım
-    public IEnumerable<TEntity> GetByIdWithRelation(int id, params Expression<Func<TEntity, object>>[] expressions)
+    public TEntity GetByIdWithRelation(int id, params Expression<Func<TEntity, object>>[] expressions)
     {
         var query = set.AsQueryable();
         foreach (var exp in expressions)
@@ -107,7 +106,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
             query = query.Include(exp);
         }
 
-        return query.Where(ent => ent.Id == id);
+        return query.FirstOrDefault(ent => ent.Id == id);
     }
     
 }

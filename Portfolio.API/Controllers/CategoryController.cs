@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Portfolio.Application.Features.Articles.GetArticlesByCategoryId;
 using Portfolio.Application.Features.Categories.CreateCategory;
 using Portfolio.Application.Features.Categories.GetCategories;
+using Portfolio.Application.Features.Categories.GetCategoriesByArticleId;
 using Portfolio.Application.Features.Categories.GetCategoriesByIds;
 using Portfolio.Application.Features.Categories.GetCategoryById;
 using Portfolio.CrossCuttingConcerns.Exceptions;
@@ -53,13 +54,14 @@ public class CategoryController : ControllerBase
         return Ok(categories);
         
     }
-    //TODO:Konumu yanlış
-    [HttpGet("getCategoryArticles/{id}")]
-    public async Task<IActionResult> GetArticlesWithCategoryId(int id)
+    [HttpGet("getCategoriesByArticleId/{id}")]
+    public async Task<IActionResult> GetCategoriesByArticleId(int id)
     {
-        var articles = await _mediator.Send(new GetArticlesByCategoryIdRequest() { Id = id });
-        return Ok(articles);
+        var categories = await _mediator.Send(new GetCategoriesByArticleIdRequest(){Id = id});
+        return Ok(categories);
+
     }
+    
 
     [HttpPost]
     public async Task<IActionResult> AddCategory([FromBody]CreateCategoryRequest request)

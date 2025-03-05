@@ -1,9 +1,8 @@
 ﻿using MediatR;
-using Portfolio.Application.DTOs;
 
 namespace Portfolio.Application.Features.Categories.GetCategoriesByIds;
 
-public class GetCategoriesByIdsRequest : IRequest<IEnumerable<CategoryDTO>>
+public class GetCategoriesByIdsRequest : IRequest<IEnumerable<GetCategoriesByIdsResponse>>
 {
     public List<int> Ids { get; set; }
 }

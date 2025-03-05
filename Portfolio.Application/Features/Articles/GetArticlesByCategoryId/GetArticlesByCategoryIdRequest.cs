@@ -1,6 +1,5 @@
 ﻿using MediatR;
-using Portfolio.Application.DTOs;
-using Portfolio.Domain.Entities;
+
 
 namespace Portfolio.Application.Features.Articles.GetArticlesByCategoryId;
 

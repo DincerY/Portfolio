@@ -20,6 +20,6 @@ public interface IRepository<TEntity> where TEntity : BaseEntity
 
     TEntity GetById(int id);
     IEnumerable<TEntity> GetByIds(List<int> ids);
-    IEnumerable<TEntity> GetByIdWithRelation(int id, params Expression<Func<TEntity, object>>[] expression);
+    TEntity GetByIdWithRelation(int id, params Expression<Func<TEntity, object>>[] expression);
 
 }

@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Portfolio.Application.Features.Articles.GetArticlesByAuthorId;
 using Portfolio.Application.Features.Authors.CreateAuthor;
 using Portfolio.Application.Features.Authors.GetAuthorById;
 using Portfolio.Application.Features.Authors.GetAuthors;
@@ -39,18 +38,11 @@ public class AuthorController : ControllerBase
         var authors = await _mediator.Send(new GetAuthorsByIdsRequest() { Ids = ids });
         return Ok(authors);
     }
-    //TODO : diğer controller taraflarında da bazı yerleri taşıyacağım
-    /*[HttpGet("getAuthorArticles/{authorId}")]
-    public async Task<IActionResult> GetArticleAuthors(int authorId)
-    {
-        var articleDtos = await _mediator.Send(new GetArticlesByAuthorIdRequest() { Id = authorId });
-        return Ok(articleDtos);
-    }*/
 
-    [HttpGet("getArticleAuthors/{articleId}")]
-    public async Task<IActionResult> GetAuthors(int articleId)
+    [HttpGet("getAuthorsByArticleId/{id}")]
+    public async Task<IActionResult> GetAuthors(int id)
     {
-        var articleDtos = await _mediator.Send(new GetAuthorsByArticleIdRequest() { Id = articleId });
+        var articleDtos = await _mediator.Send(new GetAuthorsByArticleIdRequest() { Id = id });
         return Ok(articleDtos);
     }
 

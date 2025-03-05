@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
 using MediatR;
-using Portfolio.Application.DTOs;
 using Portfolio.Domain.Interfaces.Repositories;
 
 namespace Portfolio.Application.Features.Categories.GetCategories;
 
-public class GetCategoriesHandler : IRequestHandler<GetCategoriesRequest, IEnumerable<CategoryDTO>>
+public class GetCategoriesHandler : IRequestHandler<GetCategoriesRequest, IEnumerable<GetCategoriesResponse>>
 {
     private readonly ICategoryRepository _categoryRepository;
     private readonly IMapper _mapper;
@@ -16,9 +15,9 @@ public class GetCategoriesHandler : IRequestHandler<GetCategoriesRequest, IEnume
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<CategoryDTO>> Handle(GetCategoriesRequest request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<GetCategoriesResponse>> Handle(GetCategoriesRequest request, CancellationToken cancellationToken)
     {
         var categories = _categoryRepository.GetAll();
-        return _mapper.Map<IEnumerable<CategoryDTO>>(categories);
+        return _mapper.Map<IEnumerable<GetCategoriesResponse>>(categories);
     }
 }

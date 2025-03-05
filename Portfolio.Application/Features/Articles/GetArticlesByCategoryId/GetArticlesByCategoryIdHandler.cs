@@ -1,5 +1,5 @@
-﻿using MediatR;
-using Portfolio.Application.DTOs;
+﻿using AutoMapper;
+using MediatR;
 using Portfolio.CrossCuttingConcerns.Exceptions;
 using Portfolio.Domain.Interfaces.Repositories;
 
@@ -7,32 +7,25 @@ namespace Portfolio.Application.Features.Articles.GetArticlesByCategoryId;
 
 public class GetArticlesByCategoryIdHandler : IRequestHandler<GetArticlesByCategoryIdRequest,IEnumerable<GetArticlesByCategoryIdResponse>>
 {
-    //TODO : Bu kısıma bakıcam
     private readonly IArticleRepository _articleRepository;
-    private readonly ICategoryRepository _categoryRepository;
+    private readonly IMapper _mapper;
 
-    public GetArticlesByCategoryIdHandler(IArticleRepository articleRepository, ICategoryRepository categoryRepository)
+    public GetArticlesByCategoryIdHandler(IArticleRepository articleRepository, IMapper mapper)
     {
         _articleRepository = articleRepository;
-        _categoryRepository = categoryRepository;
+        _mapper = mapper;
     }
 
-    //TODO : Burası ya article altında olmamalı yada başka bir çözüm getirilmeli çünkü bu handleri category controller kullanıyor bu yaklaşım doğru mu bilmiyorum buna bakacağım.
     public async Task<IEnumerable<GetArticlesByCategoryIdResponse>> Handle(GetArticlesByCategoryIdRequest request, CancellationToken cancellationToken)
     {
-        var articles = _articleRepository.GetByIdWithRelation(request.Id, art => art.Categories);
+        var articles = _articleRepository.GetWhere(art =>
+            art.ArticleCategories.Any(ac => ac.ArticleId == art.Id && ac.CategoryId == request.Id));
+
         if (articles == null)
         {
             throw new NotFoundException("There is no category in the entered id");
         }
 
-        return articles.Select(art => new GetArticlesByCategoryIdResponse()
-        {
-            Title = art.Title,
-            Content = art.Content,
-            Name = art.Name,
-            CategoryName = art.Categories.First(ac => ac.Id == request.Id).Name,
-            CategoryDescription = art.Categories.First(ac => ac.Id == request.Id).Name,
-        }).ToList();
+        return _mapper.Map<IEnumerable<GetArticlesByCategoryIdResponse>>(articles);
     }
 }

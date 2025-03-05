@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
 using MediatR;
-using Portfolio.Application.DTOs;
 using Portfolio.Domain.Interfaces.Repositories;
 
 namespace Portfolio.Application.Features.Authors.GetAuthors;
 
-public class GetAuthorsHandler : IRequestHandler<GetAuthorsRequest,IEnumerable<AuthorDTO>>
+public class GetAuthorsHandler : IRequestHandler<GetAuthorsRequest,IEnumerable<GetAuthorsResponse>>
 {
     private readonly IAuthorRepository _authorRepository;
     private readonly IMapper _mapper;
@@ -16,9 +15,9 @@ public class GetAuthorsHandler : IRequestHandler<GetAuthorsRequest,IEnumerable<A
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<AuthorDTO>> Handle(GetAuthorsRequest request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<GetAuthorsResponse>> Handle(GetAuthorsRequest request, CancellationToken cancellationToken)
     {
         var authors = _authorRepository.GetAllWithRelation(aut => aut.Articles);
-        return _mapper.Map<IEnumerable<AuthorDTO>>(authors);
+        return _mapper.Map<IEnumerable<GetAuthorsResponse>>(authors);
     }
 }

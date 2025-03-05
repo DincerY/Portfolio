@@ -26,7 +26,7 @@ public class CreateCategoryHandler : IRequestHandler<CreateCategoryRequest,Creat
         }
 
         Category category = _mapper.Map<Category>(request);
-
+        //TODO : Burada belki iki farklı mapper kullanırım
         var addedCategory = _categoryRepository.Add(category);
         if (addedCategory != null)
         {

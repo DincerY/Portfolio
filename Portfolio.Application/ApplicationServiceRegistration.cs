@@ -1,15 +1,20 @@
 ﻿using System.Reflection;
 using FluentValidation;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Portfolio.Application.Behaviors;
+using Portfolio.Application.Behaviors.Caching;
+using Portfolio.Application.Behaviors.Logging;
+using Portfolio.Application.Behaviors.Validation;
 using Portfolio.Application.Features.Articles.CreateArticle;
+using Portfolio.Application.Services;
 using Portfolio.CrossCuttingConcerns.Logging.Serilog;
 using Portfolio.CrossCuttingConcerns.Logging.Serilog.Logger;
+using StackExchange.Redis;
 
 namespace Portfolio.Application;
 
-public static class ApplicationServiceRegistration 
+public static class ApplicationServiceRegistration
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection service)
     {
@@ -27,10 +32,17 @@ public static class ApplicationServiceRegistration
         {
             configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
             configuration.AddOpenBehavior(typeof(IdValidationBehavior<,>));
-            configuration.AddOpenBehavior(typeof(MappingBehavior<,>));
             configuration.AddOpenBehavior(typeof(ValidationBehavior<,>));
             configuration.AddOpenBehavior(typeof(LoggingBehavior<,>));
+            configuration.AddOpenBehavior(typeof(CachingBehavior<,>));
         });
+        service.AddSingleton<IDatabase>(sp =>
+        {
+            var configuration = sp.GetService<IConfiguration>();
+            return ConnectionMultiplexer.Connect(configuration["Redis:ConnectionString"]).GetDatabase();
+        });
+
+        service.AddSingleton<ICacheService,RedisCacheService>();
 
         return service;
     }

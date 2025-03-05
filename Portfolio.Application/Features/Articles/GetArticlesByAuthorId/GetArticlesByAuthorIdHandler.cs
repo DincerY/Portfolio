@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
 using MediatR;
-using Portfolio.Application.DTOs;
 using Portfolio.CrossCuttingConcerns.Exceptions;
 using Portfolio.Domain.Interfaces.Repositories;
 
 namespace Portfolio.Application.Features.Articles.GetArticlesByAuthorId;
 
-public class GetArticlesByAuthorIdHandler : IRequestHandler<GetArticlesByAuthorIdRequest, IEnumerable<ArticleDTO>>
+public class GetArticlesByAuthorIdHandler : IRequestHandler<GetArticlesByAuthorIdRequest, IEnumerable<GetArticlesByAuthorIdResponse>>
 {
     //TODO :
     private readonly IArticleRepository _articleRepository;
@@ -18,15 +17,15 @@ public class GetArticlesByAuthorIdHandler : IRequestHandler<GetArticlesByAuthorI
         _articleRepository = articleRepository;
     }
 
-    public async Task<IEnumerable<ArticleDTO>> Handle(GetArticlesByAuthorIdRequest request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<GetArticlesByAuthorIdResponse>> Handle(GetArticlesByAuthorIdRequest request, CancellationToken cancellationToken)
     {
         //Diğer tabloyu eklemeden sadece ara tabloya giderek işlem yaptık.
-        var articles = _articleRepository.GetByIdWithRelation(request.Id, art => art.ArticleAuthors);
+        var articles = _articleRepository.GetWhere(art => art.ArticleAuthors.Any(aa => aa.ArticleId == art.Id && aa.AuthorId == request.Id));
         if (articles == null)
         {
             throw new NotFoundException("There is no author in the entered id");
         }
 
-        return _mapper.Map<IEnumerable<ArticleDTO>>(articles);
+        return _mapper.Map<IEnumerable<GetArticlesByAuthorIdResponse>>(articles);
     }
 }

@@ -1,9 +1,8 @@
 ﻿using MediatR;
-using Portfolio.Application.DTOs;
 
 namespace Portfolio.Application.Features.Authors.GetAuthorsByIds;
 
-public class GetAuthorsByIdsRequest : IRequest<IEnumerable<AuthorDTO>>
+public class GetAuthorsByIdsRequest : IRequest<IEnumerable<GetAuthorsByIdsResponse>>
 {
     public List<int> Ids { get; set; }
 }
