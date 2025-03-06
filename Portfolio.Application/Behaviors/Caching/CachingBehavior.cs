@@ -44,7 +44,7 @@ public class CachingBehavior<TRequest,TResponse> : IPipelineBehavior<TRequest,TR
 
         return response;
     }
-    //Virgüller anahatarları virgüller ile ayıracağız
+
     private async Task AddCacheKeyToGroup(TRequest request)
     {
         var cacheGroup = await _cacheService.GetAsync<string>(request.CacheGroupKey);
@@ -56,14 +56,20 @@ public class CachingBehavior<TRequest,TResponse> : IPipelineBehavior<TRequest,TR
             List<string> list = cacheGroup.Split(',').ToList();
             if (!list.Contains(request.CacheKey))
             {
-                list.Add("," + request.CacheKey);
+                list.Add(request.CacheKey);
             }
             var stringBuilder = new StringBuilder();
-            var a = list.Select(str => ","+str);
+            foreach (var str in list)
+            {
+                stringBuilder.Append(str).Append(",");
+            }
+
+            stringBuilder.Remove(stringBuilder.Length-1, 1);
+            cacheKeysInGroup = stringBuilder.ToString().Trim();
         }
         else
         {
-            cacheKeysInGroup =  $"GetArticles({request.CacheKey})";
+            cacheKeysInGroup =  request.CacheKey;
         }
         await _cacheService.SetAsync(request.CacheGroupKey, cacheKeysInGroup,TimeSpan.FromMinutes(10));
     }

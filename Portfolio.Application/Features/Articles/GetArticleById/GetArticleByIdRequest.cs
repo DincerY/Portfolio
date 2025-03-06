@@ -7,6 +7,6 @@ public class GetArticleByIdRequest : IRequest<GetArticleByIdResponse>, ICachable
 {
     public int Id { get; set; }
     public string CacheKey => $"GetArticle({Id})";
-    public string? CacheGroupKey => "GetArticles";
+    public string? CacheGroupKey => "GetArticleById";
     public TimeSpan? SlidingExpiration { get; }
 }

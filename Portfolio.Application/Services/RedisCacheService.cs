@@ -20,7 +20,7 @@ public class RedisCacheService : ICacheService
 
     public async Task SetAsync<T>(string key, T value, TimeSpan expiration)
     {
-        var serializedVal = JsonSerializer.Serialize(value);
+        var serializedVal = JsonSerializer.Serialize(value,new JsonSerializerOptions(){Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping});
         await _database.StringSetAsync(key,serializedVal,expiration);
     }
 

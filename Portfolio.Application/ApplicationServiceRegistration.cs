@@ -35,6 +35,7 @@ public static class ApplicationServiceRegistration
             configuration.AddOpenBehavior(typeof(ValidationBehavior<,>));
             configuration.AddOpenBehavior(typeof(LoggingBehavior<,>));
             configuration.AddOpenBehavior(typeof(CachingBehavior<,>));
+            configuration.AddOpenBehavior(typeof(CacheRemovingBehavior<,>));
         });
         service.AddSingleton<IDatabase>(sp =>
         {
