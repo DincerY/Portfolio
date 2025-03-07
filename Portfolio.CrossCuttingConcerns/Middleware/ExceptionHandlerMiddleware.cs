@@ -29,8 +29,10 @@ public class ExceptionHandlerMiddleware
         }
         catch (Exception ex)
         {
-            await LogException(context, ex);
             await HandleExceptionAsync(context, ex);
+            //Bunu aşağı alma sebebim exception işlendikten sonra response tarafının 
+            //status kodu vs dolmuş oluyor daha sonra log basıyoruz
+            await LogException(context, ex);
         }
     }
 

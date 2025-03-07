@@ -7,7 +7,6 @@ namespace Portfolio.Application.Features.Articles.GetArticlesByAuthorId;
 
 public class GetArticlesByAuthorIdHandler : IRequestHandler<GetArticlesByAuthorIdRequest, IEnumerable<GetArticlesByAuthorIdResponse>>
 {
-    //TODO :
     private readonly IArticleRepository _articleRepository;
     private readonly IMapper _mapper;
 

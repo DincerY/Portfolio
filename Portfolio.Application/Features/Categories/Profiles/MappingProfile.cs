@@ -19,5 +19,6 @@ public class MappingProfile : Profile
         CreateMap<Category, GetCategoriesResponse>().ReverseMap();
         CreateMap<Category, GetCategoriesByIdsResponse>().ReverseMap();
         CreateMap<Category, GetCategoryByIdResponse>().ReverseMap();
+        CreateMap<Category, CreateCategoryResponse>().ReverseMap();
     }
 }

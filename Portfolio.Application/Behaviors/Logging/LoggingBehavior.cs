@@ -45,7 +45,7 @@ public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, 
             TraceId = _httpContextAccessor.HttpContext.TraceIdentifier,
             Path = path,
             Controller = controller,
-            Type = request.GetType().Name,
+            RequestType = request.GetType().Name,
         };
         _loggerService.Info("Response : " + JsonConvert.SerializeObject(responseLogDetail));
 

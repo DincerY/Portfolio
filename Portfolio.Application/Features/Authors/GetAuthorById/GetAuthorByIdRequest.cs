@@ -7,6 +7,6 @@ public class GetAuthorByIdRequest : IRequest<GetAuthorByIdResponse>, ICachableRe
 {
     public int Id { get; set; }
     public string CacheKey => $"GetAuthor({Id})";
-    public string? CacheGroupKey => "GetAuthorById";
+    public string? CacheGroupKey { get; }
     public TimeSpan? SlidingExpiration { get; }
 }

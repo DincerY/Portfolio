@@ -23,10 +23,12 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
         _context.SaveChanges();
         return entry.Entity;
     }
-    //TODO
-    public int Delete(int id)
+
+    public TEntity Delete(int id)
     {
-        throw new NotImplementedException();
+        TEntity entity = set.FirstOrDefault(ent => ent.Id == id);
+        set.Remove(entity);
+        return entity;
     }
 
     public bool IsExists(Func<TEntity,bool> predicate)
@@ -41,17 +43,19 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
             return false;
         }
     }
-    //TODO
 
-    public int Update(TEntity entity)
+    public TEntity Update(TEntity entity)
     {
-        throw new NotImplementedException();
+        set.Update(entity);
+        _context.SaveChanges();
+        return entity;
     }
-    //TODO
 
-    public int AddAll(IEnumerable<TEntity> entities)
+    public IEnumerable<TEntity> AddAll(IEnumerable<TEntity> entities)
     {
-        throw new NotImplementedException();
+        set.AddRange(entities);
+        _context.SaveChanges();
+        return entities;
     }
 
     public IEnumerable<TEntity> GetWhere(params Expression<Func<TEntity, bool>>[] predicate)
@@ -108,5 +112,9 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
 
         return query.FirstOrDefault(ent => ent.Id == id);
     }
-    
+
+    public IEnumerable<TEntity> GetAllWithPagination(int pageSize, int pageNumber)
+    {
+        return set.Skip((pageNumber-1)*pageSize).Take(pageSize).ToList();
+    }
 }

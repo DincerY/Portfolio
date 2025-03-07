@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Portfolio.Application.Common;
 using Portfolio.Application.Features.Authors.CreateAuthor;
 using Portfolio.Application.Features.Authors.GetAuthorById;
 using Portfolio.Application.Features.Authors.GetAuthors;
@@ -21,9 +22,13 @@ public class AuthorController : ControllerBase
 
     //Bu fonksiyon sadece yazarları getirmeli ilişkili olan kısımları başka fonksiyonlar ile halletmeliyiz
     [HttpGet]
-    public async Task<IActionResult> GetAuthors()
+    public async Task<IActionResult> GetAuthors([FromQuery] PageRequest request)
     {
-        var authors = await _mediator.Send(new GetAuthorsRequest());
+        var authors = await _mediator.Send(new GetAuthorsRequest()
+        {
+            PageSize = request.PageSize,
+            PageNumber = request.PageNumber
+        });
         return Ok(authors);
     }
     [HttpGet("{id}")]

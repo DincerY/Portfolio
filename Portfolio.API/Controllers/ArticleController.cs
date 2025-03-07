@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Portfolio.Application.Common;
 using Portfolio.Application.Features.Articles.CreateArticle;
 using Portfolio.Application.Features.Articles.GetArticleById;
 using Portfolio.Application.Features.Articles.GetArticles;
@@ -24,9 +25,13 @@ public class ArticleController : ControllerBase
     }
     [ResponseCache(Duration = 10)]
     [HttpGet]
-    public async Task<IActionResult> GetArticles()
+    public async Task<IActionResult> GetArticles([FromQuery] PageRequest request)
     {
-        var articles = await _mediator.Send(new GetArticlesRequest());
+        var articles = await _mediator.Send(new GetArticlesRequest()
+        {
+            PageSize = request.PageSize,
+            PageNumber = request.PageNumber
+        });
         return Ok(articles);
         
     }

@@ -8,6 +8,6 @@ public class GetCategoryByIdRequest : IRequest<GetCategoryByIdResponse> , ICacha
 {
     public int Id { get; set; }
     public string CacheKey => $"GetCategory({Id})";
-    public string? CacheGroupKey => "GetCategoryById";
+    public string? CacheGroupKey { get; }
     public TimeSpan? SlidingExpiration { get; }
 }

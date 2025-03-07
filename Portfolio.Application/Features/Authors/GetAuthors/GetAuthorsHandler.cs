@@ -17,7 +17,8 @@ public class GetAuthorsHandler : IRequestHandler<GetAuthorsRequest,IEnumerable<G
 
     public async Task<IEnumerable<GetAuthorsResponse>> Handle(GetAuthorsRequest request, CancellationToken cancellationToken)
     {
-        var authors = _authorRepository.GetAllWithRelation(aut => aut.Articles);
+        /*var authors = _authorRepository.GetAllWithRelation(aut => aut.Articles);*/
+        var authors = _authorRepository.GetAllWithPagination(request.PageSize,request.PageNumber);
         return _mapper.Map<IEnumerable<GetAuthorsResponse>>(authors);
     }
 }

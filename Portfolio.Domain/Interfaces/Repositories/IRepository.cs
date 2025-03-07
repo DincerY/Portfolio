@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Domain.Entities;
@@ -8,10 +9,10 @@ public interface IRepository<TEntity> where TEntity : BaseEntity
 {
     public DbSet<TEntity> set { get; }
     TEntity Add(TEntity entity);
-    int Delete(int id);
+    TEntity Delete(int id);
     bool IsExists(Func<TEntity,bool> predicate);
-    int Update(TEntity entity);
-    int AddAll(IEnumerable<TEntity> entities);
+    TEntity Update(TEntity entity);
+    IEnumerable<TEntity> AddAll(IEnumerable<TEntity> entities);
     IEnumerable<TEntity> GetWhere(params Expression<Func<TEntity, bool>>[] predicate);
     IQueryable<TEntity> GetQueryable();
 
@@ -21,5 +22,6 @@ public interface IRepository<TEntity> where TEntity : BaseEntity
     TEntity GetById(int id);
     IEnumerable<TEntity> GetByIds(List<int> ids);
     TEntity GetByIdWithRelation(int id, params Expression<Func<TEntity, object>>[] expression);
+    IEnumerable<TEntity> GetAllWithPagination(int pageSize, int pageNumber);
 
 }

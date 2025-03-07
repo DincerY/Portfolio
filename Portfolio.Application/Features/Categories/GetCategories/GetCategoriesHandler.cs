@@ -17,7 +17,7 @@ public class GetCategoriesHandler : IRequestHandler<GetCategoriesRequest, IEnume
 
     public async Task<IEnumerable<GetCategoriesResponse>> Handle(GetCategoriesRequest request, CancellationToken cancellationToken)
     {
-        var categories = _categoryRepository.GetAll();
+        var categories = _categoryRepository.GetAllWithPagination(request.PageSize,request.PageNumber).ToList();
         return _mapper.Map<IEnumerable<GetCategoriesResponse>>(categories);
     }
 }

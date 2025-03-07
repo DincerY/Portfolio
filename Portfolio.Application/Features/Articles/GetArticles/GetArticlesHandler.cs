@@ -19,7 +19,7 @@ public class GetArticlesHandler : IRequestHandler<GetArticlesRequest,IEnumerable
 
     public async Task<IEnumerable<GetArticlesResponse>> Handle(GetArticlesRequest request, CancellationToken cancellationToken)
     {
-        var articles = _articleRepository.GetAll();
+        var articles = _articleRepository.GetAllWithPagination(request.PageSize,request.PageNumber).ToList();
         return _mapper.Map<IEnumerable<GetArticlesResponse>>(articles);
     }
 }

@@ -26,16 +26,11 @@ public class CreateCategoryHandler : IRequestHandler<CreateCategoryRequest,Creat
         }
 
         Category category = _mapper.Map<Category>(request);
-        //TODO : Burada belki iki farklı mapper kullanırım
+
         var addedCategory = _categoryRepository.Add(category);
         if (addedCategory != null)
         {
-            return new CreateCategoryResponse()
-            {
-                Id = addedCategory.Id,
-                Name = addedCategory.Name,
-                CreatedDate = category.PublishedDate
-            };
+            return _mapper.Map<CreateCategoryResponse>(category);
         }
         else
         {
