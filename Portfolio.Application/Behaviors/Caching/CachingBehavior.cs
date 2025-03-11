@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.Text.Json;
 using MediatR;
-using Portfolio.Application.Services;
+using Portfolio.Application.Interfaces;
 using StackExchange.Redis;
 
 namespace Portfolio.Application.Behaviors.Caching;

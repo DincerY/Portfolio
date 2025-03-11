@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using Portfolio.Application.Interfaces;
 using StackExchange.Redis;
 
 namespace Portfolio.Application.Services;

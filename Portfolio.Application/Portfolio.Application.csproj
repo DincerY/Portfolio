@@ -26,7 +26,6 @@
 
   <ItemGroup>
     <Folder Include="Features\Auth\Register\" />
-    <Folder Include="Interfaces\" />
   </ItemGroup>
 
 </Project>

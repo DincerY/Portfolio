@@ -6,16 +6,17 @@ using JWT.Builder;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Portfolio.Application.Interfaces;
 
 namespace Portfolio.Application.Features.Auth.Login;
 
 public class LoginHandler : IRequestHandler<LoginRequest,LoginResponse>
 {
-    private readonly IConfiguration _configuration;
+    private readonly ITokenService _tokenService;
 
-    public LoginHandler(IConfiguration configuration)
+    public LoginHandler(ITokenService tokenService)
     {
-        _configuration = configuration;
+        _tokenService = tokenService;
     }
     //TODO
     public async Task<LoginResponse> Handle(LoginRequest request, CancellationToken cancellationToken)
@@ -25,23 +26,15 @@ public class LoginHandler : IRequestHandler<LoginRequest,LoginResponse>
             throw new UnauthorizedAccessException("Invalid credentials");
         }
 
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]);
-        var tokenDescriptor = new SecurityTokenDescriptor()
-        {
-            Subject = new ClaimsIdentity(new[]
-            {
-                new Claim(ClaimTypes.Name, request.Username),
-                new Claim(ClaimTypes.Role, "User")
-            }),
-            Expires = DateTime.UtcNow.AddHours(1),
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),SecurityAlgorithms.HmacSha256Signature)
-        };
-        var token = tokenHandler.CreateToken(tokenDescriptor);
+
+        var token = _tokenService.GenerateToken(request.Username);
         //TODO
         return new LoginResponse()
         {
-            Token = tokenHandler.WriteToken(token),
+            Token = token,
+            AuthenticateResult = true,
+            //TODO
+            AccessTokenExpireDate = tokenDescriptor.Expires ?? DateTime.UtcNow,
         };
     }
 

@@ -7,6 +7,7 @@ using Portfolio.Application.Behaviors.Caching;
 using Portfolio.Application.Behaviors.Logging;
 using Portfolio.Application.Behaviors.Validation;
 using Portfolio.Application.Features.Articles.CreateArticle;
+using Portfolio.Application.Interfaces;
 using Portfolio.Application.Services;
 using Portfolio.CrossCuttingConcerns.Logging.Serilog;
 using Portfolio.CrossCuttingConcerns.Logging.Serilog.Logger;
@@ -44,6 +45,7 @@ public static class ApplicationServiceRegistration
         });
 
         service.AddSingleton<ICacheService,RedisCacheService>();
+        service.AddSingleton<ITokenService,TokenService>();
 
         return service;
     }
