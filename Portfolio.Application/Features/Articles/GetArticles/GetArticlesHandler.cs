@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
-using Portfolio.Application.Services;
-using Portfolio.Domain.Entities;
-using Portfolio.Domain.Interfaces.Repositories;
+using Portfolio.Application.Interfaces.Repositories;
 
 namespace Portfolio.Application.Features.Articles.GetArticles;
 

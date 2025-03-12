@@ -1,9 +1,8 @@
-using System.Collections.Generic;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Domain.Entities;
 
-namespace Portfolio.Domain.Interfaces.Repositories;
+namespace Portfolio.Application.Interfaces.Repositories;
 
 public interface IRepository<TEntity> where TEntity : BaseEntity
 {

@@ -1,61 +1,36 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using JWT.Algorithms;
-using JWT.Builder;
-using MediatR;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using Portfolio.Application.Interfaces;
+﻿using MediatR;
+using Portfolio.Application.Interfaces.Repositories;
+using Portfolio.Application.Interfaces.Services;
 
 namespace Portfolio.Application.Features.Auth.Login;
 
 public class LoginHandler : IRequestHandler<LoginRequest,LoginResponse>
 {
     private readonly ITokenService _tokenService;
+    private readonly IUserRepository _userRepository;
 
-    public LoginHandler(ITokenService tokenService)
+
+    public LoginHandler(ITokenService tokenService, IUserRepository userRepository)
     {
         _tokenService = tokenService;
+        _userRepository = userRepository;
     }
-    //TODO
     public async Task<LoginResponse> Handle(LoginRequest request, CancellationToken cancellationToken)
     {
+        //TODO : Şifreyi eklerken salt ekleyip hashleyip öyle ekleme yapıcam. Bu işlem register tarafında olucak
         if (request.Username != "test" && request.Password != "password")
         {
             throw new UnauthorizedAccessException("Invalid credentials");
         }
-
 
         var token = _tokenService.GenerateToken(request.Username);
-        //TODO
         return new LoginResponse()
         {
-            Token = token,
+            Token = token.Token,
             AuthenticateResult = true,
-            //TODO
-            AccessTokenExpireDate = tokenDescriptor.Expires ?? DateTime.UtcNow,
+            AccessTokenExpireDate = token.Expiration,
+            Role = token.Role,
+            Username = token.Username,
         };
     }
-
-    //TODO
-    /*public async Task<LoginResponse> Handle(LoginRequest request, CancellationToken cancellationToken)
-    {
-        if (request.Username != "test" && request.Password != "password")
-        {
-            throw new UnauthorizedAccessException("Invalid credentials");
-        }
-
-        var token = JwtBuilder.Create()
-            .WithAlgorithm(new RS256Algorithm(certificate))
-            .AddClaim("exp", DateTimeOffset.UtcNow.AddHours(1).ToUnixTimeSeconds())
-            .AddClaim("claim1", 0)
-            .AddClaim("claim2", "claim2-value")
-            .Encode();
-        //TODO
-        return new LoginResponse()
-        {
-            Token = token
-        };
-    }*/
 }

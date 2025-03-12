@@ -1,8 +1,8 @@
 ﻿using System.Text.Json;
-using Portfolio.Application.Interfaces;
+using Portfolio.Application.Interfaces.Services;
 using StackExchange.Redis;
 
-namespace Portfolio.Application.Services;
+namespace Portfolio.Infrastructure.Services;
 
 public class RedisCacheService : ICacheService
 {

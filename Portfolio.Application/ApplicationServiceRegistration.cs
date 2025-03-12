@@ -7,8 +7,6 @@ using Portfolio.Application.Behaviors.Caching;
 using Portfolio.Application.Behaviors.Logging;
 using Portfolio.Application.Behaviors.Validation;
 using Portfolio.Application.Features.Articles.CreateArticle;
-using Portfolio.Application.Interfaces;
-using Portfolio.Application.Services;
 using Portfolio.CrossCuttingConcerns.Logging.Serilog;
 using Portfolio.CrossCuttingConcerns.Logging.Serilog.Logger;
 using StackExchange.Redis;
@@ -44,8 +42,7 @@ public static class ApplicationServiceRegistration
             return ConnectionMultiplexer.Connect(configuration["Redis:ConnectionString"]).GetDatabase();
         });
 
-        service.AddSingleton<ICacheService,RedisCacheService>();
-        service.AddSingleton<ITokenService,TokenService>();
+
 
         return service;
     }

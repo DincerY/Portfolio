@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Portfolio.Domain.Interfaces.Repositories;
+using Portfolio.Application.Interfaces.Repositories;
 
 namespace Portfolio.Infrastructure.Repositories;
 

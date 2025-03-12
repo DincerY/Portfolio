@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Portfolio.Domain.Interfaces.Repositories;
+using Portfolio.Application.Interfaces.Services;
+using Portfolio.Application.Interfaces.Repositories;
 using Portfolio.Infrastructure.Repositories;
+using Portfolio.Infrastructure.Services;
 
 namespace Portfolio.Infrastructure;
 
@@ -11,7 +13,9 @@ public static class InfrastructureServiceRegistration
         service.AddScoped<IArticleRepository, ArticleRepository>();
         service.AddScoped<IAuthorRepository, AuthorRepository>();
         service.AddScoped<ICategoryRepository, CategoryRepository>();
-
+        service.AddScoped<IUserRepository, UserRepository>();
+        service.AddSingleton<ICacheService, RedisCacheService>();
+        service.AddScoped<ITokenService, TokenService>();
         return service;
     }
 }

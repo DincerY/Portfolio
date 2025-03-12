@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Portfolio.CrossCuttingConcerns.Exceptions;
-using Portfolio.Domain.Interfaces.Repositories;
+using Portfolio.Application.Interfaces.Repositories;
 
 namespace Portfolio.Application.Features.Articles.GetArticleWithRelationById;
 

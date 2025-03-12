@@ -1,4 +1,4 @@
-namespace Portfolio.Application.Interfaces;
+namespace Portfolio.Application.Interfaces.Services;
 
 public interface ICacheService
 {

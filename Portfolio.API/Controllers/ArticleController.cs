@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Portfolio.Application.Common;
 using Portfolio.Application.Features.Articles.CreateArticle;
@@ -15,6 +16,7 @@ namespace Portfolio.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class ArticleController : ControllerBase
 {
     private readonly IMediator _mediator;

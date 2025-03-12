@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Portfolio.Application.Services;
+using Portfolio.Application.Interfaces.Services;
 
 namespace Portfolio.Application.Behaviors.Caching;
 

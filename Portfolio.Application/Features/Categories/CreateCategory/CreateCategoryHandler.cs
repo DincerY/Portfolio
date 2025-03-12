@@ -2,7 +2,7 @@
 using MediatR;
 using Portfolio.CrossCuttingConcerns.Exceptions;
 using Portfolio.Domain.Entities;
-using Portfolio.Domain.Interfaces.Repositories;
+using Portfolio.Application.Interfaces.Repositories;
 
 namespace Portfolio.Application.Features.Categories.CreateCategory;
 
