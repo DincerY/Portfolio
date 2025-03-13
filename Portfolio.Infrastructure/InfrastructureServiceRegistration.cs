@@ -16,6 +16,7 @@ public static class InfrastructureServiceRegistration
         service.AddScoped<IUserRepository, UserRepository>();
         service.AddSingleton<ICacheService, RedisCacheService>();
         service.AddScoped<ITokenService, TokenService>();
+        service.AddScoped<IHashService, HashService>();
         return service;
     }
 }

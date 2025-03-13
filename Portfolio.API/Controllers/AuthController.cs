@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Portfolio.Application.Features.Auth.Login;
+using Portfolio.Application.Features.Auth.Register;
 
 namespace Portfolio.API.Controllers;
 
@@ -15,8 +16,14 @@ public class AuthController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpPost]
+    [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
+    {
+        var a = await _mediator.Send(request);
+        return Ok(a);
+    }
+    [HttpPost("register")]
+    public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
         var a = await _mediator.Send(request);
         return Ok(a);
