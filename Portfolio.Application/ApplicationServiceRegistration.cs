@@ -36,13 +36,6 @@ public static class ApplicationServiceRegistration
             configuration.AddOpenBehavior(typeof(CachingBehavior<,>));
             configuration.AddOpenBehavior(typeof(CacheRemovingBehavior<,>));
         });
-        service.AddSingleton<IDatabase>(sp =>
-        {
-            var configuration = sp.GetService<IConfiguration>();
-            return ConnectionMultiplexer.Connect(configuration["Redis:ConnectionString"]).GetDatabase();
-        });
-
-
 
         return service;
     }

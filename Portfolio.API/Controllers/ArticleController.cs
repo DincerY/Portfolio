@@ -16,7 +16,6 @@ namespace Portfolio.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
 public class ArticleController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -78,6 +77,7 @@ public class ArticleController : ControllerBase
         return Ok(articles);
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> AddArticle([FromBody]CreateArticleRequest request)
     {

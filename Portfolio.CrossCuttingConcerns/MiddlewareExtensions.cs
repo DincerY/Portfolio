@@ -10,6 +10,7 @@ public static class MiddlewareExtensions
         //applicationBuilder.UseMiddleware<RequestResponseLogMiddleware>();
 
         applicationBuilder.UseMiddleware<ExceptionHandlerMiddleware>();
+        applicationBuilder.UseMiddleware<UnauthorizedMiddleware>();
 
         return applicationBuilder;
         

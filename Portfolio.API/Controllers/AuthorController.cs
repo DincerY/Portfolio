@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Portfolio.Application.Common;
 using Portfolio.Application.Features.Authors.CreateAuthor;
@@ -51,6 +52,7 @@ public class AuthorController : ControllerBase
         return Ok(articleDtos);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> AddAuthor([FromBody] CreateAuthorRequest request)
     {

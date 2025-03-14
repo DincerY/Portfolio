@@ -31,7 +31,7 @@ public class LoginHandler : IRequestHandler<LoginRequest,LoginResponse>
             throw new NotFoundException("Password or username is not correct");
         }
         
-        var token = _tokenService.GenerateToken(request.Username);
+        var token = _tokenService.GenerateToken(user);
         return new LoginResponse()
         {
             Token = token.Token,

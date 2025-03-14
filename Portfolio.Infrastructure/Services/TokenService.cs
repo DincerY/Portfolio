@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Portfolio.Application.DTOs;
 using Portfolio.Application.Interfaces.Services;
+using Portfolio.Domain.Entities;
 
 namespace Portfolio.Infrastructure.Services;
 
@@ -17,7 +18,7 @@ public class TokenService : ITokenService
         _configuration = configuration;
     }
 
-    public JwtModel GenerateToken(string userName)
+    public JwtModel GenerateToken(User user)
     {
         SymmetricSecurityKey symmetricSecurityKey =
             new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]));
@@ -28,8 +29,8 @@ public class TokenService : ITokenService
         {
             Subject = new ClaimsIdentity(new[]
             {
-                new Claim(ClaimTypes.Name, userName),
-                new Claim(ClaimTypes.Role, "User")
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.Role, user.Role)
             }),
             Expires = DateTime.UtcNow.AddMinutes(10),
             NotBefore = DateTime.UtcNow,
@@ -42,8 +43,8 @@ public class TokenService : ITokenService
         {
             Token = tokenHandler.WriteToken(token),
             Expiration = token.ValidTo,
-            Role = tokenDescriptor.Subject.Name,
-            Username = userName
+            Role = user.Role,
+            Username = user.Username
 
         };
     }

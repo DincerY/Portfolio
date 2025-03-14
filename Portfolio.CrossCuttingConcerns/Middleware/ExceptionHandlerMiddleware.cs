@@ -64,6 +64,11 @@ public class ExceptionHandlerMiddleware
                 response.StatusCode = StatusCodes.Status400BadRequest;
                 response.Message = badRequestException.Message;
                 break;
+            case UnauthorizedAccessException unauthorizedAccessException:
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                response.StatusCode = StatusCodes.Status401Unauthorized;
+                response.Message = unauthorizedAccessException.Message;
+                break;
             default:
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError;
                 response.StatusCode = StatusCodes.Status500InternalServerError;

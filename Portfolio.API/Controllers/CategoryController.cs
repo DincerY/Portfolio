@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Portfolio.Application.Common;
 using Portfolio.Application.Features.Categories.CreateCategory;
@@ -44,13 +45,14 @@ public class CategoryController : ControllerBase
         return Ok(categories);
         
     }
+
     [HttpGet("getCategoriesByArticleId/{id}")]
     public async Task<IActionResult> GetCategoriesByArticleId(int id)
     {
         var categories = await _mediator.Send(new GetCategoriesByArticleIdRequest(){Id = id});
         return Ok(categories);
     }
-    
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> AddCategory([FromBody]CreateCategoryRequest request)
     {
@@ -58,7 +60,7 @@ public class CategoryController : ControllerBase
         return Ok(response);
     }
 
-
+    [Authorize]
     [HttpGet("deneme")]
     public IEnumerable<int> Deneme()
     {
