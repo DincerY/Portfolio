@@ -77,7 +77,7 @@ public class ArticleController : ControllerBase
         return Ok(articles);
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> AddArticle([FromBody]CreateArticleRequest request)
     {

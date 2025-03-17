@@ -5,6 +5,7 @@ using Portfolio.API.Extensions;
 using Portfolio.API.Filters;
 using Portfolio.Application;
 using Portfolio.CrossCuttingConcerns;
+using Portfolio.CrossCuttingConcerns.Middleware;
 using Portfolio.Infrastructure;
 using Portfolio.Infrastructure.Contexts;
 using Serilog;
@@ -88,7 +89,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
-app.UseAuthorization();
+//TODO
+app.UseMiddleware<CustomAuthorizationMiddleware>();
+//app.UseAuthorization();
 
 app.MapControllers();
 

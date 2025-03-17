@@ -21,10 +21,12 @@ public static class InfrastructureServiceRegistration
         service.AddScoped<ITokenService, TokenService>();
         service.AddScoped<IHashService, HashService>();
 
-        //TODO
         try
         {
-            var _database = ConnectionMultiplexer.Connect(_configuration["Redis:ConnectionString"]).GetDatabase();
+            var _database = ConnectionMultiplexer.Connect(_configuration["Redis:ConnectionString"], opt =>
+            {
+                opt.ConnectTimeout = 1000;
+            }).GetDatabase();
             service.AddSingleton<IDatabase>(_database);
             service.AddSingleton<ICacheService, RedisCacheService>();
             _logger.Information("RedisCache service available");
