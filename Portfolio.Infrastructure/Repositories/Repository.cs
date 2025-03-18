@@ -8,7 +8,7 @@ namespace Portfolio.Infrastructure.Repositories;
 
 public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
 {
-    private readonly AppDbContext _context;
+    protected readonly AppDbContext _context;
 
     public Repository(AppDbContext context)
     {
@@ -46,7 +46,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
 
     public TEntity Update(TEntity entity)
     {
-        set.Update(entity);
+        _context.Entry(entity).State = EntityState.Modified;
         _context.SaveChanges();
         return entity;
     }

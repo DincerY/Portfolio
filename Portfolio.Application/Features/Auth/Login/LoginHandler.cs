@@ -21,6 +21,10 @@ public class LoginHandler : IRequestHandler<LoginRequest,LoginResponse>
     public async Task<LoginResponse> Handle(LoginRequest request, CancellationToken cancellationToken)
     {
         var user = _userRepository.GetByUsername(request.Username);
+        if (!user.IsActive)
+        {
+            throw new NotFoundException("Password or username is not correct");
+        }
         if (user == null)
         {
             throw new NotFoundException("Password or username is not correct");

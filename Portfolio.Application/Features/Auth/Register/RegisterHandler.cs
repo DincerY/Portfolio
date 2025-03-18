@@ -21,7 +21,7 @@ public class RegisterHandler : IRequestHandler<RegisterRequest,RegisterResponse>
 
     public async Task<RegisterResponse> Handle(RegisterRequest request, CancellationToken cancellationToken)
     {
-        var user = _mapper.Map<User>(request);
+        var user = _mapper.Map<Domain.Entities.User>(request);
         user.PasswordHash = _hashService.HashPassword(user.PasswordHash);
         var addedUser = _userRepository.Add(user);
         if (addedUser != null)

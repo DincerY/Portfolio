@@ -59,6 +59,16 @@ public class AuthorController : ControllerBase
         var added = await _mediator.Send(request);
         return Ok(added);
     }
+    [Authorize(Roles = "Admin")]
+    [HttpGet("test")]
+    public async Task<IActionResult> Test()
+    {
+        return Ok(new
+        {
+            Message = "Access granted!",
+            User = User.Identity.Name,
+            IsAuthenticated = User.Identity.IsAuthenticated
+        });
+    }
 
-    
 }

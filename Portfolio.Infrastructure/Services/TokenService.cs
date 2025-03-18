@@ -32,8 +32,8 @@ public class TokenService : ITokenService
                 new Claim(ClaimTypes.Name, user.Username),
                 new Claim(ClaimTypes.Role, user.Role)
             }),
-            Expires = DateTime.UtcNow.AddMinutes(10),
-            NotBefore = DateTime.UtcNow,
+            Expires = DateTime.Now.AddMinutes(10),
+            NotBefore = DateTime.Now,
             SigningCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256Signature),
             Issuer = _configuration["Jwt:Issuer"],
             Audience = _configuration["Jwt:Audience"]
@@ -42,7 +42,7 @@ public class TokenService : ITokenService
         return new JwtModel()
         {
             Token = tokenHandler.WriteToken(token),
-            Expiration = token.ValidTo,
+            Expiration = tokenDescriptor.Expires,
             Role = user.Role,
             Username = user.Username
 

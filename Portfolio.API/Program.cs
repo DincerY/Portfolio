@@ -1,6 +1,7 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Portfolio.API.Extensions;
 using Portfolio.API.Filters;
 using Portfolio.Application;
@@ -47,13 +48,38 @@ builder.Services.AddAuthentication(opt =>
     };
 });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(conf =>
+{
+    conf.AddPolicy("test1", pol => pol.RequireRole("Admin"));
+    conf.AddPolicy("test2", pol => pol.RequireClaim("Admin"));
+    conf.AddPolicy("test3", pol => pol.RequireUserName("Admin"));
+});
 
 builder.Services.AddHttpContextAccessor();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(opt =>
+{
+    opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description =
+            "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345.54321\""
+    });
+    opt.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+                { Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" } },
+            new string[] { }
+        }
+    });
+});
 
 builder.Services.AddDbContext<AppDbContext>();
 
@@ -88,10 +114,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseMiddleware<TestMiddleware>();
 app.UseAuthentication();
-//TODO
-app.UseMiddleware<CustomAuthorizationMiddleware>();
-//app.UseAuthorization();
+app.UseAuthorization();
 
 app.MapControllers();
 

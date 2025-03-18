@@ -8,7 +8,7 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        CreateMap<RegisterRequest, User>()
+        CreateMap<RegisterRequest, Domain.Entities.User>()
             .ForMember(dest => dest.PasswordHash,
                 opt => opt.MapFrom(req => req.Password));
     }
