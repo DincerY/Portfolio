@@ -20,4 +20,9 @@ public class UserRepository : Repository<User>, IUserRepository
     {
         return set.SingleOrDefault(user => user.Username == username);
     }
+
+    public User GetByRefreshToken(string refreshToken)
+    {
+        return set.SingleOrDefault(user => user.RefreshToken == refreshToken);
+    }
 }

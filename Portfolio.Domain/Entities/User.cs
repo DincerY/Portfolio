@@ -7,4 +7,6 @@ public class User : BaseEntity
     public string PasswordHash { get; set; }
     public string Role { get; set; } = "User";
     public bool IsActive { get; set; } = true;
+    public string RefreshToken { get; set; }
+    public DateTime RefreshTokenExpiryTime { get; set; }
 }

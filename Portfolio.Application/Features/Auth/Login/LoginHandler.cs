@@ -36,11 +36,19 @@ public class LoginHandler : IRequestHandler<LoginRequest,LoginResponse>
         }
         
         var token = _tokenService.GenerateToken(user);
+
+        var refreshToken = _tokenService.GenerateRefreshToken();
+        var updateUser = _userRepository.GetByUsername(user.Username);
+        updateUser.RefreshToken = refreshToken;
+        updateUser.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+        _userRepository.Update(updateUser);
+
         return new LoginResponse()
         {
             Token = token.Token,
+            RefreshToken = refreshToken,
             AuthenticateResult = true,
-            AccessTokenExpireDate = token.Expiration,
+            AccessTokenExpireDate = DateTime.Now,
             Role = token.Role,
             Username = token.Username,
         };

@@ -7,5 +7,6 @@ public interface IUserRepository : IRepository<User>
 {
     User GetByEmail(string email);
     User GetByUsername(string username);
-    
+    User GetByRefreshToken(string refreshToken);
+
 }
