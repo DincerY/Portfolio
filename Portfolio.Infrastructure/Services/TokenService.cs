@@ -32,26 +32,6 @@ public class TokenService : ITokenService
         };
     }
 
-    //TODO : Bu fonksiyonların amacı sedece refresh token üretmek veya doğrulamak veri tabanına kayıt vs işleri bu fonksiyonların içinde bulunmamalıveri tabanına kayıt vs işleri bu fonksiyonların içinde bulunmamalı
-    //TODO : Normal Jwt süresi bitmediyse yenisini vermeyeceğim
-    public JwtModel GenerateTokenByRefreshToken(string token,User user)
-    {
-        if (!TokenIsValid(token))
-        {
-            throw new SecurityTokenException("Token is invalid");
-        }
-        var newToken = CreateToken(user);
-        
-        return new JwtModel()
-        {
-            Token = newToken,
-            Expiration = DateTime.UtcNow,
-            Role = user.Role,
-            Username = user.Username
-        };
-    }
-
-
     public string GenerateRefreshToken()
     {
         var randomNumber = new byte[32];
@@ -74,7 +54,7 @@ public class TokenService : ITokenService
                 new Claim(ClaimTypes.Name, user.Username),
                 new Claim(ClaimTypes.Role, user.Role)
             }),
-            Expires = DateTime.UtcNow.AddMinutes(10),
+            Expires = DateTime.UtcNow.AddMinutes(_configuration.GetValue<double>("Jwt:ExpirationInMinutes")),
             NotBefore = DateTime.UtcNow,
             SigningCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256Signature),
             Issuer = _configuration["Jwt:Issuer"],
@@ -85,7 +65,29 @@ public class TokenService : ITokenService
         return tokenHandler.WriteToken(token);
     }
 
-    private bool TokenIsValid(string token)
+    public bool TokenIsValid(string token)
+    {
+        var jwtSecurityToken = GetJwtSecurityToken(token);
+        
+        if (jwtSecurityToken == null)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public bool TokenIsExpired(string token)
+    {
+        var jwtSecurityToken = GetJwtSecurityToken(token);
+        if (jwtSecurityToken.ValidTo < DateTime.UtcNow)
+        {
+            return true;
+        }
+        return false;
+    }
+
+
+    private JwtSecurityToken GetJwtSecurityToken(string token)
     {
         var tokenValidationParameters = new TokenValidationParameters()
         {
@@ -100,14 +102,16 @@ public class TokenService : ITokenService
 
         var tokenHandler = new JwtSecurityTokenHandler();
         SecurityToken securityToken;
-        tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
-        var jwtSecurityToken = securityToken as JwtSecurityToken;
-
-        if (jwtSecurityToken == null)
+        try
         {
-            return false;
+            tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
         }
-        return true;
+        catch (Exception e)
+        {
+            throw new SecurityTokenException("Jwt is not valid");
+        }
+        var jwtSecurityToken = securityToken as JwtSecurityToken;
+        return jwtSecurityToken;
     }
 
 }

@@ -52,14 +52,14 @@ public class AuthorController : ControllerBase
         return Ok(articleDtos);
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "admin")]
     [HttpPost]
     public async Task<IActionResult> AddAuthor([FromBody] CreateAuthorRequest request)
     {
         var added = await _mediator.Send(request);
         return Ok(added);
     }
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "admin")]
     [HttpGet("test")]
     public async Task<IActionResult> Test()
     {

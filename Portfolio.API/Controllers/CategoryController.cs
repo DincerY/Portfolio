@@ -52,7 +52,7 @@ public class CategoryController : ControllerBase
         var categories = await _mediator.Send(new GetCategoriesByArticleIdRequest(){Id = id});
         return Ok(categories);
     }
-    [Authorize]
+    [Authorize("admin")]
     [HttpPost]
     public async Task<IActionResult> AddCategory([FromBody]CreateCategoryRequest request)
     {

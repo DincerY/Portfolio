@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.IdentityModel.Tokens;
 using Portfolio.Application.Interfaces.Repositories;
 using Portfolio.Application.Interfaces.Services;
 using Portfolio.CrossCuttingConcerns.Exceptions;
@@ -24,7 +25,18 @@ public class RefreshHandler : IRequestHandler<RefreshRequest,RefreshResponse>
         {
             throw new NotFoundException("User or Refresh token is not exist");
         }
-        var jwtModel = _tokenService.GenerateTokenByRefreshToken(request.Token,user);
+
+        if (!_tokenService.TokenIsValid(request.Token))
+        {
+            throw new SecurityTokenException("Token is invalid");
+        }
+
+        if (!_tokenService.TokenIsExpired(request.Token))
+        {
+            throw new SecurityTokenException("Token is not expired");
+        }
+
+        var jwtModel = _tokenService.GenerateToken(user);
 
         user.RefreshToken = _tokenService.GenerateRefreshToken();
         user.RefreshTokenExpiryTime = DateTime.UtcNow;

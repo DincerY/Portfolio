@@ -6,9 +6,10 @@ using Portfolio.Application.Features.User.ActiveUser;
 using Portfolio.Application.Features.User.CreateUser;
 using Portfolio.Application.Features.User.DeleteUser;
 using Portfolio.Application.Features.User.UpdateUser;
+using Portfolio.Application.Features.User.UpdateUserRole;
 
 namespace Portfolio.API.Controllers;
-[Authorize(Roles = "Admin")]
+[Authorize(Roles = "admin")]
 [Route("api/[controller]")]
 [ApiController]
 public class UserController : ControllerBase
@@ -26,14 +27,20 @@ public class UserController : ControllerBase
         var response = await _mediator.Send(request);
         return Ok(response);
     }
-    [HttpPut]
-    public async Task<IActionResult> UpdateUser([FromBody] UpdateUserRequest request)
+    [HttpPut("updateUsername")]
+    public async Task<IActionResult> UpdateUsername([FromBody] UpdateUsernameRequest request)
+    {
+        var response = await _mediator.Send(request);
+        return Ok(response);
+    }
+    [HttpPut("updateRole")]
+    public async Task<IActionResult> UpdateUserRole([FromBody] UpdateUserRoleRequest request)
     {
         var response = await _mediator.Send(request);
         return Ok(response);
     }
     [HttpDelete]
-    public async Task<IActionResult> UpdateUser([FromBody] DeleteUserRequest request)
+    public async Task<IActionResult> DeleteUser([FromBody] DeleteUserRequest request)
     {
         var response = await _mediator.Send(request);
         return Ok(response);
