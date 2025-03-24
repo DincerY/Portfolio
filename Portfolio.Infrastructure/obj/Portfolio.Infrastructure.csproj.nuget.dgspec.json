@@ -229,6 +229,10 @@
               "target": "Package",
               "version": "[5.0.17, )"
             },
+            "Microsoft.Extensions.Configuration.Abstractions": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
             "Microsoft.Extensions.Logging.Abstractions": {
               "target": "Package",
               "version": "[7.0.0, )"
@@ -244,6 +248,10 @@
             "Serilog.Sinks.File": {
               "target": "Package",
               "version": "[6.0.0, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[8.6.1, )"
             }
           },
           "imports": [

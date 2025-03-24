@@ -1,5 +1,6 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Portfolio.API.Extensions;
@@ -115,6 +116,24 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseMiddleware<TestMiddleware>();
+/*app.UseWhen(c =>
+{
+    var endpoint = c.GetEndpoint();
+    return endpoint?.Metadata.GetMetadata<AuthorizeAttribute>() != null;
+}, appBuilder =>
+{
+    appBuilder.UseMiddleware<CustomAuthenticationMiddleware>();
+});
+
+app.UseWhen(c =>
+{
+    var endpoint = c.GetEndpoint();
+    return endpoint?.Metadata.GetMetadata<AuthorizeAttribute>() != null;
+}, appBuilder =>
+{
+    appBuilder.UseMiddleware<CustomAuthorizationMiddleware>();
+});*/
+
 app.UseAuthentication();
 app.UseAuthorization();
 

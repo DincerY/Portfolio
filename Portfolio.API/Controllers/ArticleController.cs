@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Portfolio.API.Filters;
 using Portfolio.Application.Common;
 using Portfolio.Application.Features.Articles.CreateArticle;
 using Portfolio.Application.Features.Articles.GetArticleById;
@@ -25,6 +26,7 @@ public class ArticleController : ControllerBase
         _mediator = mediator;
     }
     [ResponseCache(Duration = 10)]
+    [CustomAuthorize("user")]
     [HttpGet]
     public async Task<IActionResult> GetArticles([FromQuery] PageRequest request)
     {
