@@ -126,3 +126,5 @@ C:\Users\dince\source\repos\Portfolio\Portfolio.API\bin\Debug\net7.0\JWT.dll
 C:\Users\dince\source\repos\Portfolio\Portfolio.API\bin\Debug\net7.0\Microsoft.Bcl.Memory.dll
 C:\Users\dince\source\repos\Portfolio\Portfolio.API\bin\Debug\net7.0\Microsoft.Bcl.TimeProvider.dll
 C:\Users\dince\source\repos\Portfolio\Portfolio.API\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\dince\source\repos\Portfolio\Portfolio.API\bin\Debug\net7.0\Prometheus.NetStandard.dll
+C:\Users\dince\source\repos\Portfolio\Portfolio.API\bin\Debug\net7.0\Prometheus.AspNetCore.dll

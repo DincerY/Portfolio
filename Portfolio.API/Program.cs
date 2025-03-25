@@ -10,6 +10,7 @@ using Portfolio.CrossCuttingConcerns;
 using Portfolio.CrossCuttingConcerns.Middleware;
 using Portfolio.Infrastructure;
 using Portfolio.Infrastructure.Contexts;
+using Prometheus;
 using Serilog;
 
 
@@ -93,6 +94,10 @@ var app = builder.Build();
 
 //Extension method
 app.UseCustomHealthChech();
+
+
+app.UseHttpMetrics();
+app.MapMetrics();
 
 
 if (app.Environment.IsDevelopment())
